@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "gb.h": "c",
+        "cgb.h": "c",
+        "tileset_map.h": "c",
+        "tileset_tiles.h": "c",
+        "types.h": "c",
+        "hardware.h": "c"
+    }
+}
