@@ -53,3 +53,7 @@ dkms.conf
 
 # Assets
 assets/
+
+# IDE Metadata
+.idea/
+.vscode/

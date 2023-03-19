@@ -1,6 +1,6 @@
 CC	= /home/user/Downloads/gb-dev/gbdk/bin/lcc -Wm-yc
 
-BINS	= cliks.gbc
+BINS	= eigg.gbc
 
 all:	$(BINS)
 
