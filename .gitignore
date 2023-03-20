@@ -54,13 +54,14 @@ dkms.conf
 # Assets
 assets/
 
-# Build scripts
+# Build scripts and output
 *.bat
+*.gbc
+*.cdb
+*.map
+*.noi
 
 # IDE Metadata
 .idea/
 .vscode/
 .vs/
-
-# ROMS
-*.gbc
