@@ -2,7 +2,6 @@
 #include <gb/cgb.h>
 #include "tile_data/tileset_tiles.h"
 #include "tile_data/tileset_map.h"
-#include "helpers/input.h"
 
 int main() {
     NR52_REG = 0x80;
@@ -54,6 +53,8 @@ int main() {
         if(joypads.joy0 & J_START) {
 
         }
+
+        wait_vbl_done();
     }
 
     return 0;
