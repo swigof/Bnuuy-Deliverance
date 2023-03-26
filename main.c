@@ -16,13 +16,14 @@ const uint8_t sprite_data[] = {
 };
 
 int main() {
-    // NR52_REG = 0x80;
-    // NR50_REG = 0x77;
-    // NR51_REG = 0xFF;
+    NR52_REG = 0x80;
+    NR50_REG = 0x77;
+    NR51_REG = 0xFF;
 
-    // DISPLAY_ON;
-    // SHOW_BKG;
-    // SPRITES_8x8;
+    DISPLAY_ON;
+    SHOW_BKG;
+    SPRITES_8x8;
+    SHOW_SPRITES;
 
     // VBK_REG = VBK_TILES;
     // set_bkg_palette(0,1,tileset_map_colors);
@@ -30,9 +31,8 @@ int main() {
     // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map);
     // VBK_REG = VBK_ATTRIBUTES;
     // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
-    
     //VBK_REG = VBK_TILES;
-    //BGP_REG = OBP0_REG = OBP1_REG = 0xE4;
+
     set_sprite_data(0, 4, sprite_data);
 
     set_sprite_tile(0, 0);
@@ -53,14 +53,20 @@ int main() {
     move_sprite(2, 75 + 8, 75);
     move_sprite(3, 75 + 8, 75 + 8);
 
-    SHOW_SPRITES;
-    
     input_init();
 
     while(1) {
-        input_process();
+      input_process();
 
-        wait_vbl_done();
+      sprite_palettes[1] += 1;
+      sprite_palettes[2] += 1;
+      sprite_palettes[3] += 1;
+      if(sprite_palettes[1] > 32767) sprite_palettes[1] = 0;
+      if(sprite_palettes[2] > 32767) sprite_palettes[2] = 0;
+      if(sprite_palettes[3] > 32767) sprite_palettes[3] = 0;
+      set_sprite_palette(0, 1, sprite_palettes);
+
+      wait_vbl_done();
     }
 
     return 0;
