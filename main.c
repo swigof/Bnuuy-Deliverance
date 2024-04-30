@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
+#include "entity/entity.h"
 #include "tile_data/tileset_tiles.h"
 #include "tile_data/tileset_map.h"
 
@@ -9,8 +10,8 @@
 
 joypads_t joypads;
 uint8_t input_mode = I_NORMAL;
-uint8_t x, y = 75;
-uint8_t flip = 0;
+
+entity_t ship;
 uint8_t flip_counter = 0;
 
 int main() {
@@ -23,13 +24,13 @@ int main() {
     SPRITES_8x8;
     SHOW_SPRITES;
 
-    // VBK_REG = VBK_TILES;
-    // set_bkg_palette(0,1,tileset_map_colors);
-    // set_bkg_data(0,tileset_tiles_count,tileset_tiles);
-    // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map);
-    // VBK_REG = VBK_ATTRIBUTES;
-    // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
-    //VBK_REG = VBK_TILES;
+    VBK_REG = VBK_TILES;
+    set_bkg_palette(0,1,tileset_map_colors);
+    set_bkg_data(0,tileset_tiles_count,tileset_tiles);
+    set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map);
+    VBK_REG = VBK_ATTRIBUTES;
+    set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
+    VBK_REG = VBK_TILES;
 
     set_sprite_data(0, tileset_tiles_count, tileset_tiles);
 
@@ -40,7 +41,7 @@ int main() {
 
     set_sprite_prop(0, 0);
 
-    move_sprite(0, x, y);
+    move_sprite(0, ship.x, ship.y);
 
     joypad_init(1, &joypads);
 
@@ -49,15 +50,15 @@ int main() {
       joypad_ex(&joypads);
 
       if(joypads.joy0 & J_UP) {
-        y--;
+        ship.y--;
       } else if(joypads.joy0 & J_DOWN) {
-        y++;
+        ship.y++;
       }
 
       if(joypads.joy0 & J_LEFT) {
-        x--;
+        ship.x--;
       } else if(joypads.joy0 & J_RIGHT) {
-        x++;
+        ship.x++;
       }
 
       if(joypads.joy0 & J_A) {
@@ -90,15 +91,12 @@ int main() {
 
       flip_counter++;
       if(flip_counter == 3) {
-        flip = !flip;
+        ship.prop ^= S_FLIPX;
         flip_counter = 0;
-        if(flip)
-          set_sprite_prop(0, S_FLIPX);
-        else
-          set_sprite_prop(0, 0);
       }
 
-      move_sprite(0, x, y);
+      set_sprite_prop(0, ship.prop);
+      move_sprite(0, ship.x, ship.y);
       // scroll_sprite() ?
 
       // fix blurring on movement?
