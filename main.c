@@ -13,6 +13,7 @@ uint8_t input_mode = I_NORMAL;
 
 entity_t ship;
 uint8_t flip_counter = 0;
+uint8_t firing_charge = 0;
 
 int main() {
     NR52_REG = 0x80;
@@ -62,13 +63,18 @@ int main() {
       }
 
       if(joypads.joy0 & J_A) {
-        sprite_palettes[1] += 1;
-        sprite_palettes[2] += 1;
-        sprite_palettes[3] += 1;
-        if(sprite_palettes[1] > 32767) sprite_palettes[1] = 0;
-        if(sprite_palettes[2] > 32767) sprite_palettes[2] = 0;
-        if(sprite_palettes[3] > 32767) sprite_palettes[3] = 0;
-        set_sprite_palette(0, 1, sprite_palettes);
+        // Render sprite / palette change and sound for charging
+        firing_charge++;
+      } else if (firing_charge != 0) {
+        if(firing_charge < 15) {
+          // Failure
+        }
+        if(firing_charge == 15) {
+          // Special shot
+        } else  {
+          // Normal shot
+        }
+        firing_charge = 0;
       }
 
       if(joypads.joy0 & J_B) {
