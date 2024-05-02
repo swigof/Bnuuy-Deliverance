@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
-#include "entity/entity.h"
+#include "helpers/entity.h"
 #include "tile_data/tileset_tiles.h"
 #include "tile_data/tileset_map.h"
 
@@ -95,8 +95,8 @@ int main() {
         flip_counter = 0;
       }
 
-      set_sprite_prop(0, ship.prop);
-      move_sprite(0, ship.x, ship.y);
+      update_entity(ship);
+
       // scroll_sprite() ?
 
       // fix blurring on movement?
