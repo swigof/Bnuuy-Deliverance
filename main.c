@@ -14,6 +14,7 @@ uint8_t input_mode = I_NORMAL;
 entity_t ship;
 uint8_t flip_counter = 0;
 uint8_t firing_charge = 0;
+uint8_t next_shot_speed = 2;
 
 int main() {
     NR52_REG = 0x80;
@@ -52,8 +53,10 @@ int main() {
 
       if(joypads.joy0 & J_UP) {
         ship.y--;
+        next_shot_speed = 3;
       } else if(joypads.joy0 & J_DOWN) {
         ship.y++;
+        next_shot_speed = 1;
       }
 
       if(joypads.joy0 & J_LEFT) {
@@ -70,21 +73,24 @@ int main() {
           // Failure
         }
         if(firing_charge == 15) {
-          // Special shot
+          // Special shot (with aoe)?
         } else  {
           // Normal shot
         }
+        next_shot_speed = 2;
         firing_charge = 0;
       }
 
       if(joypads.joy0 & J_B) {
-        sprite_palettes[1] -= 1;
-        sprite_palettes[2] -= 1;
-        sprite_palettes[3] -= 1;
-        if(sprite_palettes[1] < 0) sprite_palettes[1] = 32767;
-        if(sprite_palettes[2] < 0) sprite_palettes[2] = 32767;
-        if(sprite_palettes[3] < 0) sprite_palettes[3] = 32767;
-        set_sprite_palette(0, 1, sprite_palettes);
+        // lock to change face / movement?
+
+        // sprite_palettes[1] -= 1;
+        // sprite_palettes[2] -= 1;
+        // sprite_palettes[3] -= 1;
+        // if(sprite_palettes[1] < 0) sprite_palettes[1] = 32767;
+        // if(sprite_palettes[2] < 0) sprite_palettes[2] = 32767;
+        // if(sprite_palettes[3] < 0) sprite_palettes[3] = 32767;
+        // set_sprite_palette(0, 1, sprite_palettes);
       }
 
       if(joypads.joy0 & J_SELECT) {
