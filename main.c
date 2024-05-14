@@ -7,7 +7,23 @@
 joypads_t joypads;
 
 entity_t player;
-uint8_t firing_charge = 0;
+
+void set_camera() {
+    // update hardware scroll position
+    SCY_REG = camera_y; 
+    // up or down
+    map_pos_y = (uint8_t)(camera_y >> 3u);
+    if (map_pos_y != old_map_pos_y) { 
+        if (camera_y < old_camera_y) {
+            set_bkg_submap(map_pos_x, map_pos_y, MIN(21u, bigmap_mapWidth-map_pos_x), 1, bigmap_map, bigmap_mapWidth);
+        } else {
+            if ((bigmap_mapHeight - 18u) > map_pos_y) set_bkg_submap(map_pos_x, map_pos_y + 18u, MIN(21u, bigmap_mapWidth-map_pos_x), 1, bigmap_map, bigmap_mapWidth);     
+        }
+        old_map_pos_y = map_pos_y; 
+    }
+    // set old camera position to current camera position
+    old_camera_y = camera_y;
+}
 
 int main() {
     NR52_REG = 0x80;
@@ -22,10 +38,10 @@ int main() {
     VBK_REG = VBK_TILES;
     set_bkg_palette(0,1,tileset_map_colors);
     set_bkg_data(0,tileset_tiles_count,tileset_tiles);
-    set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map);
-    VBK_REG = VBK_ATTRIBUTES;
-    set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
-    VBK_REG = VBK_TILES;
+    set_bkg_submap(0, 0, 20, 18, tileset_map, 20);
+    // VBK_REG = VBK_ATTRIBUTES;
+    // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
+    // VBK_REG = VBK_TILES;
 
     set_sprite_data(0, tileset_tiles_count, tileset_tiles);
 
@@ -45,8 +61,11 @@ int main() {
     while(1) {
         joypad_ex(&joypads);
 
+        // just for testing
         if(joypads.joy0 & J_UP) {
-            
+            move_entity_up(&player);
+        } else if(joypads.joy0 & J_DOWN) {
+            move_entity_down(&player);
         }
 
         if(joypads.joy0 & J_LEFT) {
