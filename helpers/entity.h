@@ -20,7 +20,7 @@ inline void move_entity_left(entity_t* entity) {
         entity->direction |= J_LEFT;
         entity->sub_x = 1;
     }
-    if(entity->sub_x >= 2) {
+    if(entity->sub_x >= SUBPIXEL_THRESHOLD) {
         entity->sub_x = 0;
         entity->x--;
     }
@@ -34,7 +34,7 @@ inline void move_entity_right(entity_t* entity) {
         entity->direction |= J_RIGHT;
         entity->sub_x = 1;
     }
-    if(entity->sub_x >= 2) {
+    if(entity->sub_x >= SUBPIXEL_THRESHOLD) {
         entity->sub_x = 0;
         entity->x++;
     }
@@ -48,7 +48,7 @@ inline void move_entity_up(entity_t* entity) {
         entity->direction |= J_UP;
         entity->sub_y = 1;
     }
-    if(entity->sub_y >= 2) {
+    if(entity->sub_y >= SUBPIXEL_THRESHOLD) {
         entity->sub_y = 0;
         entity->y--;
     }
@@ -62,7 +62,7 @@ inline void move_entity_down(entity_t* entity) {
         entity->direction |= J_DOWN;
         entity->sub_y = 1;
     }
-    if(entity->sub_y >= 2) {
+    if(entity->sub_y >= SUBPIXEL_THRESHOLD) {
         entity->sub_y = 0;
         entity->y++;
     }
