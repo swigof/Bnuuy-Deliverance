@@ -43,18 +43,18 @@ int main() {
     set_bkg_data(0,tileset_tiles_count,tileset_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
+    player.x = MIN_PLAYER_X;
+    player.y = MAX_PLAYER_Y; // TODO place player at bottom, make map longer to see if max camera y breaks?
+    camera_y = MAX_CAMERA_Y;
+
     old_map_pos_y = 255;
-    map_pos_y = 0;
+    map_pos_y = (uint8_t)(camera_y >> 3u);;
     set_bkg_submap(0, map_pos_y, 20, 18, tileset_map, 20);
     DISPLAY_ON;
 
-    player.x = MIN_PLAYER_X;
-    player.y = 0; // TODO place player at bottom, make map longer to see if max camera y breaks?
-    camera_y = 0;
-
     redraw = FALSE;
 
-    SCY_REG = player.y;
+    SCY_REG = camera_y;
 
     // VBK_REG = VBK_ATTRIBUTES;
     // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
