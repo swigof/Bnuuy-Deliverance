@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
-#include "helpers/entity.h"
+#include "helpers/player.h"
 #include "tile_data/tileset_tiles.h"
 #include "tile_data/tileset_map.h"
 
@@ -12,7 +12,7 @@
 
 joypads_t joypads;
 
-entity_t player;
+player_t player;
 uint8_t map_pos_y, old_map_pos_y, redraw;
 uint16_t camera_y;
 
@@ -20,7 +20,7 @@ void set_camera() {
     SCY_REG = camera_y;
     map_pos_y = (uint8_t)(camera_y >> 3u);
     if (map_pos_y != old_map_pos_y) {
-        if (player.direction & J_UP) {
+        if (player.e.direction & J_UP) {
             set_bkg_submap(0, map_pos_y, 20, 1, tileset_map, 20);
         } else {
             if ((tileset_map_height - 18u) > map_pos_y)
@@ -43,8 +43,8 @@ int main() {
     set_bkg_data(0,tileset_tiles_count,tileset_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
-    player.x = MIN_PLAYER_X;
-    player.y = MAX_PLAYER_Y; // TODO place player at bottom, make map longer to see if max camera y breaks?
+    player.e.x = MIN_PLAYER_X;
+    player.e.y = MAX_PLAYER_Y; // TODO place player at bottom, make map longer to see if max camera y breaks?
     camera_y = MAX_CAMERA_Y;
 
     old_map_pos_y = 255;
@@ -65,7 +65,7 @@ int main() {
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
     set_sprite_prop(0, 0);
-    move_sprite(0, player.x, player.y);
+    move_sprite(0, player.e.x, player.e.y);
 
     joypad_init(1, &joypads);
 
@@ -74,19 +74,19 @@ int main() {
 
         // just for testing
         if(joypads.joy0 & J_UP) {
-            if(player.y > MIN_PLAYER_Y) {
-                move_entity_up(&player);
-                if (player.sub_y == 0 && player.y < 72 && camera_y > 0) {
-                    player.y = 72;
+            if(player.e.y > MIN_PLAYER_Y) {
+                move_entity_up(&player.e);
+                if (player.e.sub_y == 0 && player.e.y < 72 && camera_y > 0) {
+                    player.e.y = 72;
                     camera_y--;
                     redraw = TRUE;
                 }
             }
         } else if(joypads.joy0 & J_DOWN) {
-            if(player.y < MAX_PLAYER_Y) {
-                move_entity_down(&player);
-                if (player.sub_y == 0 && player.y > 72 && camera_y < MAX_CAMERA_Y) {
-                    player.y = 72;
+            if(player.e.y < MAX_PLAYER_Y) {
+                move_entity_down(&player.e);
+                if (player.e.sub_y == 0 && player.e.y > 72 && camera_y < MAX_CAMERA_Y) {
+                    player.e.y = 72;
                     camera_y++;
                     redraw = TRUE;
                 }
@@ -94,15 +94,31 @@ int main() {
         }
 
         if(joypads.joy0 & J_LEFT) {
-            if (player.x > MIN_PLAYER_X)
-                move_entity_left(&player);
+            if (player.e.x > MIN_PLAYER_X)
+                move_entity_left(&player.e);
         } else if(joypads.joy0 & J_RIGHT) {
-            if (player.x < MAX_PLAYER_X)
-                move_entity_right(&player);
+            if (player.e.x < MAX_PLAYER_X)
+                move_entity_right(&player.e);
         }
 
+        if (player.e.y >= MAX_PLAYER_Y) {
+            player.air_state = GROUNDED; // TODO actual hitbox detection
+        }
         if(joypads.joy0 & J_A) {
-            // jump
+            if (player.air_state & GROUNDED) {
+                player.air_state = (JUMPING | MAX_VELOCITY);
+            } else if (player.air_state & FALLING && !(player.air_state & USED_DOUBLE)) {
+                player.air_state = (JUMPING | USED_DOUBLE | MAX_VELOCITY);
+            } else if (player.air_state & JUMPING && player.air_state & VELOCITY_MASK) {
+                player.air_state = ((player.air_state & VELOCITY_MASK) - 1) | (player.air_state & FLAG_MASK);
+            }
+        } else if (!(player.air_state & GROUNDED)) {
+            player.air_state &= USED_DOUBLE;
+            player.air_state |= FALLING;
+        }
+        if (!(player.air_state & GROUNDED)) {
+            player.e.y += 1;
+            player.e.y -= (player.air_state & VELOCITY_MASK);
         }
 
         if(joypads.joy0 & J_B) {
@@ -117,7 +133,7 @@ int main() {
 
         }
 
-        update_entity(player);
+        update_entity(player.e);
 
         if (redraw) {
             wait_vbl_done();
