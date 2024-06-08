@@ -75,7 +75,7 @@ int main() {
         // just for testing
         if(joypads.joy0 & J_UP) {
             if(player.e.y > MIN_PLAYER_Y) {
-                move_entity_up(&player.e);
+                move_entity_up(&player.e, 1);
                 if (player.e.sub_y == 0 && player.e.y < 72 && camera_y > 0) {
                     player.e.y = 72;
                     camera_y--;
@@ -84,7 +84,7 @@ int main() {
             }
         } else if(joypads.joy0 & J_DOWN) {
             if(player.e.y < MAX_PLAYER_Y) {
-                move_entity_down(&player.e);
+                move_entity_down(&player.e, 1);
                 if (player.e.sub_y == 0 && player.e.y > 72 && camera_y < MAX_CAMERA_Y) {
                     player.e.y = 72;
                     camera_y++;
@@ -95,10 +95,10 @@ int main() {
 
         if(joypads.joy0 & J_LEFT) {
             if (player.e.x > MIN_PLAYER_X)
-                move_entity_left(&player.e);
+                move_entity_left(&player.e, 1);
         } else if(joypads.joy0 & J_RIGHT) {
             if (player.e.x < MAX_PLAYER_X)
-                move_entity_right(&player.e);
+                move_entity_right(&player.e, 1);
         }
 
         if (player.e.y >= MAX_PLAYER_Y) {
@@ -116,9 +116,11 @@ int main() {
             player.air_state &= USED_DOUBLE;
             player.air_state |= FALLING;
         }
-        if (!(player.air_state & GROUNDED)) {
-            player.e.y += 1;
-            player.e.y -= (player.air_state & VELOCITY_MASK);
+        if (!(player.air_state & GROUNDED)) {  // TODO fix should use falling state and update to falling state when vel == 0
+            if(player.air_state & VELOCITY_MASK)
+                move_entity_up(&player.e, player.air_state & VELOCITY_MASK);
+            else
+                move_entity_down(&player.e, 2);
         }
 
         if(joypads.joy0 & J_B) {
@@ -131,6 +133,16 @@ int main() {
 
         if(joypads.joy0 & J_START) {
 
+        }
+
+        if (player.e.direction & J_UP && player.e.y < 72 && camera_y > 0) {
+            camera_y -= 72 - player.e.y;
+            player.e.y = 72;
+            redraw = TRUE;
+        } else if (player.e.direction & J_DOWN && player.e.y > 72 && camera_y < MAX_CAMERA_Y) {
+            camera_y += player.e.y - 72;
+            player.e.y = 72;
+            redraw = TRUE;
         }
 
         update_entity(player.e);
