@@ -22,9 +22,15 @@ void set_camera() {
     if (map_pos_y != old_map_pos_y) {
         if (player.e.direction & J_UP) {
             set_bkg_submap(0, map_pos_y, 20, 1, tileset_map, 20);
+            VBK_REG = VBK_ATTRIBUTES;
+            set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
+            VBK_REG = VBK_TILES;
         } else {
             if ((tileset_map_height - 18u) > map_pos_y)
                 set_bkg_submap(0, map_pos_y + 18u, 20, 1, tileset_map, 20);
+                VBK_REG = VBK_ATTRIBUTES;
+                set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
+                VBK_REG = VBK_TILES;
         }
         old_map_pos_y = map_pos_y;
     }
@@ -50,15 +56,14 @@ int main() {
     old_map_pos_y = 255;
     map_pos_y = (uint8_t)(camera_y >> 3u);;
     set_bkg_submap(0, map_pos_y, 20, 18, tileset_map, 20);
+    VBK_REG = VBK_ATTRIBUTES;
+    set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
+    VBK_REG = VBK_TILES;
     DISPLAY_ON;
 
     redraw = FALSE;
 
     SCY_REG = camera_y;
-
-    // VBK_REG = VBK_ATTRIBUTES;
-    // set_bkg_tiles(0,0,tileset_map_width,tileset_map_height,tileset_map_attr);
-    // VBK_REG = VBK_TILES;
 
     set_sprite_data(0, tileset_tiles_count, tileset_tiles);
     set_sprite_tile(0, 58);
@@ -120,7 +125,7 @@ int main() {
             if(player.air_state & VELOCITY_MASK)
                 move_entity_up(&player.e, player.air_state & VELOCITY_MASK);
             else
-                move_entity_down(&player.e, 2);
+                move_entity_down(&player.e, 3); // TODO gradual increase, general accel calcs or use signed air velocity
         }
 
         if(joypads.joy0 & J_B) {
