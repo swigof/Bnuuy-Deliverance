@@ -50,7 +50,7 @@ int main() {
     set_bkg_palette(0,1,tileset_map_colors);
 
     player.e.x = MIN_PLAYER_X;
-    player.e.y = MAX_PLAYER_Y; // TODO place player at bottom, make map longer to see if max camera y breaks?
+    player.e.y = MAX_PLAYER_Y;
     camera_y = MAX_CAMERA_Y;
 
     old_map_pos_y = 255;
@@ -99,11 +99,19 @@ int main() {
         }
 
         if(joypads.joy0 & J_LEFT) {
-            if (player.e.x > MIN_PLAYER_X)
-                move_entity_left(&player.e, 1);
+            if (player.e.x > MIN_PLAYER_X) {
+                move_entity_left(&player.e, 1); // TODO generify below for all entities, add collision check flag to entities
+                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1] & c) {
+                    player.e.x++;
+                }
+            }
         } else if(joypads.joy0 & J_RIGHT) {
-            if (player.e.x < MAX_PLAYER_X)
+            if (player.e.x < MAX_PLAYER_X) {
                 move_entity_right(&player.e, 1);
+                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1] & c) {
+                    player.e.x--;
+                }
+            }
         }
 
         if (player.e.y >= MAX_PLAYER_Y) {
