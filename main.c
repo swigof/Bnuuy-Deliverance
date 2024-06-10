@@ -101,15 +101,17 @@ int main() {
         if(joypads.joy0 & J_LEFT) {
             if (player.e.x > MIN_PLAYER_X) {
                 move_entity_left(&player.e, 1); // TODO generify below for all entities, add collision check flag to entities
-                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1] & c) {
-                    player.e.x++; //TODO move completely out of tile
+                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
+                if (tileset_map_attr[player.e.true_map_tile] & c) {
+                    player.e.x = (((player.e.x + 7) >> 3)) << 3;
                 }
             }
         } else if(joypads.joy0 & J_RIGHT) {
             if (player.e.x < MAX_PLAYER_X) {
                 move_entity_right(&player.e, 1);
-                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1] & c) {
-                    player.e.x--;
+                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1;
+                if (tileset_map_attr[player.e.true_map_tile] & c) {
+                    player.e.x = ((player.e.x >> 3)) << 3;
                 }
             }
         }

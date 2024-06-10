@@ -5,6 +5,7 @@
 
 typedef struct {
     uint8_t x, y, prop, sub_x, sub_y, direction, move_amount;
+    uint16_t true_map_tile;
     uint8_t flags; // render, tile/sprite, ? ...
 } entity_t;
 
