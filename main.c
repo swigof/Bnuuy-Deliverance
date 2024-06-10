@@ -102,7 +102,7 @@ int main() {
             if (player.e.x > MIN_PLAYER_X) {
                 move_entity_left(&player.e, 1); // TODO generify below for all entities, add collision check flag to entities
                 if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1] & c) {
-                    player.e.x++;
+                    player.e.x++; //TODO move completely out of tile
                 }
             }
         } else if(joypads.joy0 & J_RIGHT) {
@@ -130,10 +130,18 @@ int main() {
             player.air_state |= FALLING;
         }
         if (!(player.air_state & GROUNDED)) {  // TODO fix should use falling state and update to falling state when vel == 0
-            if(player.air_state & VELOCITY_MASK)
+            if(player.air_state & VELOCITY_MASK) {
                 move_entity_up(&player.e, player.air_state & VELOCITY_MASK);
+                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1] & c) {
+                    // set to below block
+                }
+            }
             else
                 move_entity_down(&player.e, 3); // TODO gradual increase, general accel calcs or use signed air velocity
+                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1] & c) {
+                    // set to on block
+                    // set to grounded
+                }
         }
 
         if(joypads.joy0 & J_B) {
