@@ -109,16 +109,13 @@ int main() {
         } else if(joypads.joy0 & J_RIGHT) {
             if (player.e.x < MAX_PLAYER_X) {
                 move_entity_right(&player.e, 1);
-                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile] & c) {
+                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
+                if (tileset_map_attr[player.e.true_map_tile + 1] & c) {
                     player.e.x = ((player.e.x >> 3)) << 3;
                 }
             }
         }
 
-        if (player.e.y >= MAX_PLAYER_Y) {
-            player.air_state = GROUNDED; // TODO actual hitbox detection
-        }
         if(joypads.joy0 & J_A) {
             if (player.air_state & GROUNDED) {
                 player.air_state = (JUMPING | MAX_VELOCITY);
@@ -134,16 +131,24 @@ int main() {
         if (!(player.air_state & GROUNDED)) {  // TODO fix should use falling state and update to falling state when vel == 0
             if(player.air_state & VELOCITY_MASK) {
                 move_entity_up(&player.e, player.air_state & VELOCITY_MASK);
-                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1] & c) {
+                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
+                if (tileset_map_attr[player.e.true_map_tile] & c) {
                     // set to below block
+                    // kill upward momentum
                 }
             }
-            else
+            else {
                 move_entity_down(&player.e, 3); // TODO gradual increase, general accel calcs or use signed air velocity
-                if (tileset_map_attr[width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + ((player.e.x + 7) >> 3) - 1] & c) {
-                    // set to on block
-                    // set to grounded
+                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
+                if (player.e.y > MAX_PLAYER_Y || tileset_map_attr[player.e.true_map_tile] & c || tileset_map_attr[player.e.true_map_tile + 1] & c) {
+                    player.e.y = (player.e.y >> 3) << 3;
+                    player.air_state = GROUNDED;
                 }
+            }
+        } else {
+            if (player.e.y < MAX_PLAYER_Y && player.e.y & 0b00000111 == 0 && tileset_map_attr[player.e.true_map_tile + tileset_map_width] & c) {
+                player.air_state = FALLING; // TODO fix repeatedly hit, thinks always grounded, condition seems utterly ignored
+            }
         }
 
         if(joypads.joy0 & J_B) {
