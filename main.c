@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
-#include "helpers/player.h"
+#include "helpers/entity.h"
 #include "tile_data/tileset_tiles.h"
 #include "tile_data/tileset_map.h"
 
