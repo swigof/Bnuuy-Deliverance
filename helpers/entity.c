@@ -1,9 +1,5 @@
 #include "entity.h"
 
-// these functions should be ok using parameters according to https://sdcc.sourceforge.net/doc/sdccman.pdf page 78
-// but I am uncertain if the pointer being passed is treated simply as a 16 bit value
-// would be nice to test stack activity to make sure it's not being used
-
 // TODO remove redundancies across moves
 
 void move_entity_up(entity_t* const entity, const uint8_t amount) {
