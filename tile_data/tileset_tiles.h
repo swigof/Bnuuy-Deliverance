@@ -1,3 +1,6 @@
+#ifndef TILESET_TILES_H
+#define TILESET_TILES_H
+
 #define tileset_tiles_count 59
 #define tileset_tiles_bytes 944
 
@@ -299,3 +302,4 @@ const uint8_t tileset_tiles[944] = {
 	
 };
 
+#endif
