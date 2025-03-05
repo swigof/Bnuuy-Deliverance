@@ -1,8 +1,8 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
-#include "helpers/entity.h"
-#include "tile_data/tileset_tiles.h"
-#include "tile_data/tileset_map.h"
+#include "entity.h"
+#include "../obj/tileset_primary.h"
+#include "tileset_map.h"
 
 #define MAX_CAMERA_Y ((tileset_map_height - 18) * 8)
 #define MAX_PLAYER_Y 152
@@ -46,7 +46,7 @@ int main() {
     SPRITES_8x8;
     SHOW_SPRITES;
     VBK_REG = VBK_TILES;
-    set_bkg_data(0,tileset_tiles_count,tileset_tiles);
+    set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
     player.e.x = MIN_PLAYER_X;
@@ -65,7 +65,7 @@ int main() {
 
     SCY_REG = camera_y;
 
-    set_sprite_data(0, tileset_tiles_count, tileset_tiles);
+    set_sprite_data(0, tileset_primary_TILE_COUNT, tileset_primary_tiles);
     set_sprite_tile(0, 58);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);

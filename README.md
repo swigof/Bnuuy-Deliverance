@@ -1,6 +1,14 @@
 # eigg
 
-Eigg
+### TODOS
+
+* investigate metasprite usage
+* verify tile data memory isn't duplicated
+* remove unneeded png2asset metasprite definition from tileset generation
+* fix entity movement
+* fix tile collision
+* add simple sfx and music on separate channels
+* automate level/tilemap builds
 
 ### Resources
 
