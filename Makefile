@@ -1,6 +1,6 @@
 # GBDK path
 ifndef GBDK_HOME
-    GBDK_HOME = ../gbdk/
+    GBDK_HOME = gbdk/
 endif
 
 # Tools

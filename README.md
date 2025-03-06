@@ -2,7 +2,6 @@
 
 ### TODOS
 
-* fix IDE library integration
 * investigate metasprite usage
 * verify tile data memory isn't duplicated
 * fix entity movement
