@@ -46,7 +46,7 @@ DEPS = $(OBJS:%.o=%.d)
 # The resulting C files will get compiled to object files afterward
 .SECONDEXPANSION:
 $(OBJDIR)/%.c: $(RESDIR)/%.png
-	$(PNG2ASSET) $< -spr8x8 -no_palettes -noflip -o $@
+	$(PNG2ASSET) $< -spr8x8 -no_palettes -noflip -tiles_only -o $@
 
 # Prevent make from deleting intermediary generated asset C source files
 .SECONDARY: $(IMAGE_SRC)
