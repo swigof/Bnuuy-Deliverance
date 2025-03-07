@@ -1,6 +1,6 @@
 # GBDK path
 ifndef GBDK_HOME
-    GBDK_HOME = gbdk/
+    GBDK_HOME = ../gbdk/
 endif
 
 # Tools
@@ -8,12 +8,12 @@ LCC = $(GBDK_HOME)bin/lcc
 PNG2ASSET = $(GBDK_HOME)bin/png2asset
 
 # LCC flags
-LCCFLAGS += -I$(OBJDIR)    # Add generated asset files to includes
-LCCFLAGS += -Wm-yC         # Gameboy color mode
-LCCFLAGS += -Wf-MMD        # Header file dependency output for Makefile use
-LCCFLAGS += -Wf-Wp-MP      # Per-header phony rules
+CFLAGS += -I$(OBJDIR)    # Add generated asset files to includes
+CFLAGS += -Wm-yC         # Gameboy color mode
+CFLAGS += -Wf-MMD        # Header file dependency output for Makefile use
+CFLAGS += -Wf-Wp-MP      # Per-header phony rules
 ifdef GBDK_DEBUG
-    LCCFLAGS += -debug -v  # Add debug flags and command logging
+    CFLAGS += -debug -v  # Add debug flags and command logging
 endif
 
 PROJECTNAME = eigg
@@ -53,24 +53,24 @@ $(OBJDIR)/%.c: $(RESDIR)/%.png
 
 # Compile image .c files in "obj/" to .o object files
 $(OBJDIR)/%.o:	$(OBJDIR)/%.c
-	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	$(LCC) $(CFLAGS) -c -o $@ $<
 
 # Compile .c files in "src/" to .o object files
 $(OBJDIR)/%.o:	$(SRCDIR)/%.c
-	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	$(LCC) $(CFLAGS) -c -o $@ $<
 
 # Compile .s assembly files in "src/" to .o object files
 $(OBJDIR)/%.o:	$(SRCDIR)/%.s
-	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	$(LCC) $(CFLAGS) -c -o $@ $<
 
 # If needed, compile .c files in "src/" to .s assembly files
 # (not required if .c is compiled directly to .o)
 $(OBJDIR)/%.s:	$(SRCDIR)/%.c
-	$(LCC) $(LCCFLAGS) -S -o $@ $<
+	$(LCC) $(CFLAGS) -S -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
 $(BINS): $(OBJS)
-	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
+	$(LCC) $(CFLAGS) -o $(BINS) $(OBJS)
 
 
 clean:

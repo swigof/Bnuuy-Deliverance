@@ -8,6 +8,7 @@
 * fix tile collision
 * add simple sfx and music on separate channels
 * automate level/tilemap builds
+* automate sprite builds
 
 ### Resources
 
