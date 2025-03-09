@@ -102,7 +102,7 @@ int main() {
             if (player.e.x > MIN_PLAYER_X) {
                 move_entity_left(&player.e, 1); // TODO generify below for all entities, add collision check flag to entities
                 player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile] & c) {
+                if (tileset_map_attr[player.e.true_map_tile] & COLLIDABLE) {
                     player.e.x = (((player.e.x + 7) >> 3)) << 3;
                 }
             }
@@ -110,7 +110,7 @@ int main() {
             if (player.e.x < MAX_PLAYER_X) {
                 move_entity_right(&player.e, 1);
                 player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile + 1] & c) {
+                if (tileset_map_attr[player.e.true_map_tile + 1] & COLLIDABLE) {
                     player.e.x = ((player.e.x >> 3)) << 3;
                 }
             }
@@ -132,7 +132,7 @@ int main() {
             if(player.air_state & VELOCITY_MASK) {
                 move_entity_up(&player.e, player.air_state & VELOCITY_MASK);
                 player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile] & c) {
+                if (tileset_map_attr[player.e.true_map_tile] & COLLIDABLE) {
                     // set to below block
                     // kill upward momentum
                 }
@@ -140,13 +140,13 @@ int main() {
             else {
                 move_entity_down(&player.e, 3); // TODO gradual increase, general accel calcs or use signed air velocity
                 player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (player.e.y > MAX_PLAYER_Y || tileset_map_attr[player.e.true_map_tile] & c || tileset_map_attr[player.e.true_map_tile + 1] & c) {
+                if (player.e.y > MAX_PLAYER_Y || tileset_map_attr[player.e.true_map_tile] & COLLIDABLE || tileset_map_attr[player.e.true_map_tile + 1] & COLLIDABLE) {
                     player.e.y = (player.e.y >> 3) << 3;
                     player.air_state = GROUNDED;
                 }
             }
         } else {
-            if (player.e.y < MAX_PLAYER_Y && player.e.y & 0b00000111 == 0 && tileset_map_attr[player.e.true_map_tile + tileset_map_width] & c) {
+            if (player.e.y < MAX_PLAYER_Y && player.e.y & 0b00000111 == 0 && tileset_map_attr[player.e.true_map_tile + tileset_map_width] & COLLIDABLE) {
                 player.air_state = FALLING; // TODO fix repeatedly hit, thinks always grounded, condition seems utterly ignored
             }
         }
