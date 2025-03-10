@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 #include <gb/gb.h>
+#include <gb/metasprites.h>
+#include "tileset_map.h"
+#include "player.h"
 
 #define	SUBPIXEL_THRESHOLD 0x02U
 
@@ -37,7 +40,7 @@ void move_entity_right(entity_t* const entity, const uint8_t amount);
 
 inline void update_entity(entity_t entity) {
     set_sprite_prop(0, entity.prop);
-    move_sprite(0, entity.x, entity.y);
+    move_metasprite_ex(player_idle_metasprites[0], 0, 0, 0, entity.x, entity.y);
 }
 
 #endif

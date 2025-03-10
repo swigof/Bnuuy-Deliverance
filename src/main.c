@@ -1,14 +1,12 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
+#include <gb/metasprites.h>
 #include "entity.h"
 #include "../obj/tileset_primary.h"
+#include "player.h"
 #include "tileset_map.h"
 
 #define MAX_CAMERA_Y ((tileset_map_height - 18) * 8)
-#define MAX_PLAYER_Y 152
-#define MIN_PLAYER_Y 16
-#define MAX_PLAYER_X 160
-#define MIN_PLAYER_X 8
 
 joypads_t joypads;
 
@@ -43,7 +41,7 @@ int main() {
 
     DISPLAY_OFF;
     SHOW_BKG;
-    SPRITES_8x8;
+    SPRITES_8x16;
     SHOW_SPRITES;
     VBK_REG = VBK_TILES;
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
@@ -65,12 +63,10 @@ int main() {
 
     SCY_REG = camera_y;
 
-    set_sprite_data(0, tileset_primary_TILE_COUNT, tileset_primary_tiles);
-    set_sprite_tile(0, 58);
+    set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
-    set_sprite_prop(0, 0);
-    move_sprite(0, player.e.x, player.e.y);
+    move_metasprite_ex(player_idle_metasprites[0], 0, 0, 0, player.e.x, player.e.y);
 
     joypad_init(1, &joypads);
 

@@ -22,6 +22,7 @@ BINDIR      = bin
 SRCDIR      = src
 OBJDIR      = obj
 RESDIR      = res
+IMAGEDIRS   = $(RESDIR)/sprites/* $(RESDIR)/*
 MKDIRS      = $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
 
 BINS	    = $(BINDIR)/$(PROJECTNAME).gbc
@@ -29,7 +30,7 @@ CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 
 # Images in res/ will be converted to source files with png2asset
-IMAGES      = $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.png)))
+IMAGES      = $(foreach dir,$(IMAGEDIRS),$(notdir $(wildcard $(dir)/*.png)))
 IMAGE_SRC   = $(IMAGES:%.png=$(OBJDIR)/%.c)
 
 # png2asset objs first for dependants
@@ -45,8 +46,10 @@ DEPS = $(OBJS:%.o=%.d)
 # Convert png images in res/ to .c files
 # The resulting C files will get compiled to object files afterward
 .SECONDEXPANSION:
-$(OBJDIR)/%.c: $(RESDIR)/%.png
+$(OBJDIR)/%.c: $(RESDIR)/tiles/%.png
 	$(PNG2ASSET) $< -spr8x8 -no_palettes -noflip -tiles_only -o $@
+$(OBJDIR)/%.c: $(RESDIR)/sprites/player/%.png
+	$(PNG2ASSET) $< -spr8x16 -no_palettes -sw 16 -pw 14 -ph 20 -o $@
 
 # Prevent make from deleting intermediary generated asset C source files
 .SECONDARY: $(IMAGE_SRC)
