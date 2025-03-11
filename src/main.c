@@ -62,7 +62,7 @@ int main() {
 
     SCY_REG = camera_y;
 
-    player.sprite_pivot = ((player_idle_PIVOT_X >> 3) << 4) | (player_idle_PIVOT_Y >> 3);
+    player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
