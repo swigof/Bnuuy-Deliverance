@@ -26,8 +26,9 @@
 extern uint16_t current_entity_true_map_tile;
 extern uint8_t sprite_index;
 
-typedef struct { // TODO optimize bitwise subxy, direction, move_amount
-    uint8_t x, y, prop, sub_x, sub_y, direction, move_amount;
+typedef struct { // TODO optimize direction
+    uint8_t x, y, prop, direction;
+    uint8_t sub_x, sub_y;
     uint8_t air_state;         // bitwise 1[double_jump]1[falling]1[jumping]1[grounded]4[speed]
     uint8_t sprite_dimensions; // bitwise 4[8 multiples for width]4[8 multiples for height]
     uint8_t hitbox_padding;    // bitwise 4[width padding on both ends]4[height padding on top]

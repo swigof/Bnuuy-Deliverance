@@ -31,77 +31,57 @@ void check_collision(entity_t* const entity, const uint8_t level) {
 }
 
 void move_entity_up(entity_t* const entity, const uint8_t amount) {
-    entity->move_amount = amount;
-    while (entity->move_amount >= SUBPIXEL_THRESHOLD) {
-        entity->y--;
-        entity->move_amount -= SUBPIXEL_THRESHOLD;
-    }
-    if(entity->direction & J_UP) {
-        entity->sub_y += entity->move_amount;
-        if(entity->sub_y >= SUBPIXEL_THRESHOLD) {
-            entity->sub_y -= SUBPIXEL_THRESHOLD;
-            entity->y--;
-        }
-    } else {
+    entity->direction |= J_UP;
+    if(entity->direction & J_DOWN) {
         entity->direction &= ~J_DOWN;
-        entity->direction |= J_UP;
-        entity->sub_y = entity->move_amount;
+        entity->sub_y = 0;
     }
+    entity->sub_y += amount;
+    while (entity->sub_y >= SUBPIXEL_THRESHOLD) {
+        entity->y--;
+        entity->sub_y -= SUBPIXEL_THRESHOLD;
+    }
+    // TODO check collision immediately
 }
 
 void move_entity_down(entity_t* const entity, const uint8_t amount) {
-    entity->move_amount = amount;
-    while (entity->move_amount >= SUBPIXEL_THRESHOLD) {
-        entity->y++;
-        entity->move_amount -= SUBPIXEL_THRESHOLD;
-    }
-    if(entity->direction & J_DOWN) {
-        entity->sub_y += entity->move_amount;
-        if(entity->sub_y >= SUBPIXEL_THRESHOLD) {
-            entity->sub_y -= SUBPIXEL_THRESHOLD;
-            entity->y++;
-        }
-    } else {
+    entity->direction |= J_DOWN;
+    if(entity->direction & J_UP) {
         entity->direction &= ~J_UP;
-        entity->direction |= J_DOWN;
-        entity->sub_y = entity->move_amount;
+        entity->sub_y = 0;
     }
+    entity->sub_y += amount;
+    while (entity->sub_y >= SUBPIXEL_THRESHOLD) {
+        entity->y++;
+        entity->sub_y -= SUBPIXEL_THRESHOLD;
+    }
+    // TODO check collision immediately
 }
 
 void move_entity_left(entity_t* const entity, const uint8_t amount) {
-    entity->move_amount = amount;
-    while (entity->move_amount >= SUBPIXEL_THRESHOLD) {
-        entity->x--;
-        entity->move_amount -= SUBPIXEL_THRESHOLD;
-    }
-    if(entity->direction & J_LEFT) {
-        entity->sub_x += entity->move_amount;
-        if(entity->sub_x >= SUBPIXEL_THRESHOLD) {
-            entity->sub_x -= SUBPIXEL_THRESHOLD;
-            entity->x--;
-        }
-    } else {
+    entity->direction |= J_LEFT;
+    if(entity->direction & J_RIGHT) {
         entity->direction &= ~J_RIGHT;
-        entity->direction |= J_LEFT;
-        entity->sub_x = entity->move_amount;
+        entity->sub_x = 0;
     }
+    entity->sub_x += amount;
+    while (entity->sub_x >= SUBPIXEL_THRESHOLD) {
+        entity->x--;
+        entity->sub_x -= SUBPIXEL_THRESHOLD;
+    }
+    // TODO check collision immediately
 }
 
 void move_entity_right(entity_t* const entity, const uint8_t amount) {
-    entity->move_amount = amount;
-    while (entity->move_amount >= SUBPIXEL_THRESHOLD) {
-        entity->x++;
-        entity->move_amount -= SUBPIXEL_THRESHOLD;
-    }
-    if(entity->direction & J_RIGHT) {
-        entity->sub_x += entity->move_amount;
-        if(entity->sub_x >= SUBPIXEL_THRESHOLD) {
-            entity->sub_x -= SUBPIXEL_THRESHOLD;
-            entity->x++;
-        }
-    } else {
+    entity->direction |= J_RIGHT;
+    if(entity->direction & J_LEFT) {
         entity->direction &= ~J_LEFT;
-        entity->direction |= J_RIGHT;
-        entity->sub_x = entity->move_amount;
+        entity->sub_x = 0;
     }
+    entity->sub_x += amount;
+    while (entity->sub_x >= SUBPIXEL_THRESHOLD) {
+        entity->x++;
+        entity->sub_x -= SUBPIXEL_THRESHOLD;
+    }
+    // TODO check collision immediately
 }
