@@ -1,6 +1,5 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
-#include <gb/metasprites.h>
 #include "entity.h"
 #include "../obj/tileset_primary.h"
 #include "player.h"
@@ -10,7 +9,7 @@
 
 joypads_t joypads;
 
-player_t player;
+entity_t player;
 uint8_t map_pos_y, old_map_pos_y, redraw;
 uint16_t camera_y;
 
@@ -18,7 +17,7 @@ void set_camera() {
     SCY_REG = camera_y;
     map_pos_y = (uint8_t)(camera_y >> 3u);
     if (map_pos_y != old_map_pos_y) {
-        if (player.e.direction & J_UP) {
+        if (player.direction & J_UP) {
             set_bkg_submap(0, map_pos_y, 20, 1, tileset_map, 20);
             VBK_REG = VBK_ATTRIBUTES;
             set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
@@ -47,8 +46,8 @@ int main() {
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
-    player.e.x = MIN_PLAYER_X;
-    player.e.y = MAX_PLAYER_Y;
+    player.x = MIN_PLAYER_X;
+    player.y = MAX_PLAYER_Y;
     camera_y = MAX_CAMERA_Y;
 
     old_map_pos_y = 255;
@@ -63,10 +62,10 @@ int main() {
 
     SCY_REG = camera_y;
 
+    player.sprite_pivot = ((player_idle_PIVOT_X >> 3) << 4) | (player_idle_PIVOT_Y >> 3);
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
-    move_metasprite_ex(player_idle_metasprites[0], 0, 0, 0, player.e.x, player.e.y);
 
     joypad_init(1, &joypads);
 
@@ -75,19 +74,19 @@ int main() {
 
         // just for testing
         if(joypads.joy0 & J_UP) {
-            if(player.e.y > MIN_PLAYER_Y) {
-                move_entity_up(&player.e, 1);
-                if (player.e.sub_y == 0 && player.e.y < 72 && camera_y > 0) {
-                    player.e.y = 72;
+            if(player.y > MIN_PLAYER_Y) {
+                move_entity_up(&player, 4);
+                if (player.sub_y == 0 && player.y < 72 && camera_y > 0) {
+                    player.y = 72;
                     camera_y--;
                     redraw = TRUE;
                 }
             }
         } else if(joypads.joy0 & J_DOWN) {
-            if(player.e.y < MAX_PLAYER_Y) {
-                move_entity_down(&player.e, 1);
-                if (player.e.sub_y == 0 && player.e.y > 72 && camera_y < MAX_CAMERA_Y) {
-                    player.e.y = 72;
+            if(player.y < MAX_PLAYER_Y) {
+                move_entity_down(&player, 4);
+                if (player.sub_y == 0 && player.y > 72 && camera_y < MAX_CAMERA_Y) {
+                    player.y = 72;
                     camera_y++;
                     redraw = TRUE;
                 }
@@ -95,22 +94,15 @@ int main() {
         }
 
         if(joypads.joy0 & J_LEFT) {
-            if (player.e.x > MIN_PLAYER_X) {
-                move_entity_left(&player.e, 1); // TODO generify below for all entities, add collision check flag to entities
-                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile] & COLLIDABLE) {
-                    player.e.x = (((player.e.x + 7) >> 3)) << 3;
-                }
+            if (player.x > MIN_PLAYER_X) { // TODO move screen guard into move function? have entity flag?
+                move_entity_left(&player, 1);
             }
         } else if(joypads.joy0 & J_RIGHT) {
-            if (player.e.x < MAX_PLAYER_X) {
-                move_entity_right(&player.e, 1);
-                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile + 1] & COLLIDABLE) {
-                    player.e.x = ((player.e.x >> 3)) << 3;
-                }
+            if (player.x < MAX_PLAYER_X) {
+                move_entity_right(&player, 1);
             }
         }
+        // check_collision(&player, 0); // TODO collision flag for entity
 
         if(joypads.joy0 & J_A) {
             if (player.air_state & GROUNDED) {
@@ -121,31 +113,24 @@ int main() {
                 player.air_state = ((player.air_state & VELOCITY_MASK) - 1) | (player.air_state & FLAG_MASK);
             }
         } else if (!(player.air_state & GROUNDED)) {
+            // TODO preserve vel
             player.air_state &= USED_DOUBLE;
             player.air_state |= FALLING;
         }
         if (!(player.air_state & GROUNDED)) {  // TODO fix should use falling state and update to falling state when vel == 0
             if(player.air_state & VELOCITY_MASK) {
-                move_entity_up(&player.e, player.air_state & VELOCITY_MASK);
-                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (tileset_map_attr[player.e.true_map_tile] & COLLIDABLE) {
-                    // set to below block
-                    // kill upward momentum
-                }
+                move_entity_up(&player, player.air_state & VELOCITY_MASK);
             }
             else {
-                move_entity_down(&player.e, 3); // TODO gradual increase, general accel calcs or use signed air velocity
-                player.e.true_map_tile = width_multiplication_table[((uint16_t)(SCY_REG >> 3) + ((player.e.y + 7) >> 3) - 2)] + (player.e.x >> 3) - 1;
-                if (player.e.y > MAX_PLAYER_Y || tileset_map_attr[player.e.true_map_tile] & COLLIDABLE || tileset_map_attr[player.e.true_map_tile + 1] & COLLIDABLE) {
-                    player.e.y = (player.e.y >> 3) << 3;
-                    player.air_state = GROUNDED;
-                }
+                move_entity_down(&player, 3); // TODO gradual increase, general accel calcs or use signed air velocity
             }
         } else {
-            if (player.e.y < MAX_PLAYER_Y && player.e.y & 0b00000111 == 0 && tileset_map_attr[player.e.true_map_tile + tileset_map_width] & COLLIDABLE) {
+            if (player.y < MAX_PLAYER_Y && player.y & 0b00000111 == 0 && tileset_map_attr[current_entity_true_map_tile + tileset_map_width] & COLLIDABLE) {
                 player.air_state = FALLING; // TODO fix repeatedly hit, thinks always grounded, condition seems utterly ignored
             }
         }
+
+        check_collision(&player, 0);
 
         if(joypads.joy0 & J_B) {
             // interact / attack
@@ -158,18 +143,20 @@ int main() {
         if(joypads.joy0 & J_START) {
 
         }
-
-        if (player.e.direction & J_UP && player.e.y < 72 && camera_y > 0) {
-            camera_y -= 72 - player.e.y;
-            player.e.y = 72;
+        // TODO adjust cam value to prioritize up
+        if (player.direction & J_UP && player.y < 72 && camera_y > 0) {
+            camera_y -= 72 - player.y;
+            player.y = 72;
             redraw = TRUE;
-        } else if (player.e.direction & J_DOWN && player.e.y > 72 && camera_y < MAX_CAMERA_Y) {
-            camera_y += player.e.y - 72;
-            player.e.y = 72;
+        } else if (player.direction & J_DOWN && player.y > 72 && camera_y < MAX_CAMERA_Y) {
+            camera_y += player.y - 72;
+            player.y = 72;
             redraw = TRUE;
         }
 
-        update_entity(player.e);
+        update_entity(player);
+
+        sprite_index = 0;
 
         if (redraw) {
             vsync();

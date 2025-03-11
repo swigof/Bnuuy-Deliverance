@@ -49,7 +49,7 @@ DEPS = $(OBJS:%.o=%.d)
 $(OBJDIR)/%.c: $(RESDIR)/tiles/%.png
 	$(PNG2ASSET) $< -spr8x8 -no_palettes -noflip -tiles_only -o $@
 $(OBJDIR)/%.c: $(RESDIR)/sprites/player/%.png
-	$(PNG2ASSET) $< -spr8x16 -no_palettes -sw 16 -pw 14 -ph 20 -o $@
+	$(PNG2ASSET) $< -spr8x16 -no_palettes -sw 16 -pw 12 -ph 18 -o $@
 
 # Prevent make from deleting intermediary generated asset C source files
 .SECONDARY: $(IMAGE_SRC)

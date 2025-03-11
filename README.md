@@ -20,6 +20,7 @@ those addresses
 
 ### TODOS
 
+* adjust sprite spacing and use extra room for emotes
 * verify tile data memory isn't duplicated
 * fix entity movement
 * fix tile collision
