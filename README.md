@@ -1,5 +1,11 @@
 # eigg
 
+### Constraints
+
+* If entities move more than a tile (8 pixels) at a time, the map collision detection
+falls apart.
+* Maps can only scroll vertically
+
 ### Structure Notes
 
 Each screen will define tiles to load for entities.
@@ -20,10 +26,17 @@ those addresses
 
 ### TODOS
 
+* fix tile collision
+  * determine method to retrieve map data using big maps
+  * decide on method of storing entity coords to facilitate map tile coordinate conversion
 * adjust sprite spacing and use extra room for emotes
+* add entity state / animation
+* store static entity(-state) data in rom arrays (heights, paddings, etc)
+* make conversion operation #defines / inlines
+* make move directions -1,0,1 for x and y
+* add horizontal scrolling
 * verify tile data memory isn't duplicated
 * fix entity movement
-* fix tile collision
 * add simple sfx and music
   * on separate channels?
 * levels
@@ -37,6 +50,7 @@ those addresses
   * dropping on hit
   * balance
 * menu
+* auto saving per screen
 
 ### Resources
 
