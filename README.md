@@ -3,8 +3,11 @@
 ### Constraints
 
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
-falls apart.
+and camera can fall apart.
 * Maps can only scroll vertically
+* Maps must have a width of 20 and height of atleast 19
+* camera_y should always start with values greater than 8 as it assumes it can buffer one line 
+lower (currently this defaults to the bottom of a map anyway)
 
 ### Structure Notes
 
@@ -51,6 +54,7 @@ those addresses
   * balance
 * menu
 * auto saving per screen
+* replace tile 0 with most common background tile
 
 ### Resources
 

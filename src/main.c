@@ -4,34 +4,13 @@
 #include "../obj/tileset_primary.h"
 #include "player.h"
 #include "tileset_map.h"
-
-#define MAX_CAMERA_Y ((tileset_map_height - 18) * 8)
+#include "camera.h"
 
 joypads_t joypads;
 
 entity_t player;
-uint8_t map_pos_y, old_map_pos_y, redraw;
-uint16_t camera_y;
 
-void set_camera() {
-    SCY_REG = camera_y;
-    map_pos_y = (uint8_t)(camera_y >> 3u);
-    if (map_pos_y != old_map_pos_y) {
-        if (player.direction & J_UP) {
-            set_bkg_submap(0, map_pos_y, 20, 1, tileset_map, 20);
-            VBK_REG = VBK_ATTRIBUTES;
-            set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
-            VBK_REG = VBK_TILES;
-        } else {
-            if ((tileset_map_height - 18u) > map_pos_y)
-                set_bkg_submap(0, map_pos_y + 18u, 20, 1, tileset_map, 20);
-                VBK_REG = VBK_ATTRIBUTES;
-                set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
-                VBK_REG = VBK_TILES;
-        }
-        old_map_pos_y = map_pos_y;
-    }
-}
+uint8_t redraw;
 
 int main() {
     NR52_REG = 0x80;
@@ -42,30 +21,22 @@ int main() {
     SHOW_BKG;
     SPRITES_8x16;
     SHOW_SPRITES;
-    VBK_REG = VBK_TILES;
+
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
-    player.x = MIN_PLAYER_X;
-    player.y = MAX_PLAYER_Y;
-    camera_y = MAX_CAMERA_Y;
-
-    old_map_pos_y = 255;
-    map_pos_y = (uint8_t)(camera_y >> 3u);;
-    set_bkg_submap(0, map_pos_y, 20, 18, tileset_map, 20);
-    VBK_REG = VBK_ATTRIBUTES;
-    set_bkg_submap(0, map_pos_y, 20, 18, tileset_map_attr, 20);
-    VBK_REG = VBK_TILES;
-    DISPLAY_ON;
-
+    init_camera();
     redraw = FALSE;
 
-    SCY_REG = camera_y;
+    player.x = MIN_PLAYER_X;
+    player.y = MAX_PLAYER_Y;
 
     player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
+
+    DISPLAY_ON;
 
     joypad_init(1, &joypads);
 
