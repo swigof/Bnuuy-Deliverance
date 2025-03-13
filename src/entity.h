@@ -36,12 +36,12 @@ typedef struct { // TODO optimize direction
     uint8_t flags; // render, tile/sprite, ? ...
 } entity_t;
 
-void check_collision(entity_t* const entity, const uint8_t level);
+void check_collision(entity_t* entity);
 
-void move_entity_up(entity_t* const entity, const uint8_t amount);
-void move_entity_down(entity_t* const entity, const uint8_t amount);
-void move_entity_left(entity_t* const entity, const uint8_t amount);
-void move_entity_right(entity_t* const entity, const uint8_t amount);
+void move_entity_up(entity_t* entity, uint8_t amount);
+void move_entity_down(entity_t* entity, uint8_t amount);
+void move_entity_left(entity_t* entity, uint8_t amount);
+void move_entity_right(entity_t* entity,  uint8_t amount);
 
 // TODO 
 // used renamed joypad direction constants?

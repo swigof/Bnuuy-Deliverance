@@ -8,8 +8,6 @@
 #define tileset_map_tiles 900
 #define tileset_map_bytes 900
 
-#define COLLIDABLE 0b00010000u
-
 extern const uint8_t tileset_map[];
 extern const palette_color_t tileset_map_colors[];
 extern const uint8_t tileset_map_attr[];
