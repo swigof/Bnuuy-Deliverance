@@ -6,8 +6,7 @@
 and camera can fall apart.
 * Maps can only scroll vertically
 * Maps must have a width of 20 and height of atleast 19
-* camera_y should always start with values greater than 8 as it assumes it can buffer one line 
-lower (currently this defaults to the bottom of a map anyway)
+  * camera_y will always start with a value of 8 or more to buffer one line lower
 
 ### Structure Notes
 
@@ -29,11 +28,11 @@ those addresses
 
 ### TODOS
 
-* fix player sprite camera relative rendering
 * fix tile collision
 * consider storing sub pixel position in 4 lowest bits of x,y 
 * adjust sprite spacing and use extra room for emotes
 * add entity state / animation
+* fix entity functions to support more than just player
 * store static entity(-state) data in rom arrays (heights, paddings, etc)
 * make conversion operation #defines / inlines
 * make move directions -1,0,1 for x and y
@@ -57,6 +56,8 @@ those addresses
 * menu
 * auto saving per screen
 * replace tile 0 with most common background tile
+* do a pointer access vs direct access performance test. function parameter overhead.
+  * can just check instruction conversion
 
 ### Resources
 

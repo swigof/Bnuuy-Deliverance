@@ -6,6 +6,7 @@
 #include <gb/metasprites.h>
 #include "tileset_map.h"
 #include "player.h"
+#include "camera.h"
 
 #define	SUBPIXEL_THRESHOLD 0x02U
 
@@ -43,20 +44,10 @@ void move_entity_down(entity_t* entity, uint8_t amount);
 void move_entity_left(entity_t* entity, uint8_t amount);
 void move_entity_right(entity_t* entity,  uint8_t amount);
 
+void render_entity(const entity_t* entity);
+
 // TODO 
 // used renamed joypad direction constants?
 // add subpixel thresholds constants for different entities
-
-inline void render_entity(entity_t entity) {
-    set_sprite_prop(0, entity.prop);
-    sprite_index = move_metasprite_ex(
-        player_idle_metasprites[0],
-        0,
-        entity.prop,
-        sprite_index,
-        entity.x + ((entity.sprite_dimensions >> 4) << 2),
-        entity.y - ((entity.sprite_dimensions & SPRITE_HEIGHT_MASK) << 2)
-    );
-}
 
 #endif

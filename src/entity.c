@@ -61,3 +61,14 @@ void move_entity_right(entity_t* const entity, const uint8_t amount) {
     }
     // TODO check collision immediately
 }
+
+void render_entity(const entity_t* const entity) {
+    sprite_index = move_metasprite_ex(
+            player_idle_metasprites[0],
+            0,
+            entity->prop,
+            sprite_index,
+            entity->x,
+            entity->y - get_camera_y()
+    );
+}

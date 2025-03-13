@@ -23,10 +23,10 @@ int main() {
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
-    init_camera();
-
     player.x = 20;
     player.y = MAX_PLAYER_Y;
+
+    init_camera(player.y);
 
     player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
@@ -51,18 +51,13 @@ int main() {
             move_entity_left(&player, 4);
         }
 
-        if(player.y >= (DEVICE_SCREEN_PX_HEIGHT >> 1)) {
-            camera_y = player.y - (DEVICE_SCREEN_PX_HEIGHT >> 1);
-            if(camera_y > MAX_CAMERA_Y)
-                camera_y = MAX_CAMERA_Y;
-        } else
-            camera_y = 0;
+        set_focus(player.y);
 
-        render_entity(player);
+        render_entity(&player);
 
         sprite_index = 0;
         vsync();
-        set_camera();
+        update_camera();
     }
 
     return 0;
