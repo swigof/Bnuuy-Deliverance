@@ -29,6 +29,8 @@ void init_camera() {
 }
 
 void set_camera() {
+    if (camera_y == old_camera_y)
+        return;
     move_bkg(0, camera_y);
     map_pos_y = camera_y >> 3;
     if (map_pos_y != old_map_pos_y) {

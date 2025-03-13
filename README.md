@@ -29,15 +29,17 @@ those addresses
 
 ### TODOS
 
+* fix player sprite camera relative rendering
 * fix tile collision
-  * determine method to retrieve map data using big maps
-  * decide on method of storing entity coords to facilitate map tile coordinate conversion
+* consider storing sub pixel position in 4 lowest bits of x,y 
 * adjust sprite spacing and use extra room for emotes
 * add entity state / animation
 * store static entity(-state) data in rom arrays (heights, paddings, etc)
 * make conversion operation #defines / inlines
 * make move directions -1,0,1 for x and y
 * add horizontal scrolling
+* camera safety measure for if old vs new position is more than 1 tile difference
+* possibly adjust camera framing to make look ahead comfortable
 * verify tile data memory isn't duplicated
 * fix entity movement
 * add simple sfx and music

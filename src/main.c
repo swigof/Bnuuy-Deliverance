@@ -10,8 +10,6 @@ joypads_t joypads;
 
 entity_t player;
 
-uint8_t redraw;
-
 int main() {
     NR52_REG = 0x80;
     NR50_REG = 0x77;
@@ -26,9 +24,8 @@ int main() {
     set_bkg_palette(0,1,tileset_map_colors);
 
     init_camera();
-    redraw = FALSE;
 
-    player.x = MIN_PLAYER_X;
+    player.x = 20;
     player.y = MAX_PLAYER_Y;
 
     player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
@@ -43,97 +40,29 @@ int main() {
     while(1) {
         joypad_ex(&joypads);
 
-        // just for testing
         if(joypads.joy0 & J_UP) {
-            if(player.y > MIN_PLAYER_Y) {
-                move_entity_up(&player, 4);
-                if (player.sub_y == 0 && player.y < 72 && camera_y > 0) {
-                    player.y = 72;
-                    camera_y--;
-                    redraw = TRUE;
-                }
-            }
+            move_entity_up(&player, 4);
         } else if(joypads.joy0 & J_DOWN) {
-            if(player.y < MAX_PLAYER_Y) {
-                move_entity_down(&player, 4);
-                if (player.sub_y == 0 && player.y > 72 && camera_y < MAX_CAMERA_Y) {
-                    player.y = 72;
-                    camera_y++;
-                    redraw = TRUE;
-                }
-            }
+            move_entity_down(&player, 4);
+        }
+        if(joypads.joy0 & J_RIGHT) {
+            move_entity_right(&player, 4);
+        } else if(joypads.joy0 & J_LEFT) {
+            move_entity_left(&player, 4);
         }
 
-        if(joypads.joy0 & J_LEFT) {
-            if (player.x > MIN_PLAYER_X) { // TODO move screen guard into move function? have entity flag?
-                move_entity_left(&player, 1);
-            }
-        } else if(joypads.joy0 & J_RIGHT) {
-            if (player.x < MAX_PLAYER_X) {
-                move_entity_right(&player, 1);
-            }
-        }
-        // check_collision(&player, 0); // TODO collision flag for entity
+        if(player.y >= (DEVICE_SCREEN_PX_HEIGHT >> 1)) {
+            camera_y = player.y - (DEVICE_SCREEN_PX_HEIGHT >> 1);
+            if(camera_y > MAX_CAMERA_Y)
+                camera_y = MAX_CAMERA_Y;
+        } else
+            camera_y = 0;
 
-        if(joypads.joy0 & J_A) {
-            if (player.air_state & GROUNDED) {
-                player.air_state = (JUMPING | MAX_VELOCITY);
-            } else if (player.air_state & FALLING && !(player.air_state & USED_DOUBLE)) {
-                player.air_state = (JUMPING | USED_DOUBLE | MAX_VELOCITY);
-            } else if (player.air_state & JUMPING && player.air_state & VELOCITY_MASK) {
-                player.air_state = ((player.air_state & VELOCITY_MASK) - 1) | (player.air_state & FLAG_MASK);
-            }
-        } else if (!(player.air_state & GROUNDED)) {
-            // TODO preserve vel
-            player.air_state &= USED_DOUBLE;
-            player.air_state |= FALLING;
-        }
-        if (!(player.air_state & GROUNDED)) {  // TODO fix should use falling state and update to falling state when vel == 0
-            if(player.air_state & VELOCITY_MASK) {
-                move_entity_up(&player, player.air_state & VELOCITY_MASK);
-            }
-            else {
-                move_entity_down(&player, 3); // TODO gradual increase, general accel calcs or use signed air velocity
-            }
-        } else {
-            if (player.y < MAX_PLAYER_Y && player.y & 0b00000111 == 0 && tileset_map_attr[current_entity_true_map_tile + tileset_map_width] & COLLIDABLE) {
-                player.air_state = FALLING; // TODO fix repeatedly hit, thinks always grounded, condition seems utterly ignored
-            }
-        }
-
-        check_collision(&player, 0);
-
-        if(joypads.joy0 & J_B) {
-            // interact / attack
-        }
-
-        if(joypads.joy0 & J_SELECT) {
-
-        }
-
-        if(joypads.joy0 & J_START) {
-
-        }
-        // TODO adjust cam value to prioritize up
-        if (player.direction & J_UP && player.y < 72 && camera_y > 0) {
-            camera_y -= 72 - player.y;
-            player.y = 72;
-            redraw = TRUE;
-        } else if (player.direction & J_DOWN && player.y > 72 && camera_y < MAX_CAMERA_Y) {
-            camera_y += player.y - 72;
-            player.y = 72;
-            redraw = TRUE;
-        }
-
-        update_entity(player);
+        render_entity(player);
 
         sprite_index = 0;
-
-        if (redraw) {
-            vsync();
-            set_camera();
-            redraw = FALSE;
-        } else vsync();
+        vsync();
+        set_camera();
     }
 
     return 0;
