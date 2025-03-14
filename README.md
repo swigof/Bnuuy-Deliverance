@@ -5,8 +5,12 @@
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
 * Maps can only scroll vertically
-* Maps must have a width of 20 and height of atleast 19
-  * camera_y will always start with a value of 8 or more to buffer one line lower
+* Maps must have a width of 20 and a height between 19 and 8191 inclusive
+  * `camera_y` will always start with a value of 8 or more to buffer one line lower
+* Sprites should be centered horizontally and vertically for hitboxes
+  * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
+  * Hitboxes have a size limit of 30x30 (4 bits for pw/ph)
+  * Hitboxes should always remain fully inside the mapped area 
 
 ### Structure Notes
 
@@ -29,6 +33,7 @@ those addresses
 ### TODOS
 
 * fix tile collision
+* automate level/tilemap builds
 * consider storing sub pixel position in 4 lowest bits of x,y 
 * adjust sprite spacing and use extra room for emotes
 * add entity state / animation
@@ -44,7 +49,6 @@ those addresses
 * add simple sfx and music
   * on separate channels?
 * levels
-* automate level/tilemap builds
 * simple opening cinematic
 * tile hazards
 * moving hazards / enemies & projectiles
@@ -56,8 +60,20 @@ those addresses
 * menu
 * auto saving per screen
 * replace tile 0 with most common background tile
+* make tile type to tile number range based tileset
 * do a pointer access vs direct access performance test. function parameter overhead.
   * can just check instruction conversion
+  * can use inlines that set a global then make call instead of parameters
+* put get_edge_tile_type into tilespace to optimize it
+* make entity x,y signed to better handle offscreen behavior?
+* de-duplicate code in entity movement / collision detection
+  * make movement / hitbox edge iteration based on signed inputs and start/finish coords
+* stop scrolls earlier to allow map space to be traversed offscreen
+* find a way to render differently sized metasprites so their x,y always corresponds to their center
+  * one 8x16 sprite: 0,0 <-> 4,8
+  * two horizontal:  0,0 <-> 8,8
+  * ...
+* make x coord 8-bit as maps are fixed to 20 tile, 160 pixel size
 
 ### Resources
 

@@ -24,11 +24,12 @@ int main() {
     set_bkg_palette(0,1,tileset_map_colors);
 
     player.x = 20;
-    player.y = MAX_PLAYER_Y;
+    player.y = 300;
 
     init_camera(player.y);
 
     player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
+    player.hitbox_margin = (player_idle_PIVOT_W << 4) | (player_idle_PIVOT_H);
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
