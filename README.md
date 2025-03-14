@@ -32,11 +32,11 @@ those addresses
 
 ### TODOS
 
-* fix tile collision
+* add back proper player movement
+* add entity state / animation
 * automate level/tilemap builds
 * consider storing sub pixel position in 4 lowest bits of x,y 
 * adjust sprite spacing and use extra room for emotes
-* add entity state / animation
 * fix entity functions to support more than just player
 * store static entity(-state) data in rom arrays (heights, paddings, etc)
 * make conversion operation #defines / inlines
@@ -44,8 +44,6 @@ those addresses
 * add horizontal scrolling
 * camera safety measure for if old vs new position is more than 1 tile difference
 * possibly adjust camera framing to make look ahead comfortable
-* verify tile data memory isn't duplicated
-* fix entity movement
 * add simple sfx and music
   * on separate channels?
 * levels
