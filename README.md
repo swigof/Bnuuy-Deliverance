@@ -71,7 +71,6 @@ those addresses
   * one 8x16 sprite: 0,0 <-> 4,8
   * two horizontal:  0,0 <-> 8,8
   * ...
-* make x coord 8-bit as maps are fixed to 20 tile, 160 pixel size
 
 ### Resources
 
