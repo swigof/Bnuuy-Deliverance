@@ -7,7 +7,7 @@ and camera can fall apart.
 * Maps can only scroll vertically
 * Maps must have a width of 20 and a height between 19 and 8191 inclusive
   * `camera_y` will always start with a value of 8 or more to buffer one line lower
-* Sprites should be centered horizontally and vertically for hitboxes
+* Sprites should be centered horizontally and vertically on their hitboxes
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
   * Hitboxes have a size limit of 30x30 (4 bits for pw/ph)
   * Hitboxes should always remain fully inside the mapped area 
@@ -34,13 +34,13 @@ those addresses
 
 * add back proper player movement
 * add entity state / animation
-* automate level/tilemap builds
-* consider storing sub pixel position in 4 lowest bits of x,y 
-* adjust sprite spacing and use extra room for emotes
-* fix entity functions to support more than just player
-* store static entity(-state) data in rom arrays (heights, paddings, etc)
+* fix entity render function to support more than just player idle metasprite
+* tile hazards
+* use extra sprite room for emotes
+* store static entity(-state) data in rom arrays (heights, paddings, etc), index with defines
 * make conversion operation #defines / inlines
 * make move directions -1,0,1 for x and y
+* automate level/tilemap builds
 * add horizontal scrolling
 * camera safety measure for if old vs new position is more than 1 tile difference
 * possibly adjust camera framing to make look ahead comfortable
@@ -48,7 +48,6 @@ those addresses
   * on separate channels?
 * levels
 * simple opening cinematic
-* tile hazards
 * moving hazards / enemies & projectiles
 * carrying things
   * slowed movement, lower jumps 
@@ -62,8 +61,8 @@ those addresses
 * do a pointer access vs direct access performance test. function parameter overhead.
   * can just check instruction conversion
   * can use inlines that set a global then make call instead of parameters
-* put get_edge_tile_type into tilespace to optimize it
 * make entity x,y signed to better handle offscreen behavior?
+* put get_edge_tile_type into tilespace to optimize it
 * de-duplicate code in entity movement / collision detection
   * make movement / hitbox edge iteration based on signed inputs and start/finish coords
 * stop scrolls earlier to allow map space to be traversed offscreen
@@ -71,6 +70,7 @@ those addresses
   * one 8x16 sprite: 0,0 <-> 4,8
   * two horizontal:  0,0 <-> 8,8
   * ...
+* rename and used direction constants tha aren't joypad ones
 
 ### Resources
 

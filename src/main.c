@@ -24,9 +24,9 @@ int main() {
     set_bkg_palette(0,1,tileset_map_colors);
 
     player.x = 20;
-    player.y = 300;
+    player.y = 350<<4;
 
-    init_camera(player.y);
+    init_camera(MAP_COORD(player.y));
 
     player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
     player.hitbox_margin = (player_idle_PIVOT_W << 4) | (player_idle_PIVOT_H);
@@ -42,17 +42,17 @@ int main() {
         joypad_ex(&joypads);
 
         if(joypads.joy0 & J_UP) {
-            move_entity_up(&player, 4);
+            move_entity_up(&player, 60);
         } else if(joypads.joy0 & J_DOWN) {
-            move_entity_down(&player, 4);
+            move_entity_down(&player, 60);
         }
         if(joypads.joy0 & J_RIGHT) {
-            move_entity_right(&player, 4);
+            move_entity_right(&player, 60);
         } else if(joypads.joy0 & J_LEFT) {
-            move_entity_left(&player, 4);
+            move_entity_left(&player, 60);
         }
 
-        set_focus(player.y);
+        set_focus(MAP_COORD(player.y));
 
         render_entity(&player);
 

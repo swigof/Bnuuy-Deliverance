@@ -69,26 +69,22 @@ uint8_t get_edge_tile_type(const hitbox_record_t* const h, uint8_t edge) {
 }
 
 void populate_hitbox_record(const entity_t* const e, hitbox_record_t* const h) {
-    h->top = e->y - HEIGHT_MARGIN(e->hitbox_margin);
-    h->left = e->x - WIDTH_MARGIN(e->hitbox_margin);
-    h->right = e->x + WIDTH_MARGIN(e->hitbox_margin);
-    h->bottom = e->y + HEIGHT_MARGIN(e->hitbox_margin);
+    h->top = MAP_COORD(e->y) - HEIGHT_MARGIN(e->hitbox_margin);
+    h->left = MAP_COORD(e->x) - WIDTH_MARGIN(e->hitbox_margin);
+    h->right = MAP_COORD(e->x) + WIDTH_MARGIN(e->hitbox_margin);
+    h->bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->hitbox_margin);
 }
 
 void move_entity_up(entity_t* const entity, const uint8_t amount) {
     entity->direction |= J_UP;
     if(entity->direction & J_DOWN) {
         entity->direction &= ~J_DOWN;
-        entity->sub_y = 0;
+        entity->y |= 0b0000000000001111;
     }
-    entity->sub_y += amount;
-    while (entity->sub_y >= SUBPIXEL_THRESHOLD) {
-        entity->y--;
-        entity->sub_y -= SUBPIXEL_THRESHOLD;
-    }
+    entity->y -= amount;
     populate_hitbox_record(entity, &hitbox);
     if(get_edge_tile_type(&hitbox, J_UP) == TT_SOLID) {
-        entity->y += (TILE_COORD(hitbox.top + 8) - hitbox.top);
+        entity->y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
     }
 }
 
@@ -96,16 +92,12 @@ void move_entity_down(entity_t* const entity, const uint8_t amount) {
     entity->direction |= J_DOWN;
     if(entity->direction & J_UP) {
         entity->direction &= ~J_UP;
-        entity->sub_y = 0;
+        entity->y &= 0b1111111111110000;
     }
-    entity->sub_y += amount;
-    while (entity->sub_y >= SUBPIXEL_THRESHOLD) {
-        entity->y++;
-        entity->sub_y -= SUBPIXEL_THRESHOLD;
-    }
+    entity->y += amount;
     populate_hitbox_record(entity, &hitbox);
     if(get_edge_tile_type(&hitbox, J_DOWN) == TT_SOLID) {
-        entity->y -= (hitbox.bottom - TILE_COORD(hitbox.bottom));
+        entity->y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
     }
 }
 
@@ -113,16 +105,12 @@ void move_entity_left(entity_t* const entity, const uint8_t amount) {
     entity->direction |= J_LEFT;
     if(entity->direction & J_RIGHT) {
         entity->direction &= ~J_RIGHT;
-        entity->sub_x = 0;
+        entity->x |= 0b0000000000001111;
     }
-    entity->sub_x += amount;
-    while (entity->sub_x >= SUBPIXEL_THRESHOLD) {
-        entity->x--;
-        entity->sub_x -= SUBPIXEL_THRESHOLD;
-    }
+    entity->x -= amount;
     populate_hitbox_record(entity, &hitbox);
     if(get_edge_tile_type(&hitbox, J_LEFT) == TT_SOLID) {
-        entity->x += (TILE_COORD(hitbox.left + 8) - hitbox.left);
+        entity->x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
     }
 }
 
@@ -130,25 +118,21 @@ void move_entity_right(entity_t* const entity, const uint8_t amount) {
     entity->direction |= J_RIGHT;
     if(entity->direction & J_LEFT) {
         entity->direction &= ~J_LEFT;
-        entity->sub_x = 0;
+        entity->x &= 0b1111111111110000;
     }
-    entity->sub_x += amount;
-    while (entity->sub_x >= SUBPIXEL_THRESHOLD) {
-        entity->x++;
-        entity->sub_x -= SUBPIXEL_THRESHOLD;
-    }
+    entity->x += amount;
     populate_hitbox_record(entity, &hitbox);
     if(get_edge_tile_type(&hitbox, J_RIGHT) == TT_SOLID) {
-        entity->x -= (hitbox.right - TILE_COORD(hitbox.right));
+        entity->x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
     }
 }
 
 void render_entity(const entity_t* const entity) {
-    sprite_index = move_metasprite_ex(
+    sprite_index += move_metasprite_ex(
         player_idle_metasprites[0],
         0,
         entity->prop,
         sprite_index,
-        entity->x + DEVICE_SPRITE_PX_OFFSET_X,
-        entity->y - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
+        MAP_COORD(entity->x) + DEVICE_SPRITE_PX_OFFSET_X,
+        MAP_COORD(entity->y) - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
 }
