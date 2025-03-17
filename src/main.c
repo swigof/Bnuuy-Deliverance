@@ -7,8 +7,7 @@
 #include "camera.h"
 
 joypads_t joypads;
-
-entity_t player;
+entity_t* player;
 
 int main() {
     NR52_REG = 0x80;
@@ -23,16 +22,18 @@ int main() {
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tileset_map_colors);
 
-    player.x = 20;
-    player.y = 350<<4;
+    entity_to_add.x = 20;
+    entity_to_add.y = 350<<4;
+    entity_to_add.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
+    entity_to_add.hitbox_margin = (player_idle_PIVOT_W << 4) | (player_idle_PIVOT_H);
+    entity_to_add.active = TRUE;
+    player = add_entity();
 
-    init_camera(MAP_COORD(player.y));
-
-    player.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
-    player.hitbox_margin = (player_idle_PIVOT_W << 4) | (player_idle_PIVOT_H);
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
     palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
+
+    init_camera(MAP_COORD(player->y));
 
     DISPLAY_ON;
 
@@ -42,21 +43,20 @@ int main() {
         joypad_ex(&joypads);
 
         if(joypads.joy0 & J_UP) {
-            move_entity_up(&player, 60);
+            move_entity_up(player, 60);
         } else if(joypads.joy0 & J_DOWN) {
-            move_entity_down(&player, 60);
+            move_entity_down(player, 60);
         }
         if(joypads.joy0 & J_RIGHT) {
-            move_entity_right(&player, 60);
+            move_entity_right(player, 60);
         } else if(joypads.joy0 & J_LEFT) {
-            move_entity_left(&player, 60);
+            move_entity_left(player, 60);
         }
 
-        set_focus(MAP_COORD(player.y));
+        set_focus(MAP_COORD(player->y));
 
-        render_entity(&player);
+        update_entities();
 
-        sprite_index = 0;
         vsync();
         update_camera();
     }

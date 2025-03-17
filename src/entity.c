@@ -1,8 +1,11 @@
 #include "entity.h"
 
-enum tile_type {TT_NONE, TT_PLATFORM, TT_SOLID, TT_HAZARD};
-
 uint8_t sprite_index = 0;
+entity_t entity_to_add = {};
+
+entity_t entities[MAX_ENTITIES];
+uint8_t next_entity_index = 0;
+uint8_t entity_count = 0;
 
 uint8_t tile = 0;
 inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
@@ -135,4 +138,31 @@ void render_entity(const entity_t* const entity) {
         sprite_index,
         MAP_COORD(entity->x) + DEVICE_SPRITE_PX_OFFSET_X,
         MAP_COORD(entity->y) - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
+}
+
+entity_t empty_entity = {};
+uint8_t entity_index = 0;
+entity_t* add_entity() {
+    if(entity_count < MAX_ENTITIES) {
+        entities[next_entity_index] = entity_to_add;
+        entity_count++;
+        entity_to_add = empty_entity;
+        entity_index = next_entity_index;
+        if(entity_count < MAX_ENTITIES) {
+            next_entity_index = 0;
+            while(next_entity_index < MAX_ENTITIES && entities[next_entity_index].active)
+                next_entity_index++;
+        }
+        return &entities[entity_index];
+    }
+    return NULL;
+}
+
+uint8_t entity_iterator = 0;
+void update_entities() {
+    for(entity_iterator = 0; entity_iterator < MAX_ENTITIES; entity_iterator++) {
+        if(entities[entity_iterator].active)
+            render_entity(&entities[entity_iterator]);
+    }
+    sprite_index = 0;
 }

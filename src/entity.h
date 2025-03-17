@@ -24,7 +24,9 @@
 #define MAP_COORD(C) (C >> 4)                    // Get map coordinate from entity x/y
 #define TILE_COORD(C) (C & 0b111111111000)       // Rounds a 12bit map coordinate down to the closest 8 pixel coordinate
 
-extern uint8_t sprite_index;
+#define MAX_ENTITIES 10
+
+enum tile_type {TT_NONE, TT_PLATFORM, TT_SOLID, TT_HAZARD};
 
 typedef struct {
     uint16_t x, y;             // bitwise 12[map position at center of the entity]4[subpixel position]
@@ -32,18 +34,26 @@ typedef struct {
     uint8_t air_state;         // bitwise 1[double_jump]1[falling]1[jumping]1[grounded]4[speed]
     uint8_t sprite_dimensions; // bitwise 4[8 multiples for width]4[8 multiples for height]
     uint8_t hitbox_margin;     // bitwise 4[margin to horizontal hitbox edges from center]4[same vertically]
-    uint8_t flags;             // render, tile/sprite, ? ...
+    uint8_t active;            // flag if entity is to be updated/rendered
 } entity_t;
 
 typedef struct {
     uint16_t top, bottom, left, right;
 } hitbox_record_t;
 
+extern uint8_t sprite_index;
+extern entity_t entity_to_add;
+
 void move_entity_up(entity_t* entity, uint8_t amount);
 void move_entity_down(entity_t* entity, uint8_t amount);
 void move_entity_left(entity_t* entity, uint8_t amount);
 void move_entity_right(entity_t* entity,  uint8_t amount);
 
-void render_entity(const entity_t* entity);
+/**
+ * Adds entity_to_add to the entity list
+ * @return The pointer to the entity in the list or NULL if it failed to add
+ */
+entity_t* add_entity();
+void update_entities();
 
 #endif
