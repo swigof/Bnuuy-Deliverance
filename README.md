@@ -33,16 +33,16 @@ Variables that would normally be locals to a function are defined as globals nex
 
 ### TODOS
 
-* add back proper player movement
-  * use velocity based entity movement to streamline hitbox checking logic (l/r and down need bottom detection)
-  * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
 * add entity state / animation
   * fix entity render function to support more than just player idle metasprite
   * emotes
 * tile hazards
 * store static entity(-state) data in rom arrays (heights, paddings, etc), index with defines
+* de-duplicate and streamline code in entity movement / collision detection
+  * make movement / hitbox edge iteration based on signed inputs and start/finish coords
+    * get_edge_tile_type can take a fixed coordinate and two bounds for any edge check
+  * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
 * make conversion operation #defines / inlines
-* make move directions -1,0,1 for x and y
 * automate level/tilemap builds
 * add horizontal scrolling
 * camera safety measure for if old vs new position is more than 1 tile difference
@@ -66,16 +66,14 @@ Variables that would normally be locals to a function are defined as globals nex
   * can use inlines that set a global then make call instead of parameters
 * make entity x,y signed to better handle offscreen behavior?
 * put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
-* de-duplicate code in entity movement / collision detection
-  * make movement / hitbox edge iteration based on signed inputs and start/finish coords
-    * get_edge_tile_type can take a fixed coordinate and two bounds for any edge check
 * stop scrolls earlier to allow map space to be traversed offscreen
 * find a way to render differently sized metasprites so their x,y always corresponds to their center
   * one 8x16 sprite: 0,0 <-> 4,8
   * two horizontal:  0,0 <-> 8,8
   * ...
-* rename and used direction constants tha aren't joypad ones
+* rename and used direction constants that aren't joypad ones
 * migrate entities linked lists of active vs inactive instead of flag to avoid wasted cycles on loops
+* fix screen scroll sprite move jitter
 
 ### Resources
 

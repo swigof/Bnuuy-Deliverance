@@ -7,6 +7,7 @@
 #include "camera.h"
 
 joypads_t joypads;
+joypads_t prev_joypads;
 entity_t* player;
 
 int main() {
@@ -40,17 +41,29 @@ int main() {
     joypad_init(1, &joypads);
 
     while(1) {
+        prev_joypads = joypads;
         joypad_ex(&joypads);
 
-        if(joypads.joy0 & J_UP) {
-            move_entity_up(player, 60);
-        } else if(joypads.joy0 & J_DOWN) {
-            move_entity_down(player, 60);
+        if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
+            if(player->state & GROUNDED) {
+                player->state &= !GROUNDED;
+                player->vel_y = JUMP_VELOCITY;
+            } else if(!(player->state & DOUBLE_JUMP)) {
+                player->state |= DOUBLE_JUMP;
+                player->vel_y = JUMP_VELOCITY;
+            }
+        } else if(!(player->state & GROUNDED) && player->vel_y < 100) {
+            if(joypads.joy0 & J_A)
+                player->vel_y += 1;
+            else
+                player->vel_y += 2;
         }
-        if(joypads.joy0 & J_RIGHT) {
-            move_entity_right(player, 60);
-        } else if(joypads.joy0 & J_LEFT) {
-            move_entity_left(player, 60);
+        if(joypads.joy0 & J_LEFT) {
+            player->vel_x = -15;
+        } else if(joypads.joy0 & J_RIGHT) {
+            player->vel_x = 15;
+        } else {
+            player->vel_x = 0;
         }
 
         set_focus(MAP_COORD(player->y));

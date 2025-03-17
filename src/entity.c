@@ -1,6 +1,5 @@
 #include "entity.h"
 
-uint8_t sprite_index = 0;
 entity_t entity_to_add = {};
 
 entity_t entities[MAX_ENTITIES];
@@ -78,68 +77,6 @@ void populate_hitbox_record(const entity_t* const e, hitbox_record_t* const h) {
     h->bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->hitbox_margin);
 }
 
-void move_entity_up(entity_t* const entity, const uint8_t amount) {
-    entity->direction |= J_UP;
-    if(entity->direction & J_DOWN) {
-        entity->direction &= ~J_DOWN;
-        entity->y |= 0b0000000000001111;
-    }
-    entity->y -= amount;
-    populate_hitbox_record(entity, &hitbox);
-    if(get_edge_tile_type(&hitbox, J_UP) == TT_SOLID) {
-        entity->y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
-    }
-}
-
-void move_entity_down(entity_t* const entity, const uint8_t amount) {
-    entity->direction |= J_DOWN;
-    if(entity->direction & J_UP) {
-        entity->direction &= ~J_UP;
-        entity->y &= 0b1111111111110000;
-    }
-    entity->y += amount;
-    populate_hitbox_record(entity, &hitbox);
-    if(get_edge_tile_type(&hitbox, J_DOWN) == TT_SOLID) {
-        entity->y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
-    }
-}
-
-void move_entity_left(entity_t* const entity, const uint8_t amount) {
-    entity->direction |= J_LEFT;
-    if(entity->direction & J_RIGHT) {
-        entity->direction &= ~J_RIGHT;
-        entity->x |= 0b0000000000001111;
-    }
-    entity->x -= amount;
-    populate_hitbox_record(entity, &hitbox);
-    if(get_edge_tile_type(&hitbox, J_LEFT) == TT_SOLID) {
-        entity->x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
-    }
-}
-
-void move_entity_right(entity_t* const entity, const uint8_t amount) {
-    entity->direction |= J_RIGHT;
-    if(entity->direction & J_LEFT) {
-        entity->direction &= ~J_LEFT;
-        entity->x &= 0b1111111111110000;
-    }
-    entity->x += amount;
-    populate_hitbox_record(entity, &hitbox);
-    if(get_edge_tile_type(&hitbox, J_RIGHT) == TT_SOLID) {
-        entity->x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
-    }
-}
-
-void render_entity(const entity_t* const entity) {
-    sprite_index += move_metasprite_ex(
-        player_idle_metasprites[0],
-        0,
-        entity->prop,
-        sprite_index,
-        MAP_COORD(entity->x) + DEVICE_SPRITE_PX_OFFSET_X,
-        MAP_COORD(entity->y) - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
-}
-
 entity_t empty_entity = {};
 uint8_t entity_index = 0;
 entity_t* add_entity() {
@@ -158,11 +95,56 @@ entity_t* add_entity() {
     return NULL;
 }
 
-uint8_t entity_iterator = 0;
+int8_t entity_iterator = 0;
+uint8_t sprite_index = 0;
+uint8_t bottom_tile = TT_NONE;
 void update_entities() {
-    for(entity_iterator = 0; entity_iterator < MAX_ENTITIES; entity_iterator++) {
-        if(entities[entity_iterator].active)
-            render_entity(&entities[entity_iterator]);
-    }
     sprite_index = 0;
+    for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
+        if(entities[entity_iterator].active) {
+            // todo Entity update call
+
+            // Move
+            entities[entity_iterator].x += entities[entity_iterator].vel_x;
+            populate_hitbox_record(&entities[entity_iterator], &hitbox);
+            if(entities[entity_iterator].vel_x > 0) {
+                if (get_edge_tile_type(&hitbox, J_RIGHT) == TT_SOLID) {
+                    entities[entity_iterator].x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
+                    entities[entity_iterator].vel_x = 0;
+                }
+            } else if(entities[entity_iterator].vel_x < 0) {
+                if (get_edge_tile_type(&hitbox, J_LEFT) == TT_SOLID) {
+                    entities[entity_iterator].x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
+                    entities[entity_iterator].vel_x = 0;
+                }
+            }
+            entities[entity_iterator].y += entities[entity_iterator].vel_y;
+            populate_hitbox_record(&entities[entity_iterator], &hitbox);
+            if(entities[entity_iterator].vel_y < 0) {
+                bottom_tile = TT_NONE;
+                if (get_edge_tile_type(&hitbox, J_UP) == TT_SOLID) {
+                    entities[entity_iterator].y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
+                    entities[entity_iterator].vel_y = 0;
+                }
+            } else {
+                bottom_tile = get_edge_tile_type(&hitbox, J_DOWN);
+                if ((bottom_tile == TT_SOLID || bottom_tile == TT_PLATFORM) && entities[entity_iterator].vel_y > 0) {
+                    entities[entity_iterator].y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
+                    entities[entity_iterator].vel_y = 0;
+                    entities[entity_iterator].state |= GROUNDED;
+                } else {
+                    entities[entity_iterator].state &= !GROUNDED;
+                }
+            }
+            // Render
+            sprite_index += move_metasprite_ex(
+                    player_idle_metasprites[0],
+                    0,
+                    entities[entity_iterator].prop,
+                    sprite_index,
+                    MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
+                    MAP_COORD(entities[entity_iterator].y) - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
+
+        }
+    }
 }
