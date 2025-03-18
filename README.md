@@ -37,10 +37,7 @@ Variables that would normally be locals to a function are defined as globals nex
   * fix entity render function to support more than just player idle metasprite
   * emotes
 * tile hazards
-* de-duplicate and streamline code in entity movement / collision detection
-  * make movement / hitbox edge iteration based on signed inputs and start/finish coords
-    * get_edge_tile_type can take a fixed coordinate and two bounds for any edge check
-  * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
+* only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
 * put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
 * levels
 * carrying things

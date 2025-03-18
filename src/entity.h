@@ -48,6 +48,10 @@ typedef struct {
     uint16_t top, bottom, left, right;
 } hitbox_record_t;
 
+typedef struct {
+    uint16_t start, end, coord;
+} edge_t;
+
 extern entity_t entity_to_add;
 
 /**

@@ -15,58 +15,31 @@ inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
     return TT_NONE;
 }
 
-hitbox_record_t hitbox = {0,0,0,0}; // TODO possibly place in and update for each entity
 uint16_t edge_iterator = 0;
 uint8_t tile_type = TT_NONE;
 uint8_t max_tile_type = TT_NONE;
-/**
-    Get the highest priority tile type along the hitbox edge of an entity for the current map
-    @param h Pointer to hitbox record of the entity
-    @param edge The edge to check (one of J_RIGHT, J_LEFT, J_UP, J_DOWN)
-    @return returns The largest value tile type of those found on the edge
-                    (TT_NONE < TT_PLATFORM < TT_SOLID < TT_HAZARD)
-*/
-uint8_t get_edge_tile_type(const hitbox_record_t* const h, uint8_t edge) {
+uint8_t get_vertical_edge_tile_type(edge_t* edge) {
     max_tile_type = TT_NONE;
-
-    if (edge == J_UP) {
-        for (edge_iterator = h->left; edge_iterator < (h->right - 1); edge_iterator += 8) {
-            tile_type = get_tile_type(edge_iterator, h->top);
-            if (tile_type > max_tile_type)
-                max_tile_type = tile_type;
-        }
-        tile_type = get_tile_type((h->right - 1), h->top);
-        if (tile_type > max_tile_type)
-            max_tile_type = tile_type;
-    } else if (edge == J_DOWN) {
-        for (edge_iterator = h->left; edge_iterator < (h->right - 1); edge_iterator += 8) {
-            tile_type = get_tile_type(edge_iterator, (h->bottom - 1));
-            if (tile_type > max_tile_type)
-                max_tile_type = tile_type;
-        }
-        tile_type = get_tile_type((h->right - 1), (h->bottom - 1));
-        if (tile_type > max_tile_type)
-            max_tile_type = tile_type;
-    } else if (edge == J_LEFT) {
-        for (edge_iterator = h->top; edge_iterator < (h->bottom - 1); edge_iterator += 8) {
-            tile_type = get_tile_type(h->left, edge_iterator);
-            if (tile_type > max_tile_type)
-                max_tile_type = tile_type;
-        }
-        tile_type = get_tile_type(h->left, (h->bottom - 1));
-        if (tile_type > max_tile_type)
-            max_tile_type = tile_type;
-    } else if (edge == J_RIGHT) {
-        for (edge_iterator = h->top; edge_iterator < (h->bottom - 1); edge_iterator += 8) {
-            tile_type = get_tile_type((h->right - 1), edge_iterator);
-            if (tile_type > max_tile_type)
-                max_tile_type = tile_type;
-        }
-        tile_type = get_tile_type((h->right - 1), (h->bottom - 1));
+    for(edge_iterator = edge->start; edge_iterator < edge->end; edge_iterator += 8) {
+        tile_type = get_tile_type(edge->coord, edge_iterator);
         if (tile_type > max_tile_type)
             max_tile_type = tile_type;
     }
-
+    tile_type = get_tile_type(edge->coord, edge->end);
+    if (tile_type > max_tile_type)
+        max_tile_type = tile_type;
+    return max_tile_type;
+}
+uint8_t get_horizontal_edge_tile_type(edge_t* edge) {
+    max_tile_type = TT_NONE;
+    for(edge_iterator = edge->start; edge_iterator < edge->end; edge_iterator += 8) {
+        tile_type = get_tile_type(edge_iterator, edge->coord);
+        if (tile_type > max_tile_type)
+            max_tile_type = tile_type;
+    }
+    tile_type = get_tile_type(edge->end, edge->coord);
+    if (tile_type > max_tile_type)
+        max_tile_type = tile_type;
     return max_tile_type;
 }
 
@@ -97,46 +70,75 @@ entity_t* add_entity() {
 
 int8_t entity_iterator = 0;
 uint8_t sprite_index = 0;
-uint8_t bottom_tile = TT_NONE;
+uint8_t moved = 0; // bitwise 6[unused]1[verical]1[horizontal]
+hitbox_record_t hitbox = {};
+edge_t edge = {};
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         if(entities[entity_iterator].active) {
-            // todo Entity update call
+            // todo Entity update call / after?
 
             // Move
+            moved = 0b00;
             entities[entity_iterator].x += entities[entity_iterator].vel_x;
-            populate_hitbox_record(&entities[entity_iterator], &hitbox);
             if(entities[entity_iterator].vel_x > 0) {
-                if (get_edge_tile_type(&hitbox, J_RIGHT) == TT_SOLID) {
+                populate_hitbox_record(&entities[entity_iterator], &hitbox);
+                moved |= 0b01;
+                edge.start = hitbox.top;
+                edge.end = hitbox.bottom-1;
+                edge.coord = hitbox.right-1;
+                if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
                     entities[entity_iterator].x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
                     entities[entity_iterator].vel_x = 0;
                 }
             } else if(entities[entity_iterator].vel_x < 0) {
-                if (get_edge_tile_type(&hitbox, J_LEFT) == TT_SOLID) {
+                populate_hitbox_record(&entities[entity_iterator], &hitbox);
+                moved |= 0b01;
+                edge.start = hitbox.top;
+                edge.end = hitbox.bottom-1;
+                edge.coord = hitbox.left;
+                if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
                     entities[entity_iterator].x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
                     entities[entity_iterator].vel_x = 0;
                 }
             }
             entities[entity_iterator].y += entities[entity_iterator].vel_y;
-            populate_hitbox_record(&entities[entity_iterator], &hitbox);
             if(entities[entity_iterator].vel_y < 0) {
-                bottom_tile = TT_NONE;
-                if (get_edge_tile_type(&hitbox, J_UP) == TT_SOLID) {
+                moved |= 0b10;
+                populate_hitbox_record(&entities[entity_iterator], &hitbox);
+                edge.start = hitbox.left;
+                edge.end = hitbox.right-1;
+                edge.coord = hitbox.top;
+                if (get_horizontal_edge_tile_type(&edge) == TT_SOLID) {
                     entities[entity_iterator].y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
                     entities[entity_iterator].vel_y = 0;
                 }
-            } else {
-                bottom_tile = get_edge_tile_type(&hitbox, J_DOWN);
-                if ((bottom_tile == TT_SOLID || bottom_tile == TT_PLATFORM) && entities[entity_iterator].vel_y > 0) {
+            } else if(entities[entity_iterator].vel_y > 0) {
+                moved |= 0b10;
+                populate_hitbox_record(&entities[entity_iterator], &hitbox);
+                edge.start = hitbox.left;
+                edge.end = hitbox.right-1;
+                edge.coord = hitbox.bottom-1;
+                if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
                     entities[entity_iterator].y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
                     entities[entity_iterator].vel_y = 0;
                     entities[entity_iterator].state |= GROUNDED;
                     entities[entity_iterator].state &= ~DOUBLE_JUMP;
-                } else {
+                }
+            }
+
+            // Check grounding
+            if(moved == 0b01) {
+                populate_hitbox_record(&entities[entity_iterator], &hitbox);
+                edge.start = hitbox.left;
+                edge.end = hitbox.right-1;
+                edge.coord = hitbox.bottom+7; // Check tile below entity
+                if (get_horizontal_edge_tile_type(&edge) == TT_NONE) {
                     entities[entity_iterator].state &= ~GROUNDED;
                 }
             }
+
             // Render
             sprite_index += move_metasprite_ex(
                     entities[entity_iterator].state_data->metasprite[entities[entity_iterator].frame_counter],
