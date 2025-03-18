@@ -37,11 +37,17 @@ Variables that would normally be locals to a function are defined as globals nex
   * fix entity render function to support more than just player idle metasprite
   * emotes
 * tile hazards
-* store static entity(-state) data in rom arrays (heights, paddings, etc), index with defines
 * de-duplicate and streamline code in entity movement / collision detection
   * make movement / hitbox edge iteration based on signed inputs and start/finish coords
     * get_edge_tile_type can take a fixed coordinate and two bounds for any edge check
   * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
+* put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
+* levels
+* carrying things
+    * slowed movement, lower jumps
+    * throwing
+    * dropping on hit
+    * balance
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
 * add horizontal scrolling
@@ -49,14 +55,8 @@ Variables that would normally be locals to a function are defined as globals nex
 * possibly adjust camera framing to make look ahead comfortable
 * add simple sfx and music
   * on separate channels?
-* levels
 * simple opening cinematic
 * moving hazards / enemies & projectiles
-* carrying things
-  * slowed movement, lower jumps 
-  * throwing
-  * dropping on hit
-  * balance
 * menu
 * auto saving per screen
 * replace tile 0 with most common background tile
@@ -65,7 +65,6 @@ Variables that would normally be locals to a function are defined as globals nex
   * can just check instruction conversion
   * can use inlines that set a global then make call instead of parameters
 * make entity x,y signed to better handle offscreen behavior?
-* put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
 * stop scrolls earlier to allow map space to be traversed offscreen
 * find a way to render differently sized metasprites so their x,y always corresponds to their center
   * one 8x16 sprite: 0,0 <-> 4,8

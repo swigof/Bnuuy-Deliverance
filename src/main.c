@@ -25,9 +25,8 @@ int main() {
 
     entity_to_add.x = 20;
     entity_to_add.y = 350<<4;
-    entity_to_add.sprite_dimensions = ((player_idle_WIDTH >> 3) << 4) | (player_idle_HEIGHT >> 3);
-    entity_to_add.hitbox_margin = (player_idle_PIVOT_W << 4) | (player_idle_PIVOT_H);
     entity_to_add.active = TRUE;
+    entity_to_add.state_data = &player_idle;
     player = add_entity();
 
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
@@ -59,9 +58,9 @@ int main() {
                 player->vel_y += 2;
         }
         if(joypads.joy0 & J_LEFT) {
-            player->vel_x = -15;
+            player->vel_x = -player->state_data->speed;
         } else if(joypads.joy0 & J_RIGHT) {
-            player->vel_x = 15;
+            player->vel_x = player->state_data->speed;
         } else {
             player->vel_x = 0;
         }

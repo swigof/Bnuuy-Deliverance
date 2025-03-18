@@ -71,10 +71,10 @@ uint8_t get_edge_tile_type(const hitbox_record_t* const h, uint8_t edge) {
 }
 
 void populate_hitbox_record(const entity_t* const e, hitbox_record_t* const h) {
-    h->top = MAP_COORD(e->y) - HEIGHT_MARGIN(e->hitbox_margin);
-    h->left = MAP_COORD(e->x) - WIDTH_MARGIN(e->hitbox_margin);
-    h->right = MAP_COORD(e->x) + WIDTH_MARGIN(e->hitbox_margin);
-    h->bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->hitbox_margin);
+    h->top = MAP_COORD(e->y) - HEIGHT_MARGIN(e->state_data->hitbox_margin);
+    h->left = MAP_COORD(e->x) - WIDTH_MARGIN(e->state_data->hitbox_margin);
+    h->right = MAP_COORD(e->x) + WIDTH_MARGIN(e->state_data->hitbox_margin);
+    h->bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->state_data->hitbox_margin);
 }
 
 entity_t empty_entity = {};
@@ -138,7 +138,7 @@ void update_entities() {
             }
             // Render
             sprite_index += move_metasprite_ex(
-                    player_idle_metasprites[0],
+                    entities[entity_iterator].state_data->metasprite[entities[entity_iterator].frame_counter],
                     0,
                     entities[entity_iterator].prop,
                     sprite_index,
