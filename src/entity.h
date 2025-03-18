@@ -40,6 +40,7 @@ typedef struct {
     uint8_t state;             // entity dependant
     uint8_t active;            // flag if entity is to be updated/rendered
     uint8_t frame_counter;
+    uint8_t animation_frame;
     const state_data_t* state_data;
     void* update_function;
 } entity_t;

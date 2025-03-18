@@ -77,8 +77,6 @@ void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         if(entities[entity_iterator].active) {
-            // todo Entity update call / after?
-
             // Move
             moved = 0b00;
             entities[entity_iterator].x += entities[entity_iterator].vel_x;
@@ -139,15 +137,25 @@ void update_entities() {
                 }
             }
 
+            // Entity update?
+
+            // Animation
+            entities[entity_iterator].frame_counter++;
+            if(entities[entity_iterator].frame_counter >= entities[entity_iterator].state_data->frame_duration) {
+                entities[entity_iterator].frame_counter = 0;
+                entities[entity_iterator].animation_frame++;
+                if(entities[entity_iterator].animation_frame >= entities[entity_iterator].state_data->animation_length)
+                    entities[entity_iterator].animation_frame = 0;
+            }
+
             // Render
             sprite_index += move_metasprite_ex(
-                    entities[entity_iterator].state_data->metasprite[entities[entity_iterator].frame_counter],
+                    entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
                     0,
                     entities[entity_iterator].prop,
                     sprite_index,
                     MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
                     MAP_COORD(entities[entity_iterator].y) - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
-
         }
     }
 }
