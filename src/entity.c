@@ -132,8 +132,9 @@ void update_entities() {
                     entities[entity_iterator].y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
                     entities[entity_iterator].vel_y = 0;
                     entities[entity_iterator].state |= GROUNDED;
+                    entities[entity_iterator].state &= ~DOUBLE_JUMP;
                 } else {
-                    entities[entity_iterator].state &= !GROUNDED;
+                    entities[entity_iterator].state &= ~GROUNDED;
                 }
             }
             // Render

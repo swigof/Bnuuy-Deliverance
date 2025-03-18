@@ -45,7 +45,7 @@ int main() {
 
         if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
             if(player->state & GROUNDED) {
-                player->state &= !GROUNDED;
+                player->state &= ~GROUNDED;
                 player->vel_y = JUMP_VELOCITY;
             } else if(!(player->state & DOUBLE_JUMP)) {
                 player->state |= DOUBLE_JUMP;
