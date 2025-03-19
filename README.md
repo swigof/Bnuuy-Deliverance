@@ -33,18 +33,18 @@ Variables that would normally be locals to a function are defined as globals nex
 
 ### TODOS
 
-* add entity state / animation
-  * fix entity render function to support more than just player idle metasprite
-  * emotes
-* tile hazards
-* only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
-* put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
+* tile hazards / hurt
+* emotes / more animations
+* fix player move to idle state change having single frame where metasprites point at wrong tile data
 * levels
+* fix entity updates function to support more than just player tile location 0
 * carrying things
     * slowed movement, lower jumps
     * throwing
     * dropping on hit
     * balance
+* only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
+* put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
 * add horizontal scrolling

@@ -3,12 +3,18 @@
 #include "entity.h"
 #include "../obj/tileset_primary.h"
 #include "player.h"
-#include "tileset_map.h"
 #include "camera.h"
 
 joypads_t joypads;
 joypads_t prev_joypads;
 entity_t* player;
+
+const palette_color_t sprite_palettes[] = {
+        RGB8(0xFF,0xEE,0xBB),RGB8(0xFF,0x66,0xCC),RGB8(0x77,0x33,0x66),RGB8(0,0,0)
+};
+const palette_color_t tile_palettes[] = {
+        RGB8(0xFA,0xE6,0xCD),RGB8(0xF3,0xC0,0xCE),RGB8(0x97,0x9B,0xC7),RGB8(0,0,0)
+};
 
 int main() {
     NR52_REG = 0x80;
@@ -21,17 +27,16 @@ int main() {
     SHOW_SPRITES;
 
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
-    set_bkg_palette(0,1,tileset_map_colors);
+    set_bkg_palette(0,1,tile_palettes);
 
     entity_to_add.x = 20;
     entity_to_add.y = 350<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &player_idle;
-    player = add_entity();
-
+    entity_to_add.update_function = (void (*)(void *)) &update_player;
     set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
-    palette_color_t sprite_palettes[] = { RGB8(255, 0, 0),RGB8(0, 255, 0),RGB8(0, 0, 255),RGB8(0, 0, 0) };
     set_sprite_palette(0, 1, sprite_palettes);
+    player = add_entity();
 
     init_camera(MAP_COORD(player->y));
 

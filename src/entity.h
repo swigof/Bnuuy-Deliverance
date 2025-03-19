@@ -9,6 +9,7 @@
 
 #define GROUNDED 0b10000000
 #define DOUBLE_JUMP 0b01000000
+#define FLIP_X 0b00100000
 #define JUMP_VELOCITY (-20)
 
 #define SPRITE_WIDTH(D) ((D >> 4) << 3)          // Get width of a sprite from entity sprite_dimensions
@@ -34,15 +35,15 @@ typedef struct {
 } state_data_t;
 
 typedef struct {
-    uint16_t x, y;             // bitwise 12[map position at center of the entity]4[subpixel position]
+    uint16_t x, y;                   // bitwise 12[map position at center of the entity]4[subpixel position]
     int8_t vel_x, vel_y;
     uint8_t prop;
-    uint8_t state;             // entity dependant
-    uint8_t active;            // flag if entity is to be updated/rendered
+    uint8_t state;                   // bitwise 1[grounded]1[double jumped]1[flipx]5[unused]
+    uint8_t active;                  // flag if entity is to be updated/rendered
     uint8_t frame_counter;
     uint8_t animation_frame;
     const state_data_t* state_data;
-    void* update_function;
+    void (*update_function)(void*);  // argument of is entity_t self reference
 } entity_t;
 
 typedef struct {
