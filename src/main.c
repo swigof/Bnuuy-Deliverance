@@ -4,10 +4,19 @@
 #include "../obj/tileset_primary.h"
 #include "player.h"
 #include "camera.h"
+#include <gbdk/emu_debug.h>
 
 joypads_t joypads;
 joypads_t prev_joypads;
 entity_t* player;
+const state_data_t* pprev_state = 0;
+uint8_t prev_frame = 0;
+
+void print_message(void) {
+    if(LY_REG == 143) {
+        EMU_printf("line\n");
+    }
+}
 
 const palette_color_t sprite_palettes[] = {
         RGB8(0xFF,0xEE,0xBB),RGB8(0xFF,0x66,0xCC),RGB8(0x77,0x33,0x66),RGB8(0,0,0)
@@ -15,8 +24,14 @@ const palette_color_t sprite_palettes[] = {
 const palette_color_t tile_palettes[] = {
         RGB8(0xFA,0xE6,0xCD),RGB8(0xF3,0xC0,0xCE),RGB8(0x97,0x9B,0xC7),RGB8(0,0,0)
 };
-
 int main() {
+//    CRITICAL {
+//        STAT_REG = STATF_MODE00;
+//        add_LCD(print_message);
+//        add_LCD(nowait_int_handler);
+//    }
+//    set_interrupts(IE_REG | LCD_IFLAG);
+
     NR52_REG = 0x80;
     NR50_REG = 0x77;
     NR51_REG = 0xFF;
@@ -29,8 +44,8 @@ int main() {
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tile_palettes);
 
-    entity_to_add.x = 20;
-    entity_to_add.y = 350<<4;
+    entity_to_add.x = 20<<4;
+    entity_to_add.y = 344<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &player_idle;
     entity_to_add.update_function = (void (*)(void *)) &update_player;
@@ -71,10 +86,21 @@ int main() {
         }
 
         set_focus(MAP_COORD(player->y));
-
+        pprev_state = player->state_data;
+        prev_frame = player->animation_frame;
+        if(prev_frame == 1 && pprev_state == &player_move) {
+            EMU_printf("preupdate %u\n", player->state_data->metasprite[player->animation_frame]);
+        }
         update_entities();
-
+        if(prev_frame == 1 && pprev_state == &player_move && player->state_data == &player_idle) {
+            EMU_printf("postupdate %u\n", player->state_data->metasprite[player->animation_frame]);
+            //EMU_BREAKPOINT;
+        }
         vsync();
+        if(prev_frame == 1 && pprev_state == &player_move && player->state_data == &player_idle) {
+            EMU_printf("postsync %u\n", player->state_data->metasprite[player->animation_frame]);
+            //EMU_BREAKPOINT;
+        }
         update_camera();
     }
 

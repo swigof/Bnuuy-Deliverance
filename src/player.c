@@ -50,26 +50,26 @@ void update_player(entity_t* player) {
             if (player->state_data != &player_fall) {
                 player->animation_frame = 0;
                 player->state_data = &player_fall;
-                set_sprite_data(0, player_fall.tile_count, player_fall.tiles);
+                //set_sprite_data(0, player_fall.tile_count, player_fall.tiles);
             }
         } else {
             if (player->state_data != &player_jump) {
                 player->animation_frame = 0;
                 player->state_data = &player_jump;
-                set_sprite_data(0, player_jump.tile_count, player_jump.tiles);
+                //set_sprite_data(0, player_jump.tile_count, player_jump.tiles);
             }
         }
     } else if(player->vel_x != 0) {
         if(player->state_data != &player_move) {
             player->animation_frame = 0;
             player->state_data = &player_move;
-            set_sprite_data(0, player_move.tile_count, player_move.tiles);
+            //set_sprite_data(0, player_move.tile_count, player_move.tiles);
         }
     } else {
         if(player->state_data != &player_idle) {
             player->animation_frame = 0;
             player->state_data = &player_idle;
-            set_sprite_data(0, player_idle.tile_count, player_idle.tiles);
+            //set_sprite_data(0, player_idle.tile_count, player_idle.tiles);
         }
     }
 }

@@ -1,3 +1,4 @@
+#include <gbdk/emu_debug.h>
 #include "entity.h"
 
 entity_t entity_to_add = {};
@@ -73,6 +74,7 @@ uint8_t sprite_index = 0;
 uint8_t moved = 0; // bitwise 6[unused]1[verical]1[horizontal]
 hitbox_record_t hitbox = {};
 edge_t edge = {};
+const state_data_t* prev_state = NULL;
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
@@ -145,7 +147,19 @@ void update_entities() {
             }
 
             // Entity state specific update
+            prev_state = entities[entity_iterator].state_data;
+            EMU_printf("update_function()");
             entities[entity_iterator].update_function(&entities[entity_iterator]);
+
+            // Handle state change, swap tileset
+            if(prev_state != entities[entity_iterator].state_data) {
+                EMU_printf("set_sprite_data()");
+                set_sprite_data(
+                        0,
+                        entities[entity_iterator].state_data->tile_count,
+                        entities[entity_iterator].state_data->tiles
+                );
+            }
 
             // Animation
             if(entities[entity_iterator].state_data->animation_length > 1) {
@@ -169,6 +183,7 @@ void update_entities() {
                         MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
                         MAP_COORD(entities[entity_iterator].y) - get_camera_y() + DEVICE_SPRITE_PX_OFFSET_Y);
             } else {
+                EMU_printf("move_metasprite_ex()");
                 sprite_index += move_metasprite_ex(
                         entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
                         0,

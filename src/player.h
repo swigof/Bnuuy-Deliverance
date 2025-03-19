@@ -10,6 +10,7 @@
 #include "entity.h"
 
 extern const state_data_t player_idle;
+extern const state_data_t player_move;
 
 void update_player(entity_t* player);
 
