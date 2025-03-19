@@ -17,14 +17,14 @@ const state_data_t player_move = {
         15,
         player_move_tiles,
         player_move_TILE_COUNT,
-        15,
+        10,
         player_move_metasprites,
         2
 };
 
 const state_data_t player_jump = {
-        ((player_move_WIDTH >> 3) << 4) | (player_move_WIDTH >> 3),
-        (player_move_PIVOT_W << 4) | (player_move_PIVOT_W),
+        ((player_move_WIDTH >> 3) << 4) | (player_move_HEIGHT >> 3),
+        (player_move_PIVOT_W << 4) | (player_move_PIVOT_H),
         15,
         player_move_tiles,
         player_move_TILE_COUNT,
