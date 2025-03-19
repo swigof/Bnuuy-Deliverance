@@ -163,7 +163,7 @@ void update_entities() {
             if(entities[entity_iterator].state & FLIP_X) {
                 sprite_index += move_metasprite_flipx(
                         entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
-                        0,
+                        entities[entity_iterator].base_tile,
                         entities[entity_iterator].prop,
                         sprite_index,
                         MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
@@ -171,7 +171,7 @@ void update_entities() {
             } else {
                 sprite_index += move_metasprite_ex(
                         entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
-                        0,
+                        entities[entity_iterator].base_tile,
                         entities[entity_iterator].prop,
                         sprite_index,
                         MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,

@@ -7,6 +7,7 @@ and camera can fall apart.
 * Maps can only scroll vertically
 * Maps must have a width of 20 and a height between 19 and 8191 inclusive
   * `camera_y` will always start with a value of 8 or more to buffer one line lower
+* The project Makefile builds spritesheets using png2asset
 * Sprites should be centered horizontally and vertically on their hitboxes
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
   * Hitboxes have a size limit of 30x30 (4 bits for pw/ph)
@@ -19,15 +20,15 @@ and camera can fall apart.
 
 ### TODOS
 
-* tile hazards / hurt
-* emotes / more animations
-* levels
-* fix entity updates function to support more than just player tile location 0
+* fix box updates / gravity
 * carrying things
     * slowed movement, lower jumps
     * throwing
     * dropping on hit
-    * balance
+    * balance?
+* tile hazards / hurt
+* emotes / more animations
+* levels
 * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
 * put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
 * make conversion operation #defines / inlines

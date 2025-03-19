@@ -48,8 +48,10 @@ DEPS = $(OBJS:%.o=%.d)
 .SECONDEXPANSION:
 $(OBJDIR)/%.c: $(RESDIR)/tiles/%.png
 	$(PNG2ASSET) $< -spr8x8 -no_palettes -noflip -tiles_only -o $@
-$(OBJDIR)/%.c: $(RESDIR)/sprites/player_sheet.png
+$(OBJDIR)/player_sheet.c: $(RESDIR)/sprites/player_sheet.png
 	$(PNG2ASSET) $< -spr8x16 -no_palettes -sw 16 -sh 32 -pw 4 -ph 8 -o $@
+$(OBJDIR)/box_sheet.c: $(RESDIR)/sprites/box_sheet.png
+	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 16 -pw 7 -ph 7 -o $@
 
 # Prevent make from deleting intermediary generated asset C source files
 .SECONDARY: $(IMAGE_SRC)

@@ -35,6 +35,7 @@ typedef struct {
 typedef struct {
     uint16_t x, y;                   // bitwise 12[map position at center of the entity]4[subpixel position]
     int8_t vel_x, vel_y;
+    uint8_t base_tile;
     uint8_t prop;
     uint8_t state;                   // bitwise 1[grounded]1[double jumped]1[flipx]5[unused]
     uint8_t active;                  // flag if entity is to be updated/rendered
