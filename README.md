@@ -1,6 +1,6 @@
 # eigg
 
-### Constraints
+### Notes
 
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
@@ -11,12 +11,16 @@ and camera can fall apart.
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
   * Hitboxes have a size limit of 30x30 (4 bits for pw/ph)
   * Hitboxes should always remain fully inside the mapped area
+* Each entity should have a source definition and spritesheet
+  * The source definition details its various states and the metasprites to use in each state
+  * The spritesheet should have its animations placed in sequence in left to right, top to bottom order
+  * Sprite data for all an entity's metasprites should be fully set before being made active
+    * This would usually be done on level load
 
 ### TODOS
 
 * tile hazards / hurt
 * emotes / more animations
-* fix player move to idle state change having single frame where metasprites point at wrong tile data
 * levels
 * fix entity updates function to support more than just player tile location 0
 * carrying things

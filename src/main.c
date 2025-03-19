@@ -29,13 +29,13 @@ int main() {
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tile_palettes);
 
-    entity_to_add.x = 20;
-    entity_to_add.y = 350<<4;
+    set_sprite_data(0, player_sheet_TILE_COUNT, player_sheet_tiles);
+    set_sprite_palette(0, 1, sprite_palettes);
+    entity_to_add.x = 20<<4;
+    entity_to_add.y = 330<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &player_idle;
     entity_to_add.update_function = (void (*)(void *)) &update_player;
-    set_sprite_data(0, player_idle_TILE_COUNT, player_idle_tiles);
-    set_sprite_palette(0, 1, sprite_palettes);
     player = add_entity();
 
     init_camera(MAP_COORD(player->y));

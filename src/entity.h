@@ -27,8 +27,6 @@ typedef struct {
     uint8_t sprite_dimensions; // bitwise 4[8 multiples for width]4[8 multiples for height]
     uint8_t hitbox_margin;     // bitwise 4[margin to horizontal hitbox edges from center]4[same vertically]
     int8_t speed;
-    const uint8_t* tiles;
-    uint8_t tile_count;
     uint8_t frame_duration;
     const metasprite_t* const * metasprite;
     uint8_t animation_length;
