@@ -64,33 +64,8 @@ int main() {
     while(1) {
         prev_joypads = joypads;
         joypad_ex(&joypads);
-
-        if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
-            if(player->state & GROUNDED) {
-                player->state &= ~GROUNDED;
-                player->vel_y = JUMP_VELOCITY;
-            } else if(!(player->state & DOUBLE_JUMP)) {
-                player->state |= DOUBLE_JUMP;
-                player->vel_y = JUMP_VELOCITY;
-            }
-        } else if(!(player->state & GROUNDED) && player->vel_y < 100) {
-            if(joypads.joy0 & J_A)
-                player->vel_y += 1;
-            else
-                player->vel_y += 2;
-        }
-        if(joypads.joy0 & J_LEFT) {
-            player->vel_x = -player->state_data->speed;
-        } else if(joypads.joy0 & J_RIGHT) {
-            player->vel_x = player->state_data->speed;
-        } else {
-            player->vel_x = 0;
-        }
-
         set_focus(MAP_COORD(player->y));
-
         update_entities();
-
         vsync();
         update_camera();
     }

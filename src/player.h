@@ -3,6 +3,7 @@
 
 #include "../obj/player_sheet.h"
 #include "entity.h"
+#include "common.h"
 
 extern const state_data_t player_idle;
 
