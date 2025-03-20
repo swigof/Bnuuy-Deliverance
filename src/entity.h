@@ -10,7 +10,6 @@
 #define GROUNDED 0b10000000
 #define DOUBLE_JUMP 0b01000000
 #define FLIP_X 0b00100000
-#define JUMP_VELOCITY (-20)
 
 #define SPRITE_WIDTH(D) ((D >> 4) << 3)          // Get width of a sprite from entity sprite_dimensions
 #define SPRITE_HEIGHT(D) ((D & 0b00001111) << 3) // Get height of a sprite from entity sprite_dimensions

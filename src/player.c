@@ -2,6 +2,8 @@
 
 // Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 
+const int8_t jump_velocity[2] = {-20, -16};
+
 const state_data_t player_idle[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
@@ -83,10 +85,10 @@ void update_player(entity_t* player) {
     if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
         if(player->state & GROUNDED) {
             player->state &= ~GROUNDED;
-            player->vel_y = JUMP_VELOCITY;
+            player->vel_y = jump_velocity[player->carry];
         } else if(!(player->state & DOUBLE_JUMP)) {
             player->state |= DOUBLE_JUMP;
-            player->vel_y = JUMP_VELOCITY;
+            player->vel_y = jump_velocity[player->carry];
         }
     } else if(!(player->state & GROUNDED) && player->vel_y < 100) {
         if(joypads.joy0 & J_A)
