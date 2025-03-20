@@ -70,82 +70,13 @@ entity_t* add_entity() {
 
 int8_t entity_iterator = 0;
 uint8_t sprite_index = 0;
-uint8_t moved = 0; // bitwise 6[unused]1[verical]1[horizontal]
-hitbox_record_t hitbox = {};
-edge_t edge = {};
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         if(entities[entity_iterator].active) {
-            // Check direction
-            if(entities[entity_iterator].vel_x > 0) {
-                entities[entity_iterator].state &= ~FLIP_X;
-            } else if(entities[entity_iterator].vel_x < 0) {
-                entities[entity_iterator].state |= FLIP_X;
-            }
-
-            // Move
-            moved = 0b00;
-            entities[entity_iterator].x += entities[entity_iterator].vel_x;
-            if(entities[entity_iterator].vel_x > 0) {
-                populate_hitbox_record(&entities[entity_iterator], &hitbox);
-                moved |= 0b01;
-                edge.start = hitbox.top;
-                edge.end = hitbox.bottom-1;
-                edge.coord = hitbox.right-1;
-                if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
-                    entities[entity_iterator].x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
-                    entities[entity_iterator].vel_x = 0;
-                }
-            } else if(entities[entity_iterator].vel_x < 0) {
-                populate_hitbox_record(&entities[entity_iterator], &hitbox);
-                moved |= 0b01;
-                edge.start = hitbox.top;
-                edge.end = hitbox.bottom-1;
-                edge.coord = hitbox.left;
-                if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
-                    entities[entity_iterator].x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
-                    entities[entity_iterator].vel_x = 0;
-                }
-            }
-            entities[entity_iterator].y += entities[entity_iterator].vel_y;
-            if(entities[entity_iterator].vel_y < 0) {
-                moved |= 0b10;
-                populate_hitbox_record(&entities[entity_iterator], &hitbox);
-                edge.start = hitbox.left;
-                edge.end = hitbox.right-1;
-                edge.coord = hitbox.top;
-                if (get_horizontal_edge_tile_type(&edge) == TT_SOLID) {
-                    entities[entity_iterator].y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
-                    entities[entity_iterator].vel_y = 0;
-                }
-            } else if(entities[entity_iterator].vel_y > 0) {
-                moved |= 0b10;
-                populate_hitbox_record(&entities[entity_iterator], &hitbox);
-                edge.start = hitbox.left;
-                edge.end = hitbox.right-1;
-                edge.coord = hitbox.bottom-1;
-                if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
-                    entities[entity_iterator].y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
-                    entities[entity_iterator].vel_y = 0;
-                    entities[entity_iterator].state |= GROUNDED;
-                    entities[entity_iterator].state &= ~DOUBLE_JUMP;
-                }
-            }
-
-            // Check grounding
-            if(moved == 0b01) {
-                populate_hitbox_record(&entities[entity_iterator], &hitbox);
-                edge.start = hitbox.left;
-                edge.end = hitbox.right-1;
-                edge.coord = hitbox.bottom+7; // Check tile below entity
-                if (get_horizontal_edge_tile_type(&edge) == TT_NONE) {
-                    entities[entity_iterator].state &= ~GROUNDED;
-                }
-            }
-
-            // Entity state specific update
-            entities[entity_iterator].update_function(&entities[entity_iterator]);
+            // Entity specific update
+            if(entities[entity_iterator].update_function)
+                entities[entity_iterator].update_function(&entities[entity_iterator]);
 
             // Animation
             if(entities[entity_iterator].state_data->animation_length > 1) {
@@ -180,4 +111,76 @@ void update_entities() {
         }
     }
     hide_sprites_range(sprite_index,MAX_HARDWARE_SPRITES);
+}
+
+void velocity_direction_flip(entity_t* e) {
+    if (e->vel_x > 0) {
+        e->state &= ~FLIP_X;
+    } else if (e->vel_x < 0) {
+        e->state |= FLIP_X;
+    }
+}
+
+uint8_t moved = 0; // bitwise 6[unused]1[vertical]1[horizontal]
+hitbox_record_t hitbox = {};
+edge_t edge = {};
+uint8_t velocity_collision_move(entity_t* e) {
+    moved = 0b00;
+    e->x += e->vel_x;
+    if (e->vel_x > 0) {
+        populate_hitbox_record(e, &hitbox);
+        moved |= 0b01;
+        edge.start = hitbox.top;
+        edge.end = hitbox.bottom - 1;
+        edge.coord = hitbox.right - 1;
+        if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
+            e->x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
+            e->vel_x = 0;
+        }
+    } else if (e->vel_x < 0) {
+        populate_hitbox_record(e, &hitbox);
+        moved |= 0b01;
+        edge.start = hitbox.top;
+        edge.end = hitbox.bottom - 1;
+        edge.coord = hitbox.left;
+        if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
+            e->x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
+            e->vel_x = 0;
+        }
+    }
+    e->y += e->vel_y;
+    if (e->vel_y < 0) {
+        moved |= 0b10;
+        populate_hitbox_record(e, &hitbox);
+        edge.start = hitbox.left;
+        edge.end = hitbox.right - 1;
+        edge.coord = hitbox.top;
+        if (get_horizontal_edge_tile_type(&edge) == TT_SOLID) {
+            e->y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
+            e->vel_y = 0;
+        }
+    } else if (e->vel_y > 0) {
+        moved |= 0b10;
+        populate_hitbox_record(e, &hitbox);
+        edge.start = hitbox.left;
+        edge.end = hitbox.right - 1;
+        edge.coord = hitbox.bottom - 1;
+        if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
+            e->y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
+            e->vel_y = 0;
+            e->state |= GROUNDED;
+            e->state &= ~DOUBLE_JUMP;
+        }
+    }
+    return moved == 0b01;
+}
+
+void check_grounding(entity_t* e) {
+    populate_hitbox_record(e, &hitbox);
+    edge.start = hitbox.left;
+    edge.end = hitbox.right - 1;
+    edge.coord = hitbox.bottom + 7; // Check tile below entity
+    if (get_horizontal_edge_tile_type(&edge) == TT_NONE) {
+        e->state &= ~GROUNDED;
+    }
 }

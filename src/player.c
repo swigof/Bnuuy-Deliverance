@@ -60,6 +60,12 @@ void update_player(entity_t* player) {
         player->vel_x = 0;
     }
 
+    // Position and collision detection
+    velocity_direction_flip(player);
+    if(velocity_collision_move(player)) {
+        check_grounding(player);
+    }
+
     // State updates
     if(!(player->state & GROUNDED)) {
         if (player->vel_y >= 0) {

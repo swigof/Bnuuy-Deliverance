@@ -17,6 +17,8 @@ and camera can fall apart.
   * The spritesheet should have its animations placed in sequence in left to right, top to bottom order
   * Sprite data for all an entity's metasprites should be fully set before being made active
     * This would usually be done on level load
+* Entities update mostly through their own pre-defined functions
+  * There are generic functions that can be used for velocity movement and collision
 
 ### TODOS
 
@@ -29,6 +31,7 @@ and camera can fall apart.
 * tile hazards / hurt
 * emotes / more animations
 * levels
+* add collision/grounding flag to basic movement routine
 * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
 * put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
 * make conversion operation #defines / inlines

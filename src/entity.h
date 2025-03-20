@@ -38,11 +38,11 @@ typedef struct {
     uint8_t base_tile;
     uint8_t prop;
     uint8_t state;                   // bitwise 1[grounded]1[double jumped]1[flipx]5[unused]
-    uint8_t active;                  // flag if entity is to be updated/rendered
+    uint8_t active;                  // flag if entity is to be updated/rendered. entity can be deleted if unset
     uint8_t frame_counter;
     uint8_t animation_frame;
     const state_data_t* state_data;
-    void (*update_function)(void*);  // argument of is entity_t self reference
+    void (*update_function)(void*);  // argument is entity_t self reference
 } entity_t;
 
 typedef struct {
@@ -62,5 +62,24 @@ extern entity_t entity_to_add;
 entity_t* add_entity();
 
 void update_entities();
+
+/**
+ * Flags the entity state for which horizontal direction it should be rendered in based on velocity
+ * @param e Entity to process
+ */
+void velocity_direction_flip(entity_t* e);
+
+/**
+ * Processes velocity based movement and collision
+ * @param e Entity to process
+ * @return If the entity moved strictly horizontally
+ */
+uint8_t velocity_collision_move(entity_t* e);
+
+/**
+ * Makes air state adjustments to an entity based on if it is on a solid tile
+ * @param e Entity to process
+ */
+void check_grounding(entity_t* e);
 
 #endif
