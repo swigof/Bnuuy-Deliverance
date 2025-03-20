@@ -5,6 +5,7 @@
 #include "player.h"
 #include "box.h"
 #include "camera.h"
+#include "common.h"
 
 joypads_t joypads;
 joypads_t prev_joypads;
