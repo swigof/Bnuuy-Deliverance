@@ -26,16 +26,13 @@ and camera can fall apart.
 
 ### TODOS
 
-* carrying things
-    * slowed movement, lower jumps
-    * throwing
-    * dropping on hit
-    * balance?
+* debug rom execution errors
 * add simple sfx and music
     * on separate channels?
 * levels
 * fix screen scroll sprite move jitter
 * tile hazards / hurt
+  * dropping on hit
 * simple opening cinematic
 * fix wall hugging movement jitter
 * fix box collision while held / adjust player collision accordingly
@@ -44,7 +41,10 @@ and camera can fall apart.
 * add collision/grounding flag to basic movement routine
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
+* screenshake with scanline interrupts and scroll shifting
 * add horizontal scrolling
+* momentum driven air movement
+* carrying balance mechanics?
 * camera safety measure for if old vs new position is more than 1 tile difference
 * possibly adjust camera framing to make look ahead comfortable
 * moving hazards / enemies & projectiles

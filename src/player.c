@@ -86,7 +86,7 @@ void update_player(entity_t* player) {
         if(player->state & GROUNDED) {
             player->state &= ~GROUNDED;
             player->vel_y = jump_velocity[player->carry];
-        } else if(!(player->state & DOUBLE_JUMP)) {
+        } else if(!(player->state & DOUBLE_JUMP) && !player->carry) {
             player->state |= DOUBLE_JUMP;
             player->vel_y = jump_velocity[player->carry];
         }
