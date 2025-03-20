@@ -75,8 +75,8 @@ void update_entities() {
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         if(entities[entity_iterator].active) {
             // Onscreen check
-            entities[entity_iterator].onscreen = MAP_COORD(entities[entity_iterator].y) > (camera_y - 8)
-                    && MAP_COORD(entities[entity_iterator].y) < (camera_y + DEVICE_SCREEN_PX_HEIGHT + 8);
+            entities[entity_iterator].onscreen = MAP_COORD(entities[entity_iterator].y) > camera_y
+                    && MAP_COORD(entities[entity_iterator].y) < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
 
             // Entity specific update
             if(entities[entity_iterator].update_function)
