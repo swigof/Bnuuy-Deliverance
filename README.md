@@ -1,6 +1,6 @@
 # eigg
 
-### Notes
+### Notes on engine functionality
 
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
@@ -19,6 +19,8 @@ and camera can fall apart.
     * This would usually be done on level load
 * Entities update mostly through their own pre-defined functions
   * There are generic functions that can be used for velocity movement and collision
+    * Acceleration / velocity changes need to be handled by the entity's update function however
+* The box when carried by the player has its movement handled by the player update function
 
 ### TODOS
 

@@ -59,9 +59,22 @@ void update_player(entity_t* player) {
     } else {
         player->vel_x = 0;
     }
-    if(joypads.joy0 & J_B && box->onscreen) {
-        if(do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
-            // TODO pickup box
+    if(joypads.joy0 & J_B) {
+        if(box->onscreen && !player->carry && do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
+            player->carry = TRUE;
+            box->update_function = NULL;
+        }
+    } else {
+        if (player->carry) {
+            player->carry = FALSE;
+            box->state &= ~GROUNDED;
+            populate_hitbox_record(box);
+            box->update_function = (void (*)(void *)) &update_box;
+            box->vel_y = player->vel_y - 30;
+            if (player->state & FLIP_X)
+                box->vel_x = player->vel_x - 30;
+            else
+                box->vel_x = player->vel_x + 30;
         }
     }
 
@@ -69,6 +82,12 @@ void update_player(entity_t* player) {
     velocity_direction_flip(player);
     if(velocity_collision_move(player)) {
         check_grounding(player);
+    }
+
+    // Box update if carrying
+    if(player->carry) {
+        box->x = player->x;
+        box->y = player->hitbox.top << 4;
     }
 
     // State updates

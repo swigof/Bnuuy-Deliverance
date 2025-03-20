@@ -43,6 +43,7 @@ typedef struct {
     uint8_t prop;
     uint8_t state;                   // bitwise 1[grounded]1[double jumped]1[flipx]5[unused]
     uint8_t active;                  // flag if entity is to be updated/rendered. entity can be deleted if unset
+    uint8_t carry;                   // For player, if it is carrying the box
     hitbox_record_t hitbox;
     uint8_t onscreen;
     uint8_t frame_counter;
