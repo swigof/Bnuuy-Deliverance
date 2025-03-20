@@ -2,6 +2,10 @@
 ifndef GBDK_HOME
     GBDK_HOME = ../gbdk/
 endif
+# hUGEDriver path
+ifndef HUGE_HOME
+    HUGE_HOME = ../hUGEDriver/
+endif
 
 # Tools
 LCC = $(GBDK_HOME)bin/lcc
@@ -16,6 +20,10 @@ ifdef GBDK_DEBUG
     CFLAGS += -debug -v  # Add debug flags and command logging
 endif
 
+# Add hUGEDriver
+CFLAGS += -I$(HUGE_HOME)include
+CFLAGS += -Wl-l$(HUGE_HOME)gbdk/hUGEDriver.lib
+
 PROJECTNAME = eigg
 
 BINDIR      = bin
@@ -26,7 +34,7 @@ IMAGEDIRS   = $(RESDIR)/*
 MKDIRS      = $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
 
 BINS	    = $(BINDIR)/$(PROJECTNAME).gbc
-CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES    = $(foreach dir,$(SRCDIR) $(RESDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 
 # Images in res/ will be converted to source files with png2asset
@@ -64,14 +72,9 @@ $(OBJDIR)/%.o:	$(OBJDIR)/%.c
 $(OBJDIR)/%.o:	$(SRCDIR)/%.c
 	$(LCC) $(CFLAGS) -c -o $@ $<
 
-# Compile .s assembly files in "src/" to .o object files
-$(OBJDIR)/%.o:	$(SRCDIR)/%.s
+# Compile .c assembly files in "res/" to .o object files
+$(OBJDIR)/%.o:	$(RESDIR)/%.c
 	$(LCC) $(CFLAGS) -c -o $@ $<
-
-# If needed, compile .c files in "src/" to .s assembly files
-# (not required if .c is compiled directly to .o)
-$(OBJDIR)/%.s:	$(SRCDIR)/%.c
-	$(LCC) $(CFLAGS) -S -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
 $(BINS): $(OBJS)

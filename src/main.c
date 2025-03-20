@@ -22,8 +22,13 @@ const palette_color_t tile_palettes[] = {
 
 int main() {
     NR52_REG = 0x80;
-    NR50_REG = 0x77;
+    NR50_REG = 0xFF;
     NR51_REG = 0xFF;
+
+    CRITICAL {
+        hUGE_init(&main_track);
+        add_VBL(hUGE_dosound);
+    }
 
     DISPLAY_OFF;
     SHOW_BKG;

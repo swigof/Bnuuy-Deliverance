@@ -1,6 +1,15 @@
 # eigg
 
-### Notes on engine functionality
+## Resources
+
+The project needs certain resources placed in a top level `res` folder
+
+* `res/sprites/box_sheet.png` spritesheet of the box entity
+* `res/sprites/player_sheet.png` spritesheet of the player entity
+* `res/tiles/tileset_primary.png` tilesheet for background tiles
+* `res/main_track.c` hUGETracker exported song
+
+## Notes on engine functionality
 
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
@@ -24,9 +33,8 @@ and camera can fall apart.
   * Collision checks aren't made for the box in this case
 * Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 
-### TODOS
+## TODOS
 
-* debug rom execution errors
 * add simple sfx and music
     * on separate channels?
 * levels
@@ -37,7 +45,9 @@ and camera can fall apart.
 * fix wall hugging movement jitter
 * fix box collision while held / adjust player collision accordingly
 * emotes / more animations
+* crouch state
 * camera pan upon level load
+* timer
 * add collision/grounding flag to basic movement routine
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
@@ -66,7 +76,7 @@ and camera can fall apart.
 * consolidate entity flags further into state to save ram if needed
   * alternatively, expand flags into variables if ram is fine
 
-### Resources
+## References
 
 https://gbdev.io/
 
