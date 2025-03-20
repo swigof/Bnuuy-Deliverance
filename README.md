@@ -5,7 +5,7 @@
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
 * Maps can only scroll vertically
-* Maps must have a width of 20 and a height between 19 and 8191 inclusive
+* Maps must have a width of 20 and a height between 19 and 511 inclusive
   * `camera_y` will always start with a value of 8 or more to buffer one line lower
 * The project Makefile builds spritesheets using png2asset
 * Sprites should be centered horizontally and vertically on their hitboxes
@@ -30,6 +30,10 @@ and camera can fall apart.
 * tile hazards / hurt
 * emotes / more animations
 * levels
+* fix screen scroll sprite move jitter
+* add simple sfx and music
+    * on separate channels?
+* simple opening cinematic
 * add collision/grounding flag to basic movement routine
 * only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
 * put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
@@ -38,9 +42,6 @@ and camera can fall apart.
 * add horizontal scrolling
 * camera safety measure for if old vs new position is more than 1 tile difference
 * possibly adjust camera framing to make look ahead comfortable
-* add simple sfx and music
-  * on separate channels?
-* simple opening cinematic
 * moving hazards / enemies & projectiles
 * menu
 * auto saving per screen
