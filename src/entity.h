@@ -90,4 +90,12 @@ uint8_t velocity_collision_move(entity_t* e);
  */
 void check_grounding(entity_t* e);
 
+/**
+ * Check if two entity hitboxes overlap with eachother
+ * @param h1 The first entity hitbox
+ * @param h2 The second entity hitbox
+ * @return TRUE if they overlap, FALSE otherwise
+ */
+uint8_t do_hitboxes_overlap(const hitbox_record_t* h1, const hitbox_record_t* h2);
+
 #endif

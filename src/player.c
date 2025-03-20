@@ -59,6 +59,11 @@ void update_player(entity_t* player) {
     } else {
         player->vel_x = 0;
     }
+    if(joypads.joy0 & J_B && box->onscreen) {
+        if(do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
+            // TODO pickup box
+        }
+    }
 
     // Position and collision detection
     velocity_direction_flip(player);

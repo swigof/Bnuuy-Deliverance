@@ -27,13 +27,13 @@ and camera can fall apart.
     * throwing
     * dropping on hit
     * balance?
-* tile hazards / hurt
-* emotes / more animations
-* levels
-* fix screen scroll sprite move jitter
 * add simple sfx and music
     * on separate channels?
+* levels
+* fix screen scroll sprite move jitter
+* tile hazards / hurt
 * simple opening cinematic
+* emotes / more animations
 * add collision/grounding flag to basic movement routine
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
