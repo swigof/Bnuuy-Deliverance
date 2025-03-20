@@ -22,7 +22,7 @@ and camera can fall apart.
 
 ### TODOS
 
-* fix box updates / gravity
+* fix offscreen entity behavior 
 * carrying things
     * slowed movement, lower jumps
     * throwing
