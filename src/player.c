@@ -1,39 +1,81 @@
 #include "player.h"
 
-const state_data_t player_idle = {
+// Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
+
+const state_data_t player_idle[2] = {
+    {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         15,
         30,
         &player_sheet_metasprites[4],
         1
+    },
+    {
+        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
+        10,
+        30,
+        &player_sheet_metasprites[6],
+        1
+    }
 };
 
-const state_data_t player_move = {
+const state_data_t player_move[2] = {
+    {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         15,
         10,
         &player_sheet_metasprites[0],
         2
+    },
+    {
+        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
+        10,
+        15,
+        &player_sheet_metasprites[2],
+        2
+    }
 };
 
-const state_data_t player_jump = {
+const state_data_t player_jump[2] = {
+    {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         15,
         30,
         &player_sheet_metasprites[0],
         1
+    },
+    {
+        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
+        12,
+        30,
+        &player_sheet_metasprites[2],
+        1
+    }
 };
 
-const state_data_t player_fall = {
+const state_data_t player_fall[2] = {
+    {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         15,
         30,
         &player_sheet_metasprites[12],
         1
+    },
+    {
+        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
+        12,
+        30,
+        &player_sheet_metasprites[13],
+        1
+    }
 };
 
 void update_player(entity_t* player) {
@@ -61,12 +103,12 @@ void update_player(entity_t* player) {
     }
     if(joypads.joy0 & J_B) {
         if(box->onscreen && !player->carry && do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
-            player->carry = TRUE;
+            player->carry = 1;
             box->update_function = NULL;
         }
     } else {
         if (player->carry) {
-            player->carry = FALSE;
+            player->carry = 0;
             box->state &= ~GROUNDED;
             populate_hitbox_record(box);
             box->update_function = (void (*)(void *)) &update_box;
@@ -87,31 +129,31 @@ void update_player(entity_t* player) {
     // Box update if carrying
     if(player->carry) {
         box->x = player->x;
-        box->y = player->hitbox.top << 4;
+        box->y = (player->hitbox.top - 3) << 4;
     }
 
     // State updates
     if(!(player->state & GROUNDED)) {
         if (player->vel_y >= 0) {
-            if (player->state_data != &player_fall) {
+            if (player->state_data != &player_fall[player->carry]) {
                 player->animation_frame = 0;
-                player->state_data = &player_fall;
+                player->state_data = &player_fall[player->carry];
             }
         } else {
-            if (player->state_data != &player_jump) {
+            if (player->state_data != &player_jump[player->carry]) {
                 player->animation_frame = 0;
-                player->state_data = &player_jump;
+                player->state_data = &player_jump[player->carry];
             }
         }
     } else if(player->vel_x != 0) {
-        if(player->state_data != &player_move) {
+        if(player->state_data != &player_move[player->carry]) {
             player->animation_frame = 0;
-            player->state_data = &player_move;
+            player->state_data = &player_move[player->carry];
         }
     } else {
-        if(player->state_data != &player_idle) {
+        if(player->state_data != &player_idle[player->carry]) {
             player->animation_frame = 0;
-            player->state_data = &player_idle;
+            player->state_data = &player_idle[player->carry];
         }
     }
 }

@@ -6,7 +6,7 @@
 #include "common.h"
 #include "box.h"
 
-extern const state_data_t player_idle;
+extern const state_data_t player_idle[2];
 
 void update_player(entity_t* player);
 

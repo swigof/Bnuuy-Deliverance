@@ -21,6 +21,8 @@ and camera can fall apart.
   * There are generic functions that can be used for velocity movement and collision
     * Acceleration / velocity changes need to be handled by the entity's update function however
 * The box when carried by the player has its movement handled by the player update function
+  * Collision checks aren't made for the box in this case
+* Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 
 ### TODOS
 
@@ -35,7 +37,10 @@ and camera can fall apart.
 * fix screen scroll sprite move jitter
 * tile hazards / hurt
 * simple opening cinematic
+* fix wall hugging movement jitter
+* fix box collision while held / adjust player collision accordingly
 * emotes / more animations
+* camera pan upon level load
 * add collision/grounding flag to basic movement routine
 * make conversion operation #defines / inlines
 * automate level/tilemap builds

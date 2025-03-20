@@ -40,7 +40,7 @@ int main() {
     entity_to_add.x = 20<<4;
     entity_to_add.y = 330<<4;
     entity_to_add.active = TRUE;
-    entity_to_add.state_data = &player_idle;
+    entity_to_add.state_data = &player_idle[0];
     entity_to_add.update_function = (void (*)(void *)) &update_player;
     populate_hitbox_record(&entity_to_add);
     player = add_entity();
