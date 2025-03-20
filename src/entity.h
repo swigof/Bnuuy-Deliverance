@@ -33,12 +33,17 @@ typedef struct {
 } state_data_t;
 
 typedef struct {
+    uint16_t top, bottom, left, right;
+} hitbox_record_t;
+
+typedef struct {
     uint16_t x, y;                   // bitwise 12[map position at center of the entity]4[subpixel position]
     int8_t vel_x, vel_y;
     uint8_t base_tile;
     uint8_t prop;
     uint8_t state;                   // bitwise 1[grounded]1[double jumped]1[flipx]5[unused]
     uint8_t active;                  // flag if entity is to be updated/rendered. entity can be deleted if unset
+    hitbox_record_t hitbox;
     uint8_t onscreen;
     uint8_t frame_counter;
     uint8_t animation_frame;
@@ -47,14 +52,16 @@ typedef struct {
 } entity_t;
 
 typedef struct {
-    uint16_t top, bottom, left, right;
-} hitbox_record_t;
-
-typedef struct {
     uint16_t start, end, coord;
 } edge_t;
 
 extern entity_t entity_to_add;
+
+/**
+ * Populates the hitbox data for an entity
+ * @param e The entity to process
+ */
+void populate_hitbox_record(entity_t* e);
 
 /**
  * Adds entity_to_add to the entity list

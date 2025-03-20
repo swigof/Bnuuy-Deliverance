@@ -43,11 +43,11 @@ uint8_t get_horizontal_edge_tile_type(edge_t* edge) {
     return max_tile_type;
 }
 
-void populate_hitbox_record(const entity_t* const e, hitbox_record_t* const h) {
-    h->top = MAP_COORD(e->y) - HEIGHT_MARGIN(e->state_data->hitbox_margin);
-    h->left = MAP_COORD(e->x) - WIDTH_MARGIN(e->state_data->hitbox_margin);
-    h->right = MAP_COORD(e->x) + WIDTH_MARGIN(e->state_data->hitbox_margin);
-    h->bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->state_data->hitbox_margin);
+void populate_hitbox_record(entity_t* const e) {
+    e->hitbox.top = MAP_COORD(e->y) - HEIGHT_MARGIN(e->state_data->hitbox_margin);
+    e->hitbox.left = MAP_COORD(e->x) - WIDTH_MARGIN(e->state_data->hitbox_margin);
+    e->hitbox.right = MAP_COORD(e->x) + WIDTH_MARGIN(e->state_data->hitbox_margin);
+    e->hitbox.bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->state_data->hitbox_margin);
 }
 
 entity_t empty_entity = {};
@@ -128,64 +128,97 @@ void velocity_direction_flip(entity_t* e) {
 }
 
 uint8_t moved = 0; // bitwise 6[unused]1[vertical]1[horizontal]
-hitbox_record_t hitbox = {};
+uint16_t adjustment = 0;
 edge_t edge = {};
 uint8_t velocity_collision_move(entity_t* e) {
     moved = 0b00;
-    e->x += e->vel_x;
     if (e->vel_x > 0) {
-        populate_hitbox_record(e, &hitbox);
-        moved |= 0b01;
-        edge.start = hitbox.top;
-        edge.end = hitbox.bottom - 1;
-        edge.coord = hitbox.right - 1;
-        if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
-            e->x -= ((hitbox.right - TILE_COORD(hitbox.right)) << 4);
-            e->vel_x = 0;
+        adjustment = e->x >> 4;
+        e->x += e->vel_x;
+        adjustment = (e->x >> 4) - adjustment;
+        if(adjustment != 0) {
+            e->hitbox.right += adjustment;
+            e->hitbox.left += adjustment;
+            moved |= 0b01;
+            edge.start = e->hitbox.top;
+            edge.end = e->hitbox.bottom - 1;
+            edge.coord = e->hitbox.right - 1;
+            if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
+                adjustment = e->hitbox.right - TILE_COORD(e->hitbox.right);
+                e->x -= adjustment << 4;
+                e->hitbox.right -= adjustment;
+                e->hitbox.left -= adjustment;
+                e->vel_x = 0;
+            }
         }
     } else if (e->vel_x < 0) {
-        populate_hitbox_record(e, &hitbox);
-        moved |= 0b01;
-        edge.start = hitbox.top;
-        edge.end = hitbox.bottom - 1;
-        edge.coord = hitbox.left;
-        if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
-            e->x += ((TILE_COORD(hitbox.left + 8) - hitbox.left) << 4);
-            e->vel_x = 0;
+        adjustment = e->x >> 4;
+        e->x += e->vel_x;
+        adjustment = adjustment - (e->x >> 4);
+        if(adjustment != 0) {
+            e->hitbox.right -= adjustment;
+            e->hitbox.left -= adjustment;
+            moved |= 0b01;
+            edge.start = e->hitbox.top;
+            edge.end = e->hitbox.bottom - 1;
+            edge.coord = e->hitbox.left;
+            if (get_vertical_edge_tile_type(&edge) == TT_SOLID) {
+                adjustment = TILE_COORD(e->hitbox.left + 8) - e->hitbox.left;
+                e->x += adjustment << 4;
+                e->hitbox.right += adjustment;
+                e->hitbox.left += adjustment;
+                e->vel_x = 0;
+            }
         }
     }
-    e->y += e->vel_y;
     if (e->vel_y < 0) {
-        moved |= 0b10;
-        populate_hitbox_record(e, &hitbox);
-        edge.start = hitbox.left;
-        edge.end = hitbox.right - 1;
-        edge.coord = hitbox.top;
-        if (get_horizontal_edge_tile_type(&edge) == TT_SOLID) {
-            e->y += ((TILE_COORD(hitbox.top + 8) - hitbox.top) << 4);
-            e->vel_y = 0;
+        adjustment = e->y >> 4;
+        e->y += e->vel_y;
+        adjustment = adjustment - (e->y >> 4);
+        if(adjustment != 0) {
+            e->hitbox.top -= adjustment;
+            e->hitbox.bottom -= adjustment;
+            moved |= 0b10;
+            edge.start = e->hitbox.left;
+            edge.end = e->hitbox.right - 1;
+            edge.coord = e->hitbox.top;
+            if (get_horizontal_edge_tile_type(&edge) == TT_SOLID) {
+                adjustment = TILE_COORD(e->hitbox.top + 8) - e->hitbox.top;
+                e->y += adjustment << 4;
+                e->hitbox.top += adjustment;
+                e->hitbox.bottom += adjustment;
+                e->vel_y = 0;
+            }
         }
     } else if (e->vel_y > 0) {
-        moved |= 0b10;
-        populate_hitbox_record(e, &hitbox);
-        edge.start = hitbox.left;
-        edge.end = hitbox.right - 1;
-        edge.coord = hitbox.bottom - 1;
-        if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
-            e->y -= ((hitbox.bottom - TILE_COORD(hitbox.bottom)) << 4);
-            e->vel_y = 0;
-            e->state |= GROUNDED;
-            e->state &= ~DOUBLE_JUMP;
+        adjustment = e->y >> 4;
+        e->y += e->vel_y;
+        adjustment = (e->y >> 4) - adjustment;
+        if(adjustment != 0) {
+            e->hitbox.top += adjustment;
+            e->hitbox.bottom += adjustment;
+            moved |= 0b10;
+            edge.start = e->hitbox.left;
+            edge.end = e->hitbox.right - 1;
+            edge.coord = e->hitbox.bottom - 1;
+            if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
+                adjustment = e->hitbox.bottom - TILE_COORD(e->hitbox.bottom);
+                e->y -= adjustment << 4;
+                e->hitbox.top -= adjustment;
+                e->hitbox.bottom -= adjustment;
+                e->vel_y = 0;
+                e->state |= GROUNDED;
+                e->state &= ~DOUBLE_JUMP;
+            }
         }
     }
     return moved == 0b01;
 }
 
 void check_grounding(entity_t* e) {
-    populate_hitbox_record(e, &hitbox);
-    edge.start = hitbox.left;
-    edge.end = hitbox.right - 1;
-    edge.coord = hitbox.bottom + 7; // Check tile below entity
+    edge.start = e->hitbox.left;
+    edge.end = e->hitbox.right - 1;
+    edge.coord = e->hitbox.bottom + 7; // Check tile below entity
     if (get_horizontal_edge_tile_type(&edge) == TT_NONE) {
         e->state &= ~GROUNDED;
     }

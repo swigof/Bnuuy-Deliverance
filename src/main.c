@@ -42,6 +42,7 @@ int main() {
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &player_idle;
     entity_to_add.update_function = (void (*)(void *)) &update_player;
+    populate_hitbox_record(&entity_to_add);
     player = add_entity();
 
     set_sprite_data(player_sheet_TILE_COUNT, box_sheet_TILE_COUNT, box_sheet_tiles);
@@ -52,6 +53,7 @@ int main() {
     entity_to_add.y = 330<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &box_base;
+    populate_hitbox_record(&entity_to_add);
     entity_to_add.update_function = (void (*)(void *)) &update_box;
     box = add_entity();
 

@@ -35,8 +35,6 @@ and camera can fall apart.
     * on separate channels?
 * simple opening cinematic
 * add collision/grounding flag to basic movement routine
-* only calc collision if tile changes? prev vs new hitbox coords/tiles? just store old in entity, new in global?
-* put get_edge_tile_type into tilespace to optimize it? would still be 16bit.
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
 * add horizontal scrolling
@@ -59,6 +57,7 @@ and camera can fall apart.
 * rename and used direction constants that aren't joypad ones
 * migrate entities linked lists of active vs inactive instead of flag to avoid wasted cycles on loops
 * consolidate entity flags further into state to save ram if needed
+  * alternatively, expand flags into variables if ram is fine
 
 ### Resources
 
