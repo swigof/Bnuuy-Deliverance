@@ -114,11 +114,15 @@ void update_player(entity_t* player) {
             box->state &= ~GROUNDED;
             populate_hitbox_record(box);
             box->update_function = (void (*)(void *)) &update_box;
-            box->vel_y = player->vel_y - 30;
-            if (player->state & FLIP_X)
-                box->vel_x = player->vel_x - 30;
-            else
-                box->vel_x = player->vel_x + 30;
+            box->vel_x = player->vel_x;
+            box->vel_y = player->vel_y;
+            if (!(joypads.joy0 & J_DOWN)) {
+                box->vel_y -= 30;
+                if (player->state & FLIP_X)
+                    box->vel_x -= 30;
+                else
+                    box->vel_x += 30;
+            }
         }
     }
 
