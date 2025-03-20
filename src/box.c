@@ -31,8 +31,10 @@ void update_box(entity_t* box) {
     }
 
     // Position and collision detection
-    velocity_direction_flip(box);
-    if(velocity_collision_move(box)) {
-        check_grounding(box);
+    if(box->onscreen || box->vel_x != 0 || box->vel_y != 0) {
+        velocity_direction_flip(box);
+        if(velocity_collision_move(box)) {
+            check_grounding(box);
+        }
     }
 }

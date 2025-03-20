@@ -2,6 +2,7 @@
 #include "tileset_map.h"
 
 uint16_t camera_y;
+
 uint16_t old_camera_y;
 uint8_t map_pos_y, old_map_pos_y;
 
@@ -84,8 +85,4 @@ void set_focus(const uint16_t y) {
             camera_y = MAX_CAMERA_Y;
     } else
         camera_y = 0;
-}
-
-uint16_t get_camera_y() {
-    return camera_y;
 }

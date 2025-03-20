@@ -22,7 +22,6 @@ and camera can fall apart.
 
 ### TODOS
 
-* fix offscreen entity behavior 
 * carrying things
     * slowed movement, lower jumps
     * throwing
@@ -58,7 +57,7 @@ and camera can fall apart.
   * ...
 * rename and used direction constants that aren't joypad ones
 * migrate entities linked lists of active vs inactive instead of flag to avoid wasted cycles on loops
-* fix screen scroll sprite move jitter
+* consolidate entity flags further into state to save ram if needed
 
 ### Resources
 

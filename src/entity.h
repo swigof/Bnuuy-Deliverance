@@ -39,6 +39,7 @@ typedef struct {
     uint8_t prop;
     uint8_t state;                   // bitwise 1[grounded]1[double jumped]1[flipx]5[unused]
     uint8_t active;                  // flag if entity is to be updated/rendered. entity can be deleted if unset
+    uint8_t onscreen;
     uint8_t frame_counter;
     uint8_t animation_frame;
     const state_data_t* state_data;
