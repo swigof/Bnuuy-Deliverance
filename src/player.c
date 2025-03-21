@@ -155,7 +155,9 @@ void update_player(entity_t* player) {
         }
     } else if(player->vel_x != 0) {
         if(player->state_data != &player_move[carry]) {
-            player->animation_frame = 0;
+            // Start at the end of frame 1 to prevent walking into walls causing animation jitter
+            player->animation_frame = 1;
+            player->frame_counter = 8;
             player->state_data = &player_move[carry];
         }
     } else {

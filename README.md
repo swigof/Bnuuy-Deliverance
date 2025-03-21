@@ -46,7 +46,6 @@ and camera can fall apart.
 * add simple sfx
 * levels and more and better tiles/palettes
 * fix screen scroll sprite move jitter
-* fix wall hugging movement jitter
 * tile hazards / hurt
     * dropping on hit
 * simple opening cinematic
