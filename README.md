@@ -37,9 +37,11 @@ and camera can fall apart.
 * Entities update mostly through their own pre-defined functions
   * There are generic functions that can be used for velocity movement and collision
     * Acceleration / velocity changes need to be handled by the entity's update function however
+* New entities are added via the `add_entity` function. 
+  * There is a dedicated array in RAM for entities which normally allows a maximum of 10 at a time
+  * Entities which have the active flag unset may be removed when adding a new entity
 * The box when carried by the player has its movement handled by the player update function
   * Collision checks aren't made for the box in this case
-* Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 * Levels have an update function pointer which, if set, allows them to override normal main loop update behavior
   * This can be used for cutscenes
 
