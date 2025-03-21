@@ -1,5 +1,7 @@
 #include "player.h"
 
+uint8_t carry = 0; // If player is carrying the box
+
 // Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 
 const int8_t jump_velocity[2] = {-20, -16};
@@ -85,10 +87,10 @@ void update_player(entity_t* player) {
     if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
         if(player->state & GROUNDED) {
             player->state &= ~GROUNDED;
-            player->vel_y = jump_velocity[player->carry];
-        } else if(!(player->state & DOUBLE_JUMP) && !player->carry) {
+            player->vel_y = jump_velocity[carry];
+        } else if(!(player->state & DOUBLE_JUMP) && !carry) {
             player->state |= DOUBLE_JUMP;
-            player->vel_y = jump_velocity[player->carry];
+            player->vel_y = jump_velocity[carry];
         }
     } else if(!(player->state & GROUNDED) && player->vel_y < 100) {
         if(joypads.joy0 & J_A)
@@ -104,13 +106,13 @@ void update_player(entity_t* player) {
         player->vel_x = 0;
     }
     if(joypads.joy0 & J_B) {
-        if(box->onscreen && !player->carry && do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
-            player->carry = 1;
+        if(box->onscreen && !carry && do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
+            carry = 1;
             box->update_function = NULL;
         }
     } else {
-        if (player->carry) {
-            player->carry = 0;
+        if (carry) {
+            carry = 0;
             box->state &= ~GROUNDED;
             populate_hitbox_record(box);
             box->update_function = (void (*)(void *)) &update_box;
@@ -133,7 +135,7 @@ void update_player(entity_t* player) {
     }
 
     // Box update if carrying
-    if(player->carry) {
+    if(carry) {
         box->x = player->x;
         box->y = (player->hitbox.top - 3) << 4;
     }
@@ -141,25 +143,25 @@ void update_player(entity_t* player) {
     // State updates
     if(!(player->state & GROUNDED)) {
         if (player->vel_y >= 0) {
-            if (player->state_data != &player_fall[player->carry]) {
+            if (player->state_data != &player_fall[carry]) {
                 player->animation_frame = 0;
-                player->state_data = &player_fall[player->carry];
+                player->state_data = &player_fall[carry];
             }
         } else {
-            if (player->state_data != &player_jump[player->carry]) {
+            if (player->state_data != &player_jump[carry]) {
                 player->animation_frame = 0;
-                player->state_data = &player_jump[player->carry];
+                player->state_data = &player_jump[carry];
             }
         }
     } else if(player->vel_x != 0) {
-        if(player->state_data != &player_move[player->carry]) {
+        if(player->state_data != &player_move[carry]) {
             player->animation_frame = 0;
-            player->state_data = &player_move[player->carry];
+            player->state_data = &player_move[carry];
         }
     } else {
-        if(player->state_data != &player_idle[player->carry]) {
+        if(player->state_data != &player_idle[carry]) {
             player->animation_frame = 0;
-            player->state_data = &player_idle[player->carry];
+            player->state_data = &player_idle[carry];
         }
     }
 }
