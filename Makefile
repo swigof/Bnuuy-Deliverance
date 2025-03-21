@@ -55,7 +55,7 @@ DEPS = $(OBJS:%.o=%.d)
 # The resulting C files will get compiled to object files afterward
 .SECONDEXPANSION:
 $(OBJDIR)/%.c: $(RESDIR)/tiles/%.png
-	$(PNG2ASSET) $< -spr8x8 -no_palettes -noflip -tiles_only -o $@
+	$(PNG2ASSET) $< -spr8x8 -sprite_no_optimize -no_palettes -noflip -tiles_only -o $@
 $(OBJDIR)/player_sheet.c: $(RESDIR)/sprites/player_sheet.png
 	$(PNG2ASSET) $< -spr8x16 -no_palettes -sw 16 -sh 32 -pw 4 -ph 8 -o $@
 $(OBJDIR)/box_sheet.c: $(RESDIR)/sprites/box_sheet.png
