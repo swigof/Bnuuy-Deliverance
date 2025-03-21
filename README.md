@@ -1,5 +1,13 @@
 # eigg
 
+## Builds
+
+The project can be built with Make using the top level Makefile.
+
+This project uses GBDK and hUGEDriver. 
+By default, they are expected to be in the directory above the project.
+Alternatively, you can set `GBDK_HOME` and/or `HUGE_HOME`  in your environment to paths elsewhere.
+
 ## Resources
 
 The project needs certain resources placed in a top level `res` folder
@@ -35,19 +43,20 @@ and camera can fall apart.
 
 ## TODOS
 
-* add simple sfx and music
-    * on separate channels?
-* levels
+* add simple sfx
+* levels and more and better tiles/palettes
 * fix screen scroll sprite move jitter
-* tile hazards / hurt
-  * dropping on hit
-* simple opening cinematic
 * fix wall hugging movement jitter
-* fix box collision while held / adjust player collision accordingly
+* tile hazards / hurt
+    * dropping on hit
+* simple opening cinematic
 * emotes / more animations
+* timer?
 * crouch state
 * camera pan upon level load
-* timer
+* custom track or arrangement
+* influence throw on up hold
+* fix box collision while held / adjust player collision accordingly
 * add collision/grounding flag to basic movement routine
 * make conversion operation #defines / inlines
 * automate level/tilemap builds
