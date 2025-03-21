@@ -9,8 +9,12 @@ uint8_t entity_count = 0;
 uint8_t tile = 0;
 inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
     tile = tileset_map[(x >> 3) + width_multiplication_table[y >> 3]];
-    if (tile == 54) {
+    if (tile >= 112) {
         return TT_SOLID;
+    } else if (tile >= 96) {
+        return TT_PLATFORM;
+    } else if (tile >= 80) {
+        return TT_HAZARD;
     }
     return TT_NONE;
 }

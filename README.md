@@ -52,12 +52,14 @@ and camera can fall apart.
 * fix screen scroll sprite move jitter
 * tile hazards / hurt
     * dropping on hit
+* use advancing pointer for loops instead of index
 * simple opening cinematic
 * emotes / more animations
 * timer?
 * crouch state
 * camera pan upon level load
 * custom track or arrangement
+* fix top spawning preventing first tile row load 
 * influence throw on up hold
 * automate level/tilemap builds
 * screenshake with scanline interrupts and scroll shifting
