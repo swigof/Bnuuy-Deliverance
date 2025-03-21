@@ -40,6 +40,8 @@ and camera can fall apart.
 * The box when carried by the player has its movement handled by the player update function
   * Collision checks aren't made for the box in this case
 * Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
+* Levels have an update function pointer which, if set, allows them to override normal main loop update behavior
+  * This can be used for cutscenes
 
 ## TODOS
 
@@ -55,19 +57,19 @@ and camera can fall apart.
 * camera pan upon level load
 * custom track or arrangement
 * influence throw on up hold
-* fix box collision while held / adjust player collision accordingly
-* add collision/grounding flag to basic movement routine
-* make conversion operation #defines / inlines
 * automate level/tilemap builds
 * screenshake with scanline interrupts and scroll shifting
-* add horizontal scrolling
+* possibly adjust camera framing to make look ahead comfortable
+* auto saving per screen
+* fix box collision while held / adjust player collision accordingly
+* moving hazards / enemies & projectiles
 * momentum driven air movement
+* add collision/grounding flag to basic movement routine
+* make conversion operation #defines / inlines
+* add horizontal scrolling
 * carrying balance mechanics?
 * camera safety measure for if old vs new position is more than 1 tile difference
-* possibly adjust camera framing to make look ahead comfortable
-* moving hazards / enemies & projectiles
 * menu
-* auto saving per screen
 * replace tile 0 with most common background tile
 * make tile type to tile number range based tileset
 * do a pointer access vs direct access performance test. function parameter overhead.
