@@ -2,9 +2,7 @@
 #define CAMERA_H
 
 #include <gbdk/platform.h>
-
-// TODO replace with level data from common header
-#define MAX_CAMERA_Y ((tileset_map_height - DEVICE_SCREEN_HEIGHT) * 8)
+#include "level.h"
 
 extern uint16_t camera_y;
 

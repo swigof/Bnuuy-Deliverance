@@ -44,6 +44,7 @@ and camera can fall apart.
 * The box when carried by the player has its movement handled by the player update function
   * Collision checks aren't made for the box in this case
 * Similarly to entities, levels should have a map image respecting the primary tileset and a `level_t`
+* Levels have an init function which should initialize all entities and the camera as needed
 * Levels have an update function pointer which, if set, allows them to override normal main loop update behavior
   * This can be used for cutscenes
 
@@ -60,6 +61,7 @@ and camera can fall apart.
 * timer?
 * crouch state
 * camera pan upon level load
+* end cinematic
 * custom track or arrangement
 * fix top spawning preventing first tile row load 
 * influence throw on up hold

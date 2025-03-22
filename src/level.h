@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <gbdk/platform.h>
 #include "tileset_map.h"
+#include "../obj/level_0.h"
 
 #define MAP_WIDTH 20
 
@@ -16,6 +17,9 @@ typedef struct  {
     void (*update_function)();
 } level_t;
 
+extern const level_t* current_level;
+
+extern const level_t level_0;
 extern const level_t level_1;
 
 #endif //LEVEL_H

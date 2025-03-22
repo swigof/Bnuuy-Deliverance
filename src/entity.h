@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include <gb/gb.h>
 #include <gb/metasprites.h>
-#include "tileset_map.h"
 #include "camera.h"
+#include "level.h"
 
 #define GROUNDED 0b10000000
 #define DOUBLE_JUMP 0b01000000

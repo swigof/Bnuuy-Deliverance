@@ -13,6 +13,8 @@ joypads_t prev_joypads;
 entity_t* player;
 entity_t* box;
 
+const level_t* current_level;
+
 const palette_color_t sprite_palettes[] = {
         RGB8(0xFF,0xEE,0xBB),RGB8(0xFF,0x66,0xCC),RGB8(0x77,0x33,0x66),RGB8(0,0,0)
 };
@@ -35,6 +37,8 @@ int main() {
     SPRITES_8x16;
     SHOW_SPRITES;
 
+    current_level = &level_0;
+
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tile_palettes);
 
@@ -43,7 +47,7 @@ int main() {
     entity_to_add.base_tile = 0;
     entity_to_add.prop = 0;
     entity_to_add.x = 20<<4;
-    entity_to_add.y = 330<<4;
+    entity_to_add.y = 100<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &player_idle[0];
     entity_to_add.update_function = (void (*)(void *)) &update_player;
@@ -55,7 +59,7 @@ int main() {
     entity_to_add.base_tile = player_sheet_TILE_COUNT;
     entity_to_add.prop = 1; // Set to palette 1
     entity_to_add.x = 40<<4;
-    entity_to_add.y = 330<<4;
+    entity_to_add.y = 100<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &box_base;
     populate_hitbox_record(&entity_to_add);
