@@ -16,6 +16,7 @@ The project needs certain resources placed in a top level `res` folder
 * `res/sprites/player_sheet.png` spritesheet of the player entity
 * `res/tiles/tileset_primary.png` tilesheet for background tiles
 * `res/main_track.c` hUGETracker exported song
+* `res/levels/level_{x}.png` level images built respecting tileset_primary
 
 ## Notes on engine functionality
 
@@ -29,7 +30,7 @@ and camera can fall apart.
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
   * Hitboxes have a size limit of 30x30 (4 bits for pw/ph)
   * Hitboxes should always remain fully inside the mapped area
-* Each entity should have a source definition and spritesheet
+* Each entity should have a source definition (`entity_t`) and spritesheet
   * The source definition details its various states and the metasprites to use in each state
   * The spritesheet should have its animations placed in sequence in left to right, top to bottom order
   * Sprite data for all an entity's metasprites should be fully set before being made active
@@ -42,6 +43,7 @@ and camera can fall apart.
   * Entities which have the active flag unset may be removed when adding a new entity
 * The box when carried by the player has its movement handled by the player update function
   * Collision checks aren't made for the box in this case
+* Similarly to entities, levels should have a map image respecting the primary tileset and a `level_t`
 * Levels have an update function pointer which, if set, allows them to override normal main loop update behavior
   * This can be used for cutscenes
 
@@ -61,7 +63,6 @@ and camera can fall apart.
 * custom track or arrangement
 * fix top spawning preventing first tile row load 
 * influence throw on up hold
-* automate level/tilemap builds
 * screenshake with scanline interrupts and scroll shifting
 * possibly adjust camera framing to make look ahead comfortable
 * auto saving per screen

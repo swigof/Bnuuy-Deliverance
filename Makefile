@@ -60,6 +60,9 @@ $(OBJDIR)/player_sheet.c: $(RESDIR)/sprites/player_sheet.png
 	$(PNG2ASSET) $< -spr8x16 -no_palettes -sw 16 -sh 32 -pw 4 -ph 8 -o $@
 $(OBJDIR)/box_sheet.c: $(RESDIR)/sprites/box_sheet.png
 	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 16 -pw 7 -ph 7 -o $@
+$(OBJDIR)/%.c: $(RESDIR)/levels/%.png
+	$(PNG2ASSET) $< -sprite_no_optimize -map -use_map_attributes -maps_only \
+        -source_tileset $(RESDIR)\tiles\tileset_primary.png -o $@
 
 # Prevent make from deleting intermediary generated asset C source files
 .SECONDARY: $(IMAGE_SRC)
