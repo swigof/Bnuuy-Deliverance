@@ -51,13 +51,13 @@ and camera can fall apart.
 
 ## TODOS
 
-* transparent collision tile for invisible walls on first map
 * title text fade in
-* levels and more and better tiles/palettes
+* add level transitions
+* add levels
 * fix screen scroll sprite move jitter
-* fix player sprite colors
+* fix player sprite colors and level colors
 * use advancing pointer for loops instead of index
-* simple opening cinematic
+* simple closing cinematic
 * camera pan upon level load
   * extremely long level gag with elevator at bottom
 * signs / text popups
@@ -83,12 +83,9 @@ and camera can fall apart.
 * carrying balance mechanics?
 * camera safety measure for if old vs new position is more than 1 tile difference
 * menu
-* replace tile 0 with most common background tile
-* make tile type to tile number range based tileset
 * do a pointer access vs direct access performance test. function parameter overhead.
   * can just check instruction conversion
   * can use inlines that set a global then make call instead of parameters
-* make entity x,y signed to better handle offscreen behavior?
 * stop scrolls earlier to allow map space to be traversed offscreen
 * find a way to render differently sized metasprites so their x,y always corresponds to their center
   * one 8x16 sprite: 0,0 <-> 4,8

@@ -24,6 +24,8 @@ uint8_t tile_type = TT_NONE;
 uint8_t max_tile_type = TT_NONE;
 uint8_t get_vertical_edge_tile_type(edge_t* edge) {
     max_tile_type = TT_NONE;
+    if(edge->coord > MAX_X_COORD)
+        return TT_SOLID;
     for(edge_iterator = edge->start; edge_iterator < edge->end; edge_iterator += 8) {
         tile_type = get_tile_type(edge->coord, edge_iterator);
         if (tile_type > max_tile_type)
