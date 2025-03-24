@@ -29,11 +29,6 @@ int main() {
     NR50_REG = 0xFF;
     NR51_REG = 0xFF;
 
-    CRITICAL {
-        hUGE_init(&main_track);
-        add_VBL(hUGE_dosound);
-    }
-
     SHOW_BKG;
     SPRITES_8x16;
     SHOW_SPRITES;

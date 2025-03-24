@@ -51,18 +51,22 @@ and camera can fall apart.
 
 ## TODOS
 
-* add simple sfx
+* transparent collision tile for invisible walls on first map
+* title text fade in
 * levels and more and better tiles/palettes
 * fix screen scroll sprite move jitter
-* tile hazards / hurt
-    * dropping on hit
+* fix player sprite colors
 * use advancing pointer for loops instead of index
 * simple opening cinematic
+* camera pan upon level load
+  * extremely long level gag with elevator at bottom
+* signs / text popups
+* add simple sfx
+* tile hazards / hurt
+      * dropping on hit
 * emotes / more animations
 * timer?
 * crouch state
-* camera pan upon level load
-* signs / text popups
 * end cinematic
 * custom track or arrangement
 * fix top spawning preventing first tile row load 

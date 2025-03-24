@@ -7,6 +7,9 @@
 #include "../obj/level_0.h"
 #include "common.h"
 #include "entity.h"
+#include "../obj/box_sheet.h"
+#include "../obj/player_sheet.h"
+#include "../obj/truck_sheet.h"
 
 #define MAP_WIDTH 20
 
