@@ -67,12 +67,16 @@ int main() {
     current_level->init_function();
 
     while(1) {
-        prev_joypads = joypads;
-        joypad_ex(&joypads);
-        set_focus(MAP_COORD(player->y));
-        update_entities();
-        vsync();
-        update_camera();
+        if (current_level->update_function) {
+            current_level->update_function();
+        } else {
+            prev_joypads = joypads;
+            joypad_ex(&joypads);
+            set_focus(MAP_COORD(player->y));
+            update_entities();
+            vsync();
+            update_camera();
+        }
     }
 
     return 0;
