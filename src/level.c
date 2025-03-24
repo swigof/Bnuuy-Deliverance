@@ -4,6 +4,12 @@ entity_t* truck;
 uint8_t truck_vel_x = 32;
 uint8_t loop_flag = 0;
 void* prev_update_function = NULL;
+
+uint8_t title_color_counter = 0;
+const palette_color_t text_start_color = RGB8(0xFA,0xE6,0xCD); // Matches the background color
+palette_color_t title_colors[] = {RGB8(0xFA,0xE6,0xCD),RGB8(0,0,0),RGB8(0xFA,0xE6,0xCD),RGB8(0xFA,0xE6,0xCD)};
+const uint8_t title_attr_map[] = {7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
+
 const state_data_t truck_base = {
         ((truck_sheet_WIDTH >> 3) << 4) | (truck_sheet_HEIGHT >> 3),
         (truck_sheet_PIVOT_W << 4) | (truck_sheet_PIVOT_H),
@@ -12,6 +18,7 @@ const state_data_t truck_base = {
         &truck_sheet_metasprites[0],
         1
 };
+
 const state_data_t player_sigh = {
     ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
     (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
@@ -20,6 +27,7 @@ const state_data_t player_sigh = {
     &player_sheet_metasprites[17],
     3
 };
+
 const state_data_t player_get_up = {
     ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
     (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
@@ -28,6 +36,7 @@ const state_data_t player_get_up = {
     &player_sheet_metasprites[16],
     1
 };
+
 void level_0_init() {
     DISPLAY_OFF;
 
@@ -46,6 +55,10 @@ void level_0_init() {
     truck->y = 113<<4;
 
     init_camera(19);
+
+    set_bkg_palette(7,1, title_colors);
+    set_bkg_attributes(1, 4, 5, 1, title_attr_map);
+    set_bkg_attributes(1, 5, 11, 1, title_attr_map);
 
     DISPLAY_ON;
 }
@@ -112,6 +125,12 @@ void level_0_update() {
     player->animation_frame = 0;
     player->frame_counter = 0;
     while(player->frame_counter != 149 || player->animation_frame != 2) {
+        if(player->frame_counter % 32 == 0) {
+            title_color_counter++;
+            title_colors[2] = text_start_color - title_color_counter;
+            title_colors[3] = text_start_color - title_color_counter * 2;
+        }
+        set_bkg_palette(7, 1, title_colors);
         update_entities();
         vsync();
         loop_flag++;
@@ -128,7 +147,6 @@ void level_0_update() {
 
     // give player control
     player->update_function = prev_update_function;
-
     while(1) {
         prev_joypads = joypads;
         joypad_ex(&joypads);

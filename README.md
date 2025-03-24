@@ -51,7 +51,6 @@ and camera can fall apart.
 
 ## TODOS
 
-* title text fade in
 * add level transitions
 * add levels
 * fix screen scroll sprite move jitter
@@ -67,7 +66,6 @@ and camera can fall apart.
 * emotes / more animations
 * timer?
 * crouch state
-* end cinematic
 * custom track or arrangement
 * fix top spawning preventing first tile row load 
 * influence throw on up hold
