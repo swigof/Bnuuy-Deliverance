@@ -5,6 +5,8 @@
 #include <gbdk/platform.h>
 #include "tileset_map.h"
 #include "../obj/level_0.h"
+#include "common.h"
+#include "entity.h"
 
 #define MAP_WIDTH 20
 

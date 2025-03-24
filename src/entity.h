@@ -56,6 +56,10 @@ typedef struct {
 
 extern entity_t entity_to_add;
 
+// From main.c
+extern entity_t* player;
+extern entity_t* box;
+
 /**
  * Populates the hitbox data for an entity
  * @param e The entity to process

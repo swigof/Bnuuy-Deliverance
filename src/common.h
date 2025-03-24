@@ -13,9 +13,6 @@
 extern joypads_t joypads;
 extern joypads_t prev_joypads;
 
-extern entity_t* player;
-extern entity_t* box;
-
 extern const hUGESong_t main_track;
 
 #endif //COMMON_H

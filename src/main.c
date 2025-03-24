@@ -23,6 +23,8 @@ const palette_color_t tile_palettes[] = {
 };
 
 int main() {
+    DISPLAY_OFF;
+
     NR52_REG = 0x80;
     NR50_REG = 0xFF;
     NR51_REG = 0xFF;
@@ -32,45 +34,37 @@ int main() {
         add_VBL(hUGE_dosound);
     }
 
-    DISPLAY_OFF;
     SHOW_BKG;
     SPRITES_8x16;
     SHOW_SPRITES;
 
-    current_level = &level_0;
-
+    // Set sprite and tile data as they don't change
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tile_palettes);
-
     set_sprite_data(0, player_sheet_TILE_COUNT, player_sheet_tiles);
     set_sprite_palette(0, 1, sprite_palettes);
+    set_sprite_data(player_sheet_TILE_COUNT, box_sheet_TILE_COUNT, box_sheet_tiles);
+    set_sprite_palette(1, 1, box_sheet_palettes);
+
+    // Create our box and player since they will persist through levels
     entity_to_add.base_tile = 0;
     entity_to_add.prop = 0;
-    entity_to_add.x = 20<<4;
-    entity_to_add.y = 100<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &player_idle[0];
     entity_to_add.update_function = (void (*)(void *)) &update_player;
-    populate_hitbox_record(&entity_to_add);
     player = add_entity();
-
-    set_sprite_data(player_sheet_TILE_COUNT, box_sheet_TILE_COUNT, box_sheet_tiles);
-    set_sprite_palette(1, 1, box_sheet_palettes);
     entity_to_add.base_tile = player_sheet_TILE_COUNT;
     entity_to_add.prop = 1; // Set to palette 1
-    entity_to_add.x = 40<<4;
-    entity_to_add.y = 100<<4;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &box_base;
-    populate_hitbox_record(&entity_to_add);
     entity_to_add.update_function = (void (*)(void *)) &update_box;
     box = add_entity();
 
-    init_camera(MAP_COORD(player->y));
-
-    DISPLAY_ON;
-
     joypad_init(1, &joypads);
+
+    current_level = &level_0;
+
+    current_level->init_function();
 
     while(1) {
         prev_joypads = joypads;
