@@ -12,8 +12,9 @@ Alternatively, you can set `GBDK_HOME` and/or `HUGE_HOME`  in your environment t
 
 The project needs certain resources placed in a top level `res` folder
 
-* `res/sprites/box_sheet.png` spritesheet of the box entity
 * `res/sprites/player_sheet.png` spritesheet of the player entity
+* `res/sprites/truck_sheet.png` spritesheet of the truck entity
+* `res/sprites/box_sheet.png` spritesheet of the box entity
 * `res/tiles/tileset_primary.png` tilesheet for background tiles
 * `res/main_track.c` hUGETracker exported song
 * `res/levels/level_{x}.png` level images built respecting tileset_primary
