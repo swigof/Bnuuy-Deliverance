@@ -61,6 +61,7 @@ and camera can fall apart.
 * timer?
 * crouch state
 * camera pan upon level load
+* signs / text popups
 * end cinematic
 * custom track or arrangement
 * fix top spawning preventing first tile row load 
