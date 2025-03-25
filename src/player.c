@@ -2,6 +2,57 @@
 
 uint8_t carry = 0; // If player is carrying the box
 
+// Check if player is at the door on the current level
+inline uint8_t is_at_door(hitbox_record_t* h) {
+    return h->left < current_level->door_x &&
+           h->right > current_level->door_x &&
+           h->top < current_level->door_y &&
+           h->bottom > current_level->door_y;
+}
+#define DOOR_TILE_INDEX 12
+const uint8_t empty_tiles[] = {
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+        0xff,0xff,0xff,0xff,
+};
+const uint8_t door_tiles[] = {
+        0x7f,0x7f,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+
+        0xff,0xff,0xff,0x80,
+        0xf7,0x88,0xff,0xff,
+        0xed,0x92,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+
+        0xed,0x92,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+        0xed,0x92,0xed,0x92,
+
+        0xbf,0x59,0xbf,0x59,
+        0xb7,0x49,0xb7,0x49,
+        0xb7,0x49,0xb7,0x49,
+        0xb7,0x49,0xb7,0x49,
+};
+
 // Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 
 const int8_t jump_velocity[2] = {-20, -16};
@@ -82,6 +133,7 @@ const state_data_t player_fall[2] = {
     }
 };
 
+uint8_t player_loop_iterator;
 void update_player(entity_t* player) {
     // Input and velocity changes
     if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
@@ -109,6 +161,26 @@ void update_player(entity_t* player) {
         if(box->onscreen && !carry && do_hitboxes_overlap(&player->hitbox, &box->hitbox)) {
             carry = 1;
             box->update_function = NULL;
+        }
+        if(carry && (player->state & GROUNDED) && (joypads.joy0 & J_UP)) {
+            if(is_at_door(&player->hitbox)) {
+                // remove door by replacing its tiles with blanks
+                set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
+
+                player_loop_iterator = 0;
+                while(player_loop_iterator < 30) {
+                    vsync();
+                    player_loop_iterator++;
+                }
+
+                // re-place door tiles
+                set_bkg_data(DOOR_TILE_INDEX, 4, door_tiles);
+
+                // change level
+                current_level = current_level->next_level;
+                current_level->init_function();
+                return;
+            }
         }
     } else {
         if (carry) {
