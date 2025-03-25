@@ -147,13 +147,7 @@ void level_0_update() {
 
     // give player control
     player->update_function = prev_update_function;
-    while(1) {
-        prev_joypads = joypads;
-        joypad_ex(&joypads);
-        set_focus(MAP_COORD(player->y));
-        update_entities();
-        vsync();
-    }
+    level_0.update_function = NULL;
 }
 
 void level_1_init() {
@@ -177,20 +171,26 @@ void level_1_init() {
     DISPLAY_ON;
 }
 
-const level_t level_0 = {
-    level_0_HEIGHT >> 3,
-    level_0_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
-    level_0_map,
-    level_0_map_attributes,
-    level_0_init,
-    level_0_update
-};
-
-const level_t level_1 = {
+level_t level_1 = {
     tileset_map_height,
     (tileset_map_height - DEVICE_SCREEN_HEIGHT) << 3,
     tileset_map,
     tileset_map_attr,
     level_1_init,
-    NULL
+    NULL,
+    NULL,
+    0,
+    0
+};
+
+level_t level_0 = {
+    level_0_HEIGHT >> 3,
+    level_0_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+    level_0_map,
+    level_0_map_attributes,
+    level_0_init,
+    level_0_update,
+    &level_1,
+    148,
+    120
 };
