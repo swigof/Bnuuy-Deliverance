@@ -191,6 +191,6 @@ level_t level_0 = {
     level_0_init,
     level_0_update,
     &level_1,
-    148,
+    144,
     120
 };
