@@ -5,8 +5,7 @@ uint8_t truck_vel_x = 32;
 uint8_t loop_flag = 0;
 void* prev_update_function = NULL;
 
-uint8_t title_color_counter = 0;
-const palette_color_t text_start_color = RGB8(0xFA,0xE6,0xCD); // Matches the background color
+const palette_color_t title_target_colors[2] = { RGBHTML(0xD43FD6),RGB_BLACK };
 palette_color_t title_colors[] = {RGB8(0xFA,0xE6,0xCD),RGB8(0,0,0),RGB8(0xFA,0xE6,0xCD),RGB8(0xFA,0xE6,0xCD)};
 const uint8_t title_attr_map[] = {7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
 
@@ -56,6 +55,7 @@ void level_0_init() {
 
     init_camera(19);
 
+    // Title text fade in using unused color palette
     set_bkg_palette(7,1, title_colors);
     set_bkg_attributes(1, 4, 5, 1, title_attr_map);
     set_bkg_attributes(1, 5, 11, 1, title_attr_map);
@@ -125,12 +125,11 @@ void level_0_update() {
     player->animation_frame = 0;
     player->frame_counter = 0;
     while(player->frame_counter != 149 || player->animation_frame != 2) {
-        if(player->frame_counter % 32 == 0) {
-            title_color_counter++;
-            title_colors[2] = text_start_color - title_color_counter;
-            title_colors[3] = text_start_color - title_color_counter * 2;
+        if(player->frame_counter % 8 == 0) {
+            fade_to_color(&title_colors[2], &title_target_colors[0]);
+            fade_to_color(&title_colors[3], &title_target_colors[1]);
+            set_bkg_palette(7, 1, title_colors);
         }
-        set_bkg_palette(7, 1, title_colors);
         update_entities();
         vsync();
         loop_flag++;

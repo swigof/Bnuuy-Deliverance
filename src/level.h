@@ -10,6 +10,7 @@
 #include "../obj/box_sheet.h"
 #include "../obj/player_sheet.h"
 #include "../obj/truck_sheet.h"
+#include "color.h"
 
 #define MAP_WIDTH 20
 
