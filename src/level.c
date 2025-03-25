@@ -158,6 +158,8 @@ void level_1_init() {
         add_VBL(hUGE_dosound);
     }
 
+    truck->active =  FALSE;
+
     player->x = 20<<4;
     player->y = 300<<4;
     populate_hitbox_record(player);

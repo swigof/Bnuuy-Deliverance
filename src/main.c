@@ -15,9 +15,6 @@ entity_t* box;
 
 const level_t* current_level;
 
-const palette_color_t sprite_palettes[] = {
-        RGB8(0xFF,0xEE,0xBB),RGB8(0xFF,0x66,0xCC),RGB8(0x77,0x33,0x66),RGB8(0,0,0)
-};
 const palette_color_t tile_palettes[] = {
         RGB8(0xFA,0xE6,0xCD),RGB8(0xF3,0xC0,0xCE),RGB8(0x97,0x9B,0xC7),RGB8(0,0,0)
 };
@@ -37,7 +34,7 @@ int main() {
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tile_palettes);
     set_sprite_data(0, player_sheet_TILE_COUNT, player_sheet_tiles);
-    set_sprite_palette(0, 1, sprite_palettes);
+    set_sprite_palette(0, 1, player_sheet_palettes);
     set_sprite_data(player_sheet_TILE_COUNT, box_sheet_TILE_COUNT, box_sheet_tiles);
     set_sprite_palette(1, 1, box_sheet_palettes);
 
