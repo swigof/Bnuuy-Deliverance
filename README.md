@@ -52,7 +52,6 @@ and camera can fall apart.
 ## TODOS
 
 * add levels
-* fix screen scroll sprite move jitter
 * fix player sprite colors and level colors
 * background decorations
 * simple closing cinematic
@@ -60,11 +59,11 @@ and camera can fall apart.
 * camera pan upon level load
     * extremely long level gag with elevator at bottom
 * add simple sfx
-      * adjust music start to feel more natural
+    * adjust music start to feel more natural
 * signs / text popups
 * adjust intro cinematic pacing
 * tile hazards / hurt
-      * dropping on hit
+    * dropping on hit
 * emotes / more animations
 * timer?
 * crouch state

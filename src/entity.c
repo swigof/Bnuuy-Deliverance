@@ -84,10 +84,6 @@ void update_entities() {
             entities[entity_iterator].onscreen = MAP_COORD(entities[entity_iterator].y) > camera_y
                     && MAP_COORD(entities[entity_iterator].y) < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
 
-            // Entity specific update
-            if(entities[entity_iterator].update_function)
-                entities[entity_iterator].update_function(&entities[entity_iterator]);
-
             if(entities[entity_iterator].onscreen) {
                 // Animation
                 if(entities[entity_iterator].state_data->animation_length > 1) {
@@ -120,6 +116,9 @@ void update_entities() {
                             MAP_COORD(entities[entity_iterator].y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
                 }
             }
+            // Entity specific update
+            if(entities[entity_iterator].update_function)
+                entities[entity_iterator].update_function(&entities[entity_iterator]);
         }
     }
     hide_sprites_range(sprite_index,MAX_HARDWARE_SPRITES);
