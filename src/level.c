@@ -172,6 +172,34 @@ void level_1_init() {
     DISPLAY_ON;
 }
 
+void level_2_init() {
+    DISPLAY_OFF;
+
+    player->x = 32<<4;
+    player->y = 168<<4;
+    populate_hitbox_record(player);
+
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
+    populate_hitbox_record(box);
+
+    init_camera(MAP_COORD(player->y));
+
+    DISPLAY_ON;
+}
+
+level_t level_2 = {
+        level_2_HEIGHT >> 3,
+        level_2_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_2_map,
+        level_2_map_attributes,
+        level_2_init,
+        NULL,
+        &level_2,
+        72,
+        32
+};
+
 level_t level_1 = {
     level_1_HEIGHT >> 3,
     level_1_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
@@ -179,7 +207,7 @@ level_t level_1 = {
     level_1_map_attributes,
     level_1_init,
     NULL,
-    &level_1,
+    &level_2,
     72,
     32
 };

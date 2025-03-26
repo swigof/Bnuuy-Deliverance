@@ -5,6 +5,7 @@
 #include <gbdk/platform.h>
 #include "../obj/level_0.h"
 #include "../obj/level_1.h"
+#include "../obj/level_2.h"
 #include "common.h"
 #include "entity.h"
 #include "../obj/box_sheet.h"
@@ -32,5 +33,6 @@ extern const level_t* current_level;
 
 extern level_t level_0;
 extern level_t level_1;
+extern level_t level_2;
 
 #endif //LEVEL_H
