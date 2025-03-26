@@ -135,6 +135,7 @@ void velocity_direction_flip(entity_t* e) {
 uint8_t moved = 0; // bitwise 6[unused]1[vertical]1[horizontal]
 uint16_t adjustment = 0;
 edge_t edge = {};
+uint16_t previous_map_coord;
 uint8_t velocity_collision_move(entity_t* e) {
     moved = 0b00;
     if (e->vel_x > 0) {
@@ -200,20 +201,23 @@ uint8_t velocity_collision_move(entity_t* e) {
         e->y += e->vel_y;
         adjustment = (e->y >> 4) - adjustment;
         if(adjustment != 0) {
+            previous_map_coord = (e->hitbox.bottom - 1) >> 3;
             e->hitbox.top += adjustment;
             e->hitbox.bottom += adjustment;
             moved |= 0b10;
-            edge.start = e->hitbox.left;
-            edge.end = e->hitbox.right - 1;
-            edge.coord = e->hitbox.bottom - 1;
-            if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
-                adjustment = e->hitbox.bottom - TILE_COORD(e->hitbox.bottom);
-                e->y -= adjustment << 4;
-                e->hitbox.top -= adjustment;
-                e->hitbox.bottom -= adjustment;
-                e->vel_y = 0;
-                e->state |= GROUNDED;
-                e->state &= ~DOUBLE_JUMP;
+            if(previous_map_coord != ((e->hitbox.bottom - 1) >> 3)) { // Prevent platform snap-ups
+                edge.start = e->hitbox.left;
+                edge.end = e->hitbox.right - 1;
+                edge.coord = e->hitbox.bottom - 1;
+                if (get_horizontal_edge_tile_type(&edge) != TT_NONE) {
+                    adjustment = e->hitbox.bottom - TILE_COORD(e->hitbox.bottom);
+                    e->y -= adjustment << 4;
+                    e->hitbox.top -= adjustment;
+                    e->hitbox.bottom -= adjustment;
+                    e->vel_y = 0;
+                    e->state |= GROUNDED;
+                    e->state &= ~DOUBLE_JUMP;
+                }
             }
         }
     }
