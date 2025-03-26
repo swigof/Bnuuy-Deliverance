@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #include <gbdk/platform.h>
-#include "tileset_map.h"
 #include "../obj/level_0.h"
+#include "../obj/level_1.h"
 #include "common.h"
 #include "entity.h"
 #include "../obj/box_sheet.h"
@@ -25,6 +25,8 @@ struct level_t {
     const level_t* next_level;
     const uint16_t door_x, door_y;
 };
+
+extern const uint16_t width_multiplication_table[];
 
 extern const level_t* current_level;
 

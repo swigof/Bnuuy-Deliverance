@@ -64,6 +64,7 @@ and camera can fall apart.
 * adjust intro cinematic pacing
 * tile hazards / hurt
     * dropping on hit
+* down jumps through platforms
 * emotes / more animations
 * timer?
 * crouch state
