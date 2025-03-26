@@ -6,6 +6,10 @@
 #include "../obj/level_0.h"
 #include "../obj/level_1.h"
 #include "../obj/level_2.h"
+#include "../obj/level_3.h"
+#include "../obj/level_4.h"
+#include "../obj/level_5.h"
+#include "../obj/level_6.h"
 #include "common.h"
 #include "entity.h"
 #include "../obj/box_sheet.h"
@@ -32,7 +36,5 @@ extern const uint16_t width_multiplication_table[];
 extern const level_t* current_level;
 
 extern level_t level_0;
-extern level_t level_1;
-extern level_t level_2;
 
 #endif //LEVEL_H

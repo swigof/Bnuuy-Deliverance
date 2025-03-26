@@ -188,6 +188,118 @@ void level_2_init() {
     DISPLAY_ON;
 }
 
+void level_3_init() {
+    DISPLAY_OFF;
+
+    player->x = 16<<4;
+    player->y = 168<<4;
+    populate_hitbox_record(player);
+
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
+    populate_hitbox_record(box);
+
+    init_camera(MAP_COORD(player->y));
+
+    DISPLAY_ON;
+}
+
+void level_4_init() {
+    DISPLAY_OFF;
+
+    player->x = 144<<4;
+    player->y = 168<<4;
+    populate_hitbox_record(player);
+
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
+    populate_hitbox_record(box);
+
+    init_camera(MAP_COORD(player->y));
+
+    DISPLAY_ON;
+}
+
+void level_5_init() {
+    DISPLAY_OFF;
+
+    player->x = 16<<4;
+    player->y = 176<<4;
+    populate_hitbox_record(player);
+
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
+    populate_hitbox_record(box);
+
+    init_camera(MAP_COORD(player->y));
+
+    DISPLAY_ON;
+}
+
+void level_6_init() {
+    DISPLAY_OFF;
+
+    player->x = 16<<4;
+    player->y = 176<<4;
+    populate_hitbox_record(player);
+
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
+    populate_hitbox_record(box);
+
+    init_camera(MAP_COORD(player->y));
+
+    DISPLAY_ON;
+}
+
+level_t level_6 = {
+        level_6_HEIGHT >> 3,
+        level_6_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_6_map,
+        level_6_map_attributes,
+        level_6_init,
+        NULL,
+        &level_6,
+        48,
+        32
+};
+
+level_t level_5 = {
+        level_5_HEIGHT >> 3,
+        level_5_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_5_map,
+        level_5_map_attributes,
+        level_5_init,
+        NULL,
+        &level_6,
+        144,
+        32
+};
+
+level_t level_4 = {
+        level_4_HEIGHT >> 3,
+        level_4_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_4_map,
+        level_4_map_attributes,
+        level_4_init,
+        NULL,
+        &level_5,
+        112,
+        32
+};
+
+level_t level_3 = {
+        level_3_HEIGHT >> 3,
+        level_3_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_3_map,
+        level_3_map_attributes,
+        level_3_init,
+        NULL,
+        &level_4,
+        24,
+        32
+};
+
 level_t level_2 = {
         level_2_HEIGHT >> 3,
         level_2_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
@@ -195,7 +307,7 @@ level_t level_2 = {
         level_2_map_attributes,
         level_2_init,
         NULL,
-        &level_2,
+        &level_3,
         72,
         32
 };
