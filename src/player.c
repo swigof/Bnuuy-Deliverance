@@ -268,7 +268,10 @@ void update_player(entity_t* player) {
     // Box update if carrying
     if(carry) {
         box->x = player->x;
-        box->y = (player->hitbox.top - 3) << 4;
+        if(joypads.joy0 & J_DOWN)
+            box->y = player->hitbox.top << 4;
+        else
+            box->y = (player->hitbox.top - 3) << 4;
     }
 
     // State updates
