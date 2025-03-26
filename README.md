@@ -51,16 +51,18 @@ and camera can fall apart.
 
 ## TODOS
 
-* add level transitions
 * add levels
 * fix screen scroll sprite move jitter
 * fix player sprite colors and level colors
-* use advancing pointer for loops instead of index
+* background decorations
 * simple closing cinematic
+* use advancing pointer for loops instead of index
 * camera pan upon level load
-  * extremely long level gag with elevator at bottom
-* signs / text popups
+    * extremely long level gag with elevator at bottom
 * add simple sfx
+      * adjust music start to feel more natural
+* signs / text popups
+* adjust intro cinematic pacing
 * tile hazards / hurt
       * dropping on hit
 * emotes / more animations
@@ -72,6 +74,7 @@ and camera can fall apart.
 * screenshake with scanline interrupts and scroll shifting
 * possibly adjust camera framing to make look ahead comfortable
 * auto saving per screen
+* adjust offscreen checks to prevent disappearance
 * fix box collision while held / adjust player collision accordingly
 * moving hazards / enemies & projectiles
 * momentum driven air movement
@@ -89,7 +92,6 @@ and camera can fall apart.
   * one 8x16 sprite: 0,0 <-> 4,8
   * two horizontal:  0,0 <-> 8,8
   * ...
-* rename and used direction constants that aren't joypad ones
 * migrate entities linked lists of active vs inactive instead of flag to avoid wasted cycles on loops
 * consolidate entity flags further into state to save ram if needed
   * alternatively, expand flags into variables if ram is fine

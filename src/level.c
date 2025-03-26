@@ -159,12 +159,12 @@ void level_1_init() {
 
     truck->active =  FALSE;
 
-    player->x = 20<<4;
-    player->y = 300<<4;
+    player->x = 24<<4;
+    player->y = 344<<4;
     populate_hitbox_record(player);
 
-    box->x = 40<<4;
-    box->y = 300<<4;
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
     populate_hitbox_record(box);
 
     init_camera(MAP_COORD(player->y));

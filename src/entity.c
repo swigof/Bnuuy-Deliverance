@@ -1,6 +1,7 @@
 #include "entity.h"
 
 entity_t entity_to_add = {};
+uint8_t sprite_index = 0;
 
 entity_t entities[MAX_ENTITIES];
 uint8_t next_entity_index = 0;
@@ -75,7 +76,6 @@ entity_t* add_entity() {
 }
 
 int8_t entity_iterator = 0;
-uint8_t sprite_index = 0;
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {

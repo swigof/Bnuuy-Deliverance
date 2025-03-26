@@ -57,6 +57,7 @@ typedef struct {
 } edge_t;
 
 extern entity_t entity_to_add;
+extern uint8_t sprite_index;
 
 // From main.c
 extern entity_t* player;

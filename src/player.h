@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "common.h"
 #include "box.h"
+#include "color.h"
 
 extern const state_data_t player_idle[2];
 
