@@ -35,6 +35,6 @@ extern const uint16_t width_multiplication_table[];
 
 extern const level_t* current_level;
 
-extern level_t level_0;
+extern const level_t level_0;
 
 #endif //LEVEL_H

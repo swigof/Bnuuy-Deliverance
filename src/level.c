@@ -146,7 +146,14 @@ void level_0_update() {
 
     // give player control
     player->update_function = prev_update_function;
-    level_0.update_function = NULL;
+    while(current_level == &level_0) {
+        prev_joypads = joypads;
+        joypad_ex(&joypads);
+        set_focus(MAP_COORD(player->y));
+        update_entities();
+        vsync();
+        update_camera();
+    }
 }
 
 void level_1_init() {
@@ -252,7 +259,7 @@ void level_6_init() {
     DISPLAY_ON;
 }
 
-level_t level_6 = {
+const level_t level_6 = {
         level_6_HEIGHT >> 3,
         level_6_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_6_map,
@@ -264,7 +271,7 @@ level_t level_6 = {
         32
 };
 
-level_t level_5 = {
+const level_t level_5 = {
         level_5_HEIGHT >> 3,
         level_5_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_5_map,
@@ -276,7 +283,7 @@ level_t level_5 = {
         32
 };
 
-level_t level_4 = {
+const level_t level_4 = {
         level_4_HEIGHT >> 3,
         level_4_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_4_map,
@@ -288,7 +295,7 @@ level_t level_4 = {
         32
 };
 
-level_t level_3 = {
+const level_t level_3 = {
         level_3_HEIGHT >> 3,
         level_3_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_3_map,
@@ -300,7 +307,7 @@ level_t level_3 = {
         32
 };
 
-level_t level_2 = {
+const level_t level_2 = {
         level_2_HEIGHT >> 3,
         level_2_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_2_map,
@@ -312,7 +319,7 @@ level_t level_2 = {
         32
 };
 
-level_t level_1 = {
+const level_t level_1 = {
     level_1_HEIGHT >> 3,
     level_1_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
     level_1_map,
@@ -324,7 +331,7 @@ level_t level_1 = {
     32
 };
 
-level_t level_0 = {
+const level_t level_0 = {
     level_0_HEIGHT >> 3,
     level_0_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
     level_0_map,
