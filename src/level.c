@@ -179,6 +179,18 @@ void standard_init() {
     DISPLAY_ON;
 }
 
+const level_t level_end = {
+        level_end_HEIGHT >> 3,
+        level_end_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_end_map,
+        level_end_map_attributes,
+        standard_init,
+        NULL,
+        &level_end,
+        0, 0,
+        8, 136,
+};
+
 const level_t level_6 = {
         level_6_HEIGHT >> 3,
         level_6_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
@@ -186,7 +198,7 @@ const level_t level_6 = {
         level_6_map_attributes,
         standard_init,
         NULL,
-        &level_6,
+        &level_end,
         48, 32,
         16, 176
 };

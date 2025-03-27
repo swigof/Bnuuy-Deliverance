@@ -10,6 +10,7 @@
 #include "../obj/level_4.h"
 #include "../obj/level_5.h"
 #include "../obj/level_6.h"
+#include "../obj/level_end.h"
 #include "common.h"
 #include "entity.h"
 #include "../obj/box_sheet.h"
