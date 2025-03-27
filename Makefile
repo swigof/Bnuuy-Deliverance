@@ -13,6 +13,8 @@ PNG2ASSET = $(GBDK_HOME)bin/png2asset
 
 # LCC flags
 CFLAGS += -I$(OBJDIR)    # Add generated asset files to includes
+CFLAGS += -Wm-yoA        # Automatic bank count
+CFLAGS += -Wm-yt0x1A     # ROM+MB5+RAM
 CFLAGS += -Wm-yC         # Gameboy color mode
 CFLAGS += -Wf-MMD        # Header file dependency output for Makefile use
 CFLAGS += -Wf-Wp-MP      # Per-header phony rules
