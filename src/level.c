@@ -154,10 +154,6 @@ void level_0_update() {
         vsync();
         update_camera();
     }
-}
-
-void level_1_init() {
-    DISPLAY_OFF;
 
     CRITICAL {
         hUGE_init(&main_track);
@@ -165,89 +161,13 @@ void level_1_init() {
     }
 
     truck->active =  FALSE;
-
-    player->x = 8<<4;
-    player->y = 168<<4;
-    populate_hitbox_record(player);
-
-    box->x = player->x;
-    box->y = (player->hitbox.top - 3) << 4;
-    populate_hitbox_record(box);
-
-    init_camera(MAP_COORD(player->y));
-
-    DISPLAY_ON;
 }
 
-void level_2_init() {
+void standard_init() {
     DISPLAY_OFF;
 
-    player->x = 32<<4;
-    player->y = 168<<4;
-    populate_hitbox_record(player);
-
-    box->x = player->x;
-    box->y = (player->hitbox.top - 3) << 4;
-    populate_hitbox_record(box);
-
-    init_camera(MAP_COORD(player->y));
-
-    DISPLAY_ON;
-}
-
-void level_3_init() {
-    DISPLAY_OFF;
-
-    player->x = 16<<4;
-    player->y = 168<<4;
-    populate_hitbox_record(player);
-
-    box->x = player->x;
-    box->y = (player->hitbox.top - 3) << 4;
-    populate_hitbox_record(box);
-
-    init_camera(MAP_COORD(player->y));
-
-    DISPLAY_ON;
-}
-
-void level_4_init() {
-    DISPLAY_OFF;
-
-    player->x = 144<<4;
-    player->y = 168<<4;
-    populate_hitbox_record(player);
-
-    box->x = player->x;
-    box->y = (player->hitbox.top - 3) << 4;
-    populate_hitbox_record(box);
-
-    init_camera(MAP_COORD(player->y));
-
-    DISPLAY_ON;
-}
-
-void level_5_init() {
-    DISPLAY_OFF;
-
-    player->x = 16<<4;
-    player->y = 176<<4;
-    populate_hitbox_record(player);
-
-    box->x = player->x;
-    box->y = (player->hitbox.top - 3) << 4;
-    populate_hitbox_record(box);
-
-    init_camera(MAP_COORD(player->y));
-
-    DISPLAY_ON;
-}
-
-void level_6_init() {
-    DISPLAY_OFF;
-
-    player->x = 16<<4;
-    player->y = 176<<4;
+    player->x = current_level->start_x << 4;
+    player->y = current_level->start_y << 4;
     populate_hitbox_record(player);
 
     box->x = player->x;
@@ -264,11 +184,11 @@ const level_t level_6 = {
         level_6_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_6_map,
         level_6_map_attributes,
-        level_6_init,
+        standard_init,
         NULL,
         &level_6,
-        48,
-        32
+        48, 32,
+        16, 176
 };
 
 const level_t level_5 = {
@@ -276,11 +196,11 @@ const level_t level_5 = {
         level_5_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_5_map,
         level_5_map_attributes,
-        level_5_init,
+        standard_init,
         NULL,
         &level_6,
-        144,
-        32
+        144, 32,
+        16, 176
 };
 
 const level_t level_4 = {
@@ -288,11 +208,11 @@ const level_t level_4 = {
         level_4_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_4_map,
         level_4_map_attributes,
-        level_4_init,
+        standard_init,
         NULL,
         &level_5,
-        112,
-        32
+        112, 32,
+        144, 168
 };
 
 const level_t level_3 = {
@@ -300,11 +220,11 @@ const level_t level_3 = {
         level_3_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_3_map,
         level_3_map_attributes,
-        level_3_init,
+        standard_init,
         NULL,
         &level_4,
-        24,
-        32
+        24, 32,
+        16, 168
 };
 
 const level_t level_2 = {
@@ -312,11 +232,11 @@ const level_t level_2 = {
         level_2_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_2_map,
         level_2_map_attributes,
-        level_2_init,
+        standard_init,
         NULL,
         &level_3,
-        72,
-        32
+        72, 32,
+        32, 168
 };
 
 const level_t level_1 = {
@@ -324,11 +244,11 @@ const level_t level_1 = {
     level_1_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
     level_1_map,
     level_1_map_attributes,
-    level_1_init,
+    standard_init,
     NULL,
     &level_2,
-    72,
-    32
+    72,32,
+    8, 168
 };
 
 const level_t level_0 = {
@@ -339,8 +259,8 @@ const level_t level_0 = {
     level_0_init,
     level_0_update,
     &level_1,
-    144,
-    120
+    144, 120,
+    32, 110
 };
 
 const uint16_t width_multiplication_table[] = {

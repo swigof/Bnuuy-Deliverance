@@ -29,6 +29,7 @@ struct level_t {
     void (*update_function)();
     const level_t* next_level;
     const uint16_t door_x, door_y;
+    const uint16_t start_x, start_y;
 };
 
 extern const uint16_t width_multiplication_table[];
