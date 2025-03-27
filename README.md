@@ -24,8 +24,9 @@ The project needs certain resources placed in a top level `res` folder
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
 * Maps can only scroll vertically
-* Maps must have a width of 20 and a height between 19 and 511 inclusive
-  * `camera_y` will always start with a value of 8 or more to buffer one line lower
+* Maps must have a width of 20 and a height between 19 and 409 inclusive
+  * The min is because `camera_y` will always start with a value of 8 or more to buffer one line lower
+  * The max is to keep the map and its attributes within the bounds of a single ROM bank
 * The project Makefile builds spritesheets using png2asset
 * Sprites should be centered horizontally and vertically on their hitboxes
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
@@ -55,11 +56,14 @@ and camera can fall apart.
 * fix player sprite colors and level colors
 * background decorations
 * simple closing cinematic
-* use advancing pointer for loops instead of index
 * camera pan upon level load
     * extremely long level gag with elevator at bottom
+* fix player sprite colors and level colors
 * add simple sfx
     * adjust music start to feel more natural
+* adjust offscreen checks to prevent disappearance
+* background decorations
+* use advancing pointer for loops instead of index
 * signs / text popups
 * adjust intro cinematic pacing
 * tile hazards / hurt
@@ -74,7 +78,6 @@ and camera can fall apart.
 * screenshake with scanline interrupts and scroll shifting
 * possibly adjust camera framing to make look ahead comfortable
 * auto saving per screen
-* adjust offscreen checks to prevent disappearance
 * fix box collision while held / adjust player collision accordingly
 * moving hazards / enemies & projectiles
 * momentum driven air movement
