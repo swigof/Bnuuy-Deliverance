@@ -191,6 +191,20 @@ const level_t level_end = {
         &level_end,
         0, 0,
         8, 136,
+        BANK(level_end)
+};
+
+const level_t level_long = {
+        level_long_HEIGHT >> 3,
+        level_long_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_long_map,
+        level_long_map_attributes,
+        standard_init,
+        NULL,
+        &level_end,
+        0, 0,
+        16, level_long_HEIGHT-16,
+        BANK(level_long)
 };
 
 const level_t level_6 = {
@@ -200,9 +214,10 @@ const level_t level_6 = {
         level_6_map_attributes,
         standard_init,
         NULL,
-        &level_end,
+        &level_long,
         48, 32,
-        16, 176
+        16, 176,
+        BANK(level_6)
 };
 
 const level_t level_5 = {
@@ -214,7 +229,8 @@ const level_t level_5 = {
         NULL,
         &level_6,
         144, 32,
-        16, 176
+        16, 176,
+        BANK(level_5)
 };
 
 const level_t level_4 = {
@@ -226,7 +242,8 @@ const level_t level_4 = {
         NULL,
         &level_5,
         112, 32,
-        144, 168
+        144, 168,
+        BANK(level_4)
 };
 
 const level_t level_3 = {
@@ -238,7 +255,8 @@ const level_t level_3 = {
         NULL,
         &level_4,
         24, 32,
-        16, 168
+        16, 168,
+        BANK(level_3)
 };
 
 const level_t level_2 = {
@@ -250,7 +268,8 @@ const level_t level_2 = {
         NULL,
         &level_3,
         72, 32,
-        32, 168
+        32, 168,
+        BANK(level_2)
 };
 
 const level_t level_1 = {
@@ -262,7 +281,8 @@ const level_t level_1 = {
     NULL,
     &level_2,
     72,32,
-    8, 168
+    8, 168,
+    BANK(level_1)
 };
 
 const level_t level_0 = {
@@ -274,7 +294,8 @@ const level_t level_0 = {
     level_0_update,
     &level_1,
     144, 120,
-    32, 110
+    32, 110,
+    BANK(level_0)
 };
 
 const uint16_t width_multiplication_table[] = {

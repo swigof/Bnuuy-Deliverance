@@ -16,7 +16,7 @@ uint8_t* tilemap;
 inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
     height_base_index = width_multiplication_table[y >> 3];
     tilemap = current_level->map;
-    SWITCH_ROM(2);
+    SWITCH_ROM(current_level->bank);
     tile = tilemap[(x >> 3) + height_base_index];
     SWITCH_ROM(1);
     if (tile >= 112) {

@@ -11,6 +11,7 @@
 #include "../obj/level_5.h"
 #include "../obj/level_6.h"
 #include "../obj/level_end.h"
+#include "../obj/level_long.h"
 #include "common.h"
 #include "entity.h"
 #include "../obj/box_sheet.h"
@@ -31,6 +32,7 @@ struct level_t {
     const level_t* next_level;
     const uint16_t door_x, door_y;
     const uint16_t start_x, start_y;
+    const uint8_t bank;
 };
 
 extern const uint16_t width_multiplication_table[];

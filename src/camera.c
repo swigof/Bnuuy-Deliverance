@@ -5,7 +5,7 @@
 uint16_t camera_y;
 
 uint16_t old_camera_y;
-uint16_t map_pos_y, old_map_pos_y;
+uint8_t map_pos_y, old_map_pos_y;
 uint8_t *bank_map, *bank_attributes;
 
 void init_camera(const uint16_t y) NONBANKED{
@@ -22,7 +22,7 @@ void init_camera(const uint16_t y) NONBANKED{
     move_bkg(0, camera_y);
     bank_map = current_level->map;
     bank_attributes = current_level->attributes;
-    SWITCH_ROM(2);
+    SWITCH_ROM(current_level->bank);
     set_bkg_submap(
         0,
         map_pos_y - 1, // to avoid tearing along with the +1 height, also see call in update_camera()
@@ -49,7 +49,7 @@ void update_camera() NONBANKED{
         if (camera_y < old_camera_y && map_pos_y > 0) { // prevent top line from drawing twice
             bank_map = current_level->map;
             bank_attributes = current_level->attributes;
-            SWITCH_ROM(2);
+            SWITCH_ROM(current_level->bank);
             set_bkg_submap(
                 0,
                 map_pos_y - 1,
@@ -69,7 +69,7 @@ void update_camera() NONBANKED{
             if ((current_level->map_height - DEVICE_SCREEN_HEIGHT) > map_pos_y) {
                 bank_map = current_level->map;
                 bank_attributes = current_level->attributes;
-                SWITCH_ROM(2);
+                SWITCH_ROM(current_level->bank);
                 set_bkg_submap(
                     0,
                     map_pos_y + DEVICE_SCREEN_HEIGHT,

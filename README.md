@@ -24,9 +24,8 @@ The project needs certain resources placed in a top level `res` folder
 * If entities move more than a tile (8 pixels) at a time, the map collision detection
 and camera can fall apart.
 * Maps can only scroll vertically
-* Maps must have a width of 20 and a height between 19 and 409 inclusive
-  * The min is because `camera_y` will always start with a value of 8 or more to buffer one line lower
-  * The max is to keep the map and its attributes within the bounds of a single ROM bank
+* Maps must have a width of 20 and a height between 19 and 255 inclusive
+  * `camera_y` will always start with a value of 8 or more to buffer one line lower
 * The project Makefile builds spritesheets using png2asset
 * Sprites should be centered horizontally and vertically on their hitboxes
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
@@ -60,6 +59,7 @@ Layout:
 * ROM 0: Specifically NONBANKED code which needs to switch banks
 * ROM 1: All other code/data and spritesheets
 * ROM 2: Levels and map tilesets
+* ROM 3: Levels
 
 ## TODOS
 

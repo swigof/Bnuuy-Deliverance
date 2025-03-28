@@ -64,6 +64,9 @@ $(OBJDIR)/truck_sheet.c: $(RESDIR)/sprites/truck_sheet.png
 	$(PNG2ASSET) $< -spr8x16 -sw 32 -sh 32 -pw 15 -ph 15 -b 1 -o $@
 $(OBJDIR)/box_sheet.c: $(RESDIR)/sprites/box_sheet.png
 	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 16 -pw 7 -ph 7 -b 1 -o $@
+$(OBJDIR)/level_long.c: $(RESDIR)/levels/level_long.png
+	$(PNG2ASSET) $< -sprite_no_optimize -map -use_map_attributes -maps_only \
+        -source_tileset $(RESDIR)\tiles\tileset_primary.png -b 3 -o $@
 $(OBJDIR)/%.c: $(RESDIR)/levels/%.png
 	$(PNG2ASSET) $< -sprite_no_optimize -map -use_map_attributes -maps_only \
         -source_tileset $(RESDIR)\tiles\tileset_primary.png -b 2 -o $@
