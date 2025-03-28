@@ -21,9 +21,9 @@ inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
     SWITCH_ROM(1);
     if (tile >= 112) {
         return TT_SOLID;
-    } else if (tile >= 96) {
+    } else if (tile >= 108) {
         return TT_PLATFORM;
-    } else if (tile >= 80) {
+    } else if (tile >= 104) {
         return TT_HAZARD;
     }
     return TT_NONE;

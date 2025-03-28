@@ -12,6 +12,7 @@
 #include "../obj/level_6.h"
 #include "../obj/level_end.h"
 #include "../obj/level_long.h"
+#include "../obj/level_elevator.h"
 #include "common.h"
 #include "entity.h"
 #include "../obj/box_sheet.h"

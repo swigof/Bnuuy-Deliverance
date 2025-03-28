@@ -9,6 +9,8 @@
 
 extern const state_data_t player_idle[2];
 
+extern uint8_t remove_door;
+
 void update_player(entity_t* player);
 
 #endif //PLAYER_H

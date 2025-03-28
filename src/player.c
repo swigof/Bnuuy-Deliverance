@@ -2,6 +2,8 @@
 
 #pragma bank 1
 
+uint8_t remove_door = TRUE; // flag to remove doors on level transition
+
 uint8_t carry = 0; // If player is carrying the box
 
 // Check if player is at the door on the current level
@@ -139,7 +141,8 @@ uint16_t player_fade_colors[4];
 uint16_t box_fade_colors[4];
 void level_transition() {
     // remove door by replacing its tiles with blanks
-    set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
+    if(remove_door)
+        set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
 
     // set player to turn around sprite, hide box
     hide_sprites_range(

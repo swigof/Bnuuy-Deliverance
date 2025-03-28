@@ -1,4 +1,5 @@
 #include "level.h"
+#include "player.h"
 
 #pragma bank 1
 
@@ -181,6 +182,11 @@ void standard_init() {
     DISPLAY_ON;
 }
 
+void level_long_init() {
+    standard_init();
+    remove_door = FALSE;
+}
+
 const level_t level_end = {
         level_end_HEIGHT >> 3,
         level_end_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
@@ -194,16 +200,29 @@ const level_t level_end = {
         BANK(level_end)
 };
 
+const level_t level_elevator = {
+        level_elevator_HEIGHT >> 3,
+        level_elevator_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
+        level_elevator_map,
+        level_elevator_map_attributes,
+        standard_init,
+        NULL,
+        &level_end,
+        0, 0,
+        80, 88,
+        BANK(level_end)
+};
+
 const level_t level_long = {
         level_long_HEIGHT >> 3,
         level_long_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_long_map,
         level_long_map_attributes,
-        standard_init,
+        level_long_init,
         NULL,
-        &level_end,
-        0, 0,
-        16, level_long_HEIGHT-16,
+        &level_elevator,
+        128, 2024,
+        16, 2024,
         BANK(level_long)
 };
 
