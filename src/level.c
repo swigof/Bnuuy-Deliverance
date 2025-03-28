@@ -215,6 +215,59 @@ void level_long_init() {
     remove_door = FALSE;
 }
 
+uint8_t elevator_timer = 0;
+uint8_t offset = 0;
+void scanline_isr(void) { SCX_REG = offset; }
+void level_elevator_update() {
+    elevator_timer = 0;
+    while(elevator_timer <= 30) {
+        vsync();
+        elevator_timer++;
+    }
+
+    CRITICAL {
+        STAT_REG = STATF_MODE00;
+        add_LCD(scanline_isr);
+        add_LCD(nowait_int_handler);
+    }
+    set_interrupts(IE_REG | LCD_IFLAG);
+    elevator_timer = 0;
+    while(elevator_timer <= 254) {
+        offset = (elevator_timer & 0b00000100) >> 2;
+        sprite_index = 0;
+        sprite_index += move_metasprite_ex(
+                box->state_data->metasprite[box->animation_frame],
+                box->base_tile,
+                box->prop,
+                sprite_index,
+                MAP_COORD(box->x) + DEVICE_SPRITE_PX_OFFSET_X + offset,
+                MAP_COORD(box->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+        sprite_index += move_metasprite_ex(
+                *player_idle[1].metasprite,
+                player->base_tile,
+                player->prop,
+                sprite_index,
+                MAP_COORD(player->x) + DEVICE_SPRITE_PX_OFFSET_X + offset,
+                MAP_COORD(player->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+        hide_sprites_range(sprite_index,MAX_HARDWARE_SPRITES);
+        vsync();
+        elevator_timer++;
+    }
+    CRITICAL {
+        remove_LCD(nowait_int_handler);
+        remove_LCD(scanline_isr);
+        STAT_REG = 0;
+    }
+
+    elevator_timer = 0;
+    while(elevator_timer <= 30) {
+        vsync();
+        elevator_timer++;
+    }
+
+    level_transition();
+}
+
 const level_t level_end = {
         level_end_HEIGHT >> 3,
         level_end_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
@@ -234,9 +287,9 @@ const level_t level_elevator = {
         level_elevator_map,
         level_elevator_map_attributes,
         standard_init,
-        NULL,
+        level_elevator_update,
         &level_end,
-        0, 0,
+        80, 88,
         80, 88,
         BANK(level_end)
 };
