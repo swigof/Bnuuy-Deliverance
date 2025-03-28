@@ -1,5 +1,7 @@
 #include "player.h"
 
+#pragma bank 1
+
 uint8_t carry = 0; // If player is carrying the box
 
 // Check if player is at the door on the current level

@@ -1,5 +1,7 @@
 #include "box.h"
 
+#pragma bank 1
+
 const state_data_t box_base = {
         ((box_sheet_WIDTH >> 3) << 4) | (box_sheet_HEIGHT >> 3),
         (box_sheet_PIVOT_W << 4) | (box_sheet_PIVOT_H),

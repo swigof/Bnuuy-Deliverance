@@ -50,11 +50,19 @@ and camera can fall apart.
 * Levels have an update function pointer which, if set, allows them to override normal main loop update behavior
   * This can be used for cutscenes
 
+## Banking
+
+Banks 0 and 1 are used largely by default, with bank 1 being briefly switched from to access data in other banks as 
+needed. 
+Bank 1 is leveraged as much as possible for principle code and data to avoid filling the valuable bank 0 space.
+
+Layout:
+* ROM 0: Specifically NONBANKED code which needs to switch banks
+* ROM 1: All other code/data and spritesheets
+* ROM 2: Levels and map tilesets
+
 ## TODOS
 
-* add levels
-* fix player sprite colors and level colors
-* background decorations
 * simple closing cinematic
 * camera pan upon level load
     * extremely long level gag with elevator at bottom
@@ -69,6 +77,10 @@ and camera can fall apart.
 * tile hazards / hurt
     * dropping on hit
 * down jumps through platforms
+* fade to black level transitions 
+  * use line interrupts?
+  * spend some number of vsyncs with a black screen / DISPLAY_OFF?
+* move spritesheet data off ROM1
 * emotes / more animations
 * timer?
 * crouch state

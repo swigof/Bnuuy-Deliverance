@@ -1,5 +1,7 @@
 #include "entity.h"
 
+#pragma bank 1
+
 entity_t entity_to_add = {};
 uint8_t sprite_index = 0;
 
@@ -7,9 +9,16 @@ entity_t entities[MAX_ENTITIES];
 uint8_t next_entity_index = 0;
 uint8_t entity_count = 0;
 
+uint16_t height_base_index = 0;
 uint8_t tile = 0;
+uint8_t* tilemap;
+// Functions which use this need to be NONBANKED
 inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
-    tile = current_level->map[(x >> 3) + width_multiplication_table[y >> 3]];
+    height_base_index = width_multiplication_table[y >> 3];
+    tilemap = current_level->map;
+    SWITCH_ROM(2);
+    tile = tilemap[(x >> 3) + height_base_index];
+    SWITCH_ROM(1);
     if (tile >= 112) {
         return TT_SOLID;
     } else if (tile >= 96) {
@@ -23,7 +32,7 @@ inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
 uint16_t edge_iterator = 0;
 uint8_t tile_type = TT_NONE;
 uint8_t max_tile_type = TT_NONE;
-uint8_t get_vertical_edge_tile_type(edge_t* edge) {
+uint8_t get_vertical_edge_tile_type(edge_t* edge) NONBANKED{
     max_tile_type = TT_NONE;
     if(edge->coord > MAX_X_COORD)
         return TT_SOLID;
@@ -37,7 +46,7 @@ uint8_t get_vertical_edge_tile_type(edge_t* edge) {
         max_tile_type = tile_type;
     return max_tile_type;
 }
-uint8_t get_horizontal_edge_tile_type(edge_t* edge) {
+uint8_t get_horizontal_edge_tile_type(edge_t* edge) NONBANKED{
     max_tile_type = TT_NONE;
     for(edge_iterator = edge->start; edge_iterator < edge->end; edge_iterator += 8) {
         tile_type = get_tile_type(edge_iterator, edge->coord);

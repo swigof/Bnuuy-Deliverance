@@ -57,16 +57,16 @@ DEPS = $(OBJS:%.o=%.d)
 # The resulting C files will get compiled to object files afterward
 .SECONDEXPANSION:
 $(OBJDIR)/%.c: $(RESDIR)/tiles/%.png
-	$(PNG2ASSET) $< -spr8x8 -sprite_no_optimize -no_palettes -noflip -tiles_only -o $@
+	$(PNG2ASSET) $< -spr8x8 -sprite_no_optimize -no_palettes -noflip -tiles_only -b 2 -o $@
 $(OBJDIR)/player_sheet.c: $(RESDIR)/sprites/player_sheet.png
-	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 32 -pw 4 -ph 8 -o $@
+	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 32 -pw 4 -ph 8 -b 1 -o $@
 $(OBJDIR)/truck_sheet.c: $(RESDIR)/sprites/truck_sheet.png
-	$(PNG2ASSET) $< -spr8x16 -sw 32 -sh 32 -pw 15 -ph 15 -o $@
+	$(PNG2ASSET) $< -spr8x16 -sw 32 -sh 32 -pw 15 -ph 15 -b 1 -o $@
 $(OBJDIR)/box_sheet.c: $(RESDIR)/sprites/box_sheet.png
-	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 16 -pw 7 -ph 7 -o $@
+	$(PNG2ASSET) $< -spr8x16 -sw 16 -sh 16 -pw 7 -ph 7 -b 1 -o $@
 $(OBJDIR)/%.c: $(RESDIR)/levels/%.png
 	$(PNG2ASSET) $< -sprite_no_optimize -map -use_map_attributes -maps_only \
-        -source_tileset $(RESDIR)\tiles\tileset_primary.png -o $@
+        -source_tileset $(RESDIR)\tiles\tileset_primary.png -b 2 -o $@
 
 # Prevent make from deleting intermediary generated asset C source files
 .SECONDARY: $(IMAGE_SRC)

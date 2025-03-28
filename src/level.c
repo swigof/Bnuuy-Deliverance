@@ -1,5 +1,7 @@
 #include "level.h"
 
+#pragma bank 1
+
 entity_t* truck;
 uint8_t truck_vel_x = 32;
 uint8_t loop_flag = 0;

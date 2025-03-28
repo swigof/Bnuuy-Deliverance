@@ -1,5 +1,7 @@
 #include "color.h"
 
+#pragma bank 1
+
 const uint16_t black = RGB_BLACK;
 const uint16_t white = RGB_WHITE;
 

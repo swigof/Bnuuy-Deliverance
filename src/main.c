@@ -7,6 +7,8 @@
 #include "camera.h"
 #include "common.h"
 
+#pragma bank 1
+
 joypads_t joypads;
 joypads_t prev_joypads;
 
@@ -19,7 +21,7 @@ const palette_color_t tile_palettes[] = {
         RGB8(0xFA,0xE6,0xCD),RGB8(0xF3,0xC0,0xCE),RGB8(0x97,0x9B,0xC7),RGB8(0,0,0)
 };
 
-int main() {
+int main() NONBANKED{
     DISPLAY_OFF;
 
     NR52_REG = 0x80;
@@ -31,8 +33,10 @@ int main() {
     SHOW_SPRITES;
 
     // Set sprite and tile data as they don't change
+    SWITCH_ROM(BANK(tileset_primary));
     set_bkg_data(0,tileset_primary_TILE_COUNT,tileset_primary_tiles);
     set_bkg_palette(0,1,tile_palettes);
+    SWITCH_ROM(1);
     set_sprite_data(0, player_sheet_TILE_COUNT, player_sheet_tiles);
     set_sprite_palette(0, 1, player_sheet_palettes);
     set_sprite_data(player_sheet_TILE_COUNT, box_sheet_TILE_COUNT, box_sheet_tiles);
