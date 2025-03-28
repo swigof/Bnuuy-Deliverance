@@ -182,8 +182,36 @@ void standard_init() {
     DISPLAY_ON;
 }
 
+uint16_t level_pan_y = 0;
 void level_long_init() {
-    standard_init();
+    DISPLAY_OFF;
+
+    set_bkg_data(DOOR_TILE_INDEX, 4, door_tiles);
+
+    player->x = current_level->start_x << 4;
+    player->y = current_level->start_y << 4;
+    populate_hitbox_record(player);
+
+    box->x = player->x;
+    box->y = (player->hitbox.top - 3) << 4;
+    populate_hitbox_record(box);
+
+    init_camera(level_pan_y);
+
+    hide_sprites_range(0,MAX_HARDWARE_SPRITES);
+
+    DISPLAY_ON;
+
+    while(level_pan_y < MAP_COORD(player->y)) {
+        level_pan_y += 2;
+        set_focus(level_pan_y);
+        vsync();
+        update_camera();
+    }
+
+    set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
+    set_focus(MAP_COORD(player->y));
+
     remove_door = FALSE;
 }
 
