@@ -21,6 +21,7 @@
 #include "color.h"
 
 #define MAP_WIDTH 20
+#define DOOR_TILE_INDEX 12
 
 typedef struct level_t level_t;
 struct level_t {
@@ -39,6 +40,9 @@ struct level_t {
 extern const uint16_t width_multiplication_table[];
 
 extern const level_t* current_level;
+
+extern const uint8_t door_tiles[];
+extern const uint8_t empty_tiles[];
 
 extern const level_t level_0;
 
