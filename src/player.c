@@ -65,7 +65,7 @@ const state_data_t player_idle[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        15,
+        16,
         30,
         &player_sheet_metasprites[4],
         1
@@ -73,7 +73,7 @@ const state_data_t player_idle[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        10,
+        8,
         30,
         &player_sheet_metasprites[6],
         1
@@ -84,7 +84,7 @@ const state_data_t player_move[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        15,
+        16,
         10,
         &player_sheet_metasprites[0],
         2
@@ -92,7 +92,7 @@ const state_data_t player_move[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        10,
+        8,
         15,
         &player_sheet_metasprites[2],
         2
@@ -103,7 +103,7 @@ const state_data_t player_jump[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        15,
+        16,
         30,
         &player_sheet_metasprites[0],
         1
@@ -111,7 +111,7 @@ const state_data_t player_jump[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        12,
+        8,
         30,
         &player_sheet_metasprites[2],
         1
@@ -122,7 +122,7 @@ const state_data_t player_fall[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        15,
+        16,
         30,
         &player_sheet_metasprites[12],
         1
@@ -130,7 +130,7 @@ const state_data_t player_fall[2] = {
     {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        12,
+        8,
         30,
         &player_sheet_metasprites[13],
         1
