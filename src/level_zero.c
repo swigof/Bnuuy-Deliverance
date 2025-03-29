@@ -2,10 +2,9 @@
 #include "entity.h"
 #include "common.h"
 #include "color.h"
+#include "player.h"
 #include "../obj/level_0.h"
-#include "../obj/player_sheet.h"
 #include "../obj/truck_sheet.h"
-#include "../obj/box_sheet.h"
 
 #pragma bank 1
 
@@ -24,24 +23,6 @@ const state_data_t truck_base = {
         0,
         0,
         &truck_sheet_metasprites[0],
-        1
-};
-
-const state_data_t player_sigh = {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
-        (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        0,
-        150,
-        &player_sheet_metasprites[17],
-        3
-};
-
-const state_data_t player_get_up = {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
-        (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
-        0,
-        0,
-        &player_sheet_metasprites[16],
         1
 };
 
