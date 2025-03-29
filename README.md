@@ -1,4 +1,4 @@
-# eigg
+# Bnuuy Deliverance
 
 ## Builds
 
@@ -60,56 +60,6 @@ Layout:
 * ROM 1: All other code/data and spritesheets
 * ROM 2: Levels and map tilesets
 * ROM 3: Levels
-
-## TODOS
-
-* simple closing cinematic
-* camera pan upon level load
-    * extremely long level gag with elevator at bottom
-* fix player sprite colors and level colors
-* add simple sfx
-    * adjust music start to feel more natural
-* adjust offscreen checks to prevent disappearance
-* background decorations
-* use advancing pointer for loops instead of index
-* signs / text popups
-* adjust intro cinematic pacing
-* tile hazards / hurt
-    * dropping on hit
-* down jumps through platforms
-* fade to black level transitions 
-  * use line interrupts?
-  * spend some number of vsyncs with a black screen / DISPLAY_OFF?
-* move spritesheet data off ROM1
-* emotes / more animations
-* timer?
-* crouch state
-* custom track or arrangement
-* fix top spawning preventing first tile row load 
-* influence throw on up hold
-* screenshake with scanline interrupts and scroll shifting
-* possibly adjust camera framing to make look ahead comfortable
-* auto saving per screen
-* fix box collision while held / adjust player collision accordingly
-* moving hazards / enemies & projectiles
-* momentum driven air movement
-* add collision/grounding flag to basic movement routine
-* make conversion operation #defines / inlines
-* add horizontal scrolling
-* carrying balance mechanics?
-* camera safety measure for if old vs new position is more than 1 tile difference
-* menu
-* do a pointer access vs direct access performance test. function parameter overhead.
-  * can just check instruction conversion
-  * can use inlines that set a global then make call instead of parameters
-* stop scrolls earlier to allow map space to be traversed offscreen
-* find a way to render differently sized metasprites so their x,y always corresponds to their center
-  * one 8x16 sprite: 0,0 <-> 4,8
-  * two horizontal:  0,0 <-> 8,8
-  * ...
-* migrate entities linked lists of active vs inactive instead of flag to avoid wasted cycles on loops
-* consolidate entity flags further into state to save ram if needed
-  * alternatively, expand flags into variables if ram is fine
 
 ## References
 
