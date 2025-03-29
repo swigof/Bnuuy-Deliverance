@@ -32,7 +32,6 @@ extern const level_t level_2;
 extern const level_t level_3;
 extern const level_t level_4;
 extern const level_t level_5;
-extern const level_t level_end;
 
 void standard_init();
 

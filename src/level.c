@@ -6,7 +6,6 @@
 #include "../obj/level_3.h"
 #include "../obj/level_4.h"
 #include "../obj/level_5.h"
-#include "../obj/level_end.h"
 
 #pragma bank 1
 
@@ -25,19 +24,6 @@ void standard_init() {
 
     DISPLAY_ON;
 }
-
-const level_t level_end = {
-        level_end_HEIGHT >> 3,
-        level_end_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
-        level_end_map,
-        level_end_map_attributes,
-        standard_init,
-        NULL,
-        &level_end,
-        0, 0,
-        8, 136,
-        BANK(level_end)
-};
 
 const level_t level_5 = {
         level_5_HEIGHT >> 3,

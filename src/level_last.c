@@ -1,4 +1,5 @@
 #include "level_last.h"
+#include "level_end.h"
 #include "player.h"
 #include "../obj/level_long.h"
 #include "../obj/level_elevator.h"
