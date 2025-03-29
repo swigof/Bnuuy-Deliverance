@@ -133,6 +133,10 @@ void level_0_update() {
     }
 
     // give player control
+    CRITICAL {
+        hUGE_init(&main_track);
+        add_VBL(hUGE_dosound);
+    }
     player->update_function = prev_update_function;
     while(current_level == &level_0) {
         prev_joypads = joypads;
@@ -141,11 +145,6 @@ void level_0_update() {
         update_entities();
         vsync();
         update_camera();
-    }
-
-    CRITICAL {
-        hUGE_init(&main_track);
-        add_VBL(hUGE_dosound);
     }
 
     truck->active =  FALSE;
