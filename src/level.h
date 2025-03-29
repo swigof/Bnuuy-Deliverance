@@ -43,6 +43,6 @@ extern const level_t* current_level;
 extern const uint8_t door_tiles[];
 extern const uint8_t empty_tiles[];
 
-extern const level_t level_0;
+extern const level_t level_1;
 
 #endif //LEVEL_H

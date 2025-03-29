@@ -7,6 +7,7 @@
 #include "box.h"
 #include "camera.h"
 #include "common.h"
+#include "level_zero.h"
 
 #pragma bank 1
 
