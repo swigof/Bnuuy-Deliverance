@@ -29,14 +29,14 @@ const state_data_t truck_base = {
 void level_0_init() {
     DISPLAY_OFF;
 
-    player->active = FALSE;
-    box->active = FALSE;
-
     entity_to_add.base_tile = player_sheet_TILE_COUNT + box_sheet_TILE_COUNT;
     entity_to_add.prop = 2;
     entity_to_add.active = TRUE;
     entity_to_add.state_data = &truck_base;
     truck = add_entity();
+
+    player->active = FALSE;
+    box->active = FALSE;
 
     truck->x = -256;   // Start wrapped offscreen
     truck->y = 113<<4;
