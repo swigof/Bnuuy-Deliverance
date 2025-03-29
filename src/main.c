@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "../obj/tileset_primary.h"
 #include "player.h"
+#include "angel.h"
 #include "box.h"
 #include "camera.h"
 #include "common.h"
@@ -41,6 +42,11 @@ int main() NONBANKED{
     set_sprite_palette(0, 1, player_sheet_palettes);
     set_sprite_data(player_sheet_TILE_COUNT, box_sheet_TILE_COUNT, box_sheet_tiles);
     set_sprite_palette(1, 1, box_sheet_palettes);
+    set_sprite_data(player_sheet_TILE_COUNT + box_sheet_TILE_COUNT, truck_sheet_TILE_COUNT, truck_sheet_tiles);
+    set_sprite_palette(2, 1, truck_sheet_palettes);
+    set_sprite_data(player_sheet_TILE_COUNT + box_sheet_TILE_COUNT + truck_sheet_TILE_COUNT,
+                    angel_sheet_TILE_COUNT, angel_sheet_tiles);
+    set_sprite_palette(3, angel_sheet_PALETTE_COUNT, angel_sheet_palettes);
 
     // Create our box and player since they will persist through levels
     entity_to_add.base_tile = 0;

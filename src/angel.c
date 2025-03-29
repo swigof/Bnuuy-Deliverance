@@ -1,0 +1,30 @@
+#include "angel.h"
+
+#pragma bank 1
+
+const state_data_t angel_tpose = {
+    ((angel_sheet_WIDTH >> 3) << 4) | (angel_sheet_HEIGHT >> 3),
+    (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
+    16,
+    15,
+    &angel_sheet_metasprites[0],
+    1
+};
+
+const state_data_t angel_idle = {
+    ((angel_sheet_WIDTH >> 3) << 4) | (angel_sheet_HEIGHT >> 3),
+    (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
+    16,
+    15,
+    &angel_sheet_metasprites[1],
+    1
+};
+
+const state_data_t angel_clap = {
+    ((angel_sheet_WIDTH >> 3) << 4) | (angel_sheet_HEIGHT >> 3),
+    (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
+    16,
+    15,
+    &angel_sheet_metasprites[2],
+    2
+};

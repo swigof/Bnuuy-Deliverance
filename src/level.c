@@ -45,8 +45,6 @@ void level_0_init() {
     player->active = FALSE;
     box->active = FALSE;
 
-    set_sprite_data(player_sheet_TILE_COUNT + box_sheet_TILE_COUNT, truck_sheet_TILE_COUNT, truck_sheet_tiles);
-    set_sprite_palette(2, 1, truck_sheet_palettes);
     entity_to_add.base_tile = player_sheet_TILE_COUNT + box_sheet_TILE_COUNT;
     entity_to_add.prop = 2;
     entity_to_add.active = TRUE;
@@ -58,7 +56,7 @@ void level_0_init() {
 
     init_camera(19);
 
-    // Title text fade in using unused color palette
+    // Title text fade using unused color palette
     set_bkg_palette(7,1, title_colors);
     set_bkg_attributes(1, 4, 5, 1, title_attr_map);
     set_bkg_attributes(1, 5, 11, 1, title_attr_map);
