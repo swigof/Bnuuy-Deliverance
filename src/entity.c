@@ -85,13 +85,18 @@ entity_t* add_entity() {
 }
 
 int8_t entity_iterator = 0;
+uint16_t entity_y_coord = 0;
+uint8_t half_sprite_height = 0;
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         if(entities[entity_iterator].active) {
+            entity_y_coord = MAP_COORD(entities[entity_iterator].y);
+            half_sprite_height = (SPRITE_HEIGHT(entities[entity_iterator].state_data->sprite_dimensions)) >> 1;
+
             // Onscreen check
-            entities[entity_iterator].onscreen = MAP_COORD(entities[entity_iterator].y) > camera_y
-                    && MAP_COORD(entities[entity_iterator].y) < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
+            entities[entity_iterator].onscreen = (entity_y_coord + half_sprite_height) > camera_y
+                    && entity_y_coord - half_sprite_height < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
 
             if(entities[entity_iterator].onscreen) {
                 // Animation
@@ -114,7 +119,7 @@ void update_entities() {
                             entities[entity_iterator].prop,
                             sprite_index,
                             MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
-                            MAP_COORD(entities[entity_iterator].y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+                            entity_y_coord - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
                 } else {
                     sprite_index += move_metasprite_ex(
                             entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
@@ -122,7 +127,7 @@ void update_entities() {
                             entities[entity_iterator].prop,
                             sprite_index,
                             MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
-                            MAP_COORD(entities[entity_iterator].y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+                            entity_y_coord - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
                 }
             }
             // Entity specific update
