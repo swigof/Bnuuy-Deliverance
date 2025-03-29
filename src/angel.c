@@ -2,6 +2,18 @@
 
 #pragma bank 1
 
+uint8_t float_timer = 0;
+
+void update_angel(entity_t* e) {
+    float_timer++;
+    if(float_timer % 64 == 0) {
+        if(float_timer % 128)
+            e->y += 16;
+        else
+            e->y -= 16;
+    }
+}
+
 const state_data_t angel_tpose = {
     ((angel_sheet_WIDTH >> 3) << 4) | (angel_sheet_HEIGHT >> 3),
     (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
