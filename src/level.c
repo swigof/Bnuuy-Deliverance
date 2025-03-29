@@ -305,19 +305,6 @@ const level_t level_long = {
         BANK(level_long)
 };
 
-const level_t level_6 = {
-        level_6_HEIGHT >> 3,
-        level_6_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
-        level_6_map,
-        level_6_map_attributes,
-        standard_init,
-        NULL,
-        &level_long,
-        48, 32,
-        16, 176,
-        BANK(level_6)
-};
-
 const level_t level_5 = {
         level_5_HEIGHT >> 3,
         level_5_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
@@ -325,7 +312,7 @@ const level_t level_5 = {
         level_5_map_attributes,
         standard_init,
         NULL,
-        &level_6,
+        &level_long,
         144, 32,
         16, 176,
         BANK(level_5)

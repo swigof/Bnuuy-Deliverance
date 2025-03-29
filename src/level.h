@@ -9,7 +9,6 @@
 #include "../obj/level_3.h"
 #include "../obj/level_4.h"
 #include "../obj/level_5.h"
-#include "../obj/level_6.h"
 #include "../obj/level_end.h"
 #include "../obj/level_long.h"
 #include "../obj/level_elevator.h"
