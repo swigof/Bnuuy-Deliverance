@@ -87,52 +87,53 @@ entity_t* add_entity() {
 int8_t entity_iterator = 0;
 uint16_t entity_y_coord = 0;
 uint8_t half_sprite_height = 0;
+entity_t* current_entity = NULL;
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
-        if(entities[entity_iterator].active) {
-            entity_y_coord = MAP_COORD(entities[entity_iterator].y);
-            half_sprite_height = (SPRITE_HEIGHT(entities[entity_iterator].state_data->sprite_dimensions)) >> 1;
+        current_entity = &entities[entity_iterator];
+        if(current_entity->active) {
+            entity_y_coord = MAP_COORD(current_entity->y);
+            half_sprite_height = (SPRITE_HEIGHT(current_entity->state_data->sprite_dimensions)) >> 1;
 
             // Onscreen check
-            entities[entity_iterator].onscreen = (entity_y_coord + half_sprite_height) > camera_y
+            current_entity->onscreen = (entity_y_coord + half_sprite_height) > camera_y
                     && entity_y_coord - half_sprite_height < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
 
-            if(entities[entity_iterator].onscreen) {
+            if(current_entity->onscreen) {
                 // Animation
-                if(entities[entity_iterator].state_data->animation_length > 1) {
-                    entities[entity_iterator].frame_counter++;
-                    if(entities[entity_iterator].frame_counter >= entities[entity_iterator].state_data->frame_duration) {
-                        entities[entity_iterator].frame_counter = 0;
-                        entities[entity_iterator].animation_frame++;
-                        if(entities[entity_iterator].animation_frame
-                                >= entities[entity_iterator].state_data->animation_length)
-                            entities[entity_iterator].animation_frame = 0;
+                if(current_entity->state_data->animation_length > 1) {
+                    current_entity->frame_counter++;
+                    if(current_entity->frame_counter >= current_entity->state_data->frame_duration) {
+                        current_entity->frame_counter = 0;
+                        current_entity->animation_frame++;
+                        if(current_entity->animation_frame >= current_entity->state_data->animation_length)
+                            current_entity->animation_frame = 0;
                     }
                 }
 
                 // Render
-                if(entities[entity_iterator].state & FLIP_X) {
+                if(current_entity->state & FLIP_X) {
                     sprite_index += move_metasprite_flipx(
-                            entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
-                            entities[entity_iterator].base_tile,
-                            entities[entity_iterator].prop,
+                            current_entity->state_data->metasprite[current_entity->animation_frame],
+                            current_entity->base_tile,
+                            current_entity->prop,
                             sprite_index,
-                            MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
+                            MAP_COORD(current_entity->x) + DEVICE_SPRITE_PX_OFFSET_X,
                             entity_y_coord - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
                 } else {
                     sprite_index += move_metasprite_ex(
-                            entities[entity_iterator].state_data->metasprite[entities[entity_iterator].animation_frame],
-                            entities[entity_iterator].base_tile,
-                            entities[entity_iterator].prop,
+                            current_entity->state_data->metasprite[current_entity->animation_frame],
+                            current_entity->base_tile,
+                            current_entity->prop,
                             sprite_index,
-                            MAP_COORD(entities[entity_iterator].x) + DEVICE_SPRITE_PX_OFFSET_X,
+                            MAP_COORD(current_entity->x) + DEVICE_SPRITE_PX_OFFSET_X,
                             entity_y_coord - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
                 }
             }
             // Entity specific update
-            if(entities[entity_iterator].update_function)
-                entities[entity_iterator].update_function(&entities[entity_iterator]);
+            if(current_entity->update_function)
+                current_entity->update_function(&entities[entity_iterator]);
         }
     }
     hide_sprites_range(sprite_index,MAX_HARDWARE_SPRITES);

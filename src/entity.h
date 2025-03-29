@@ -20,7 +20,7 @@
 #define MAP_COORD(C) (C >> 4)                    // Get map coordinate from entity x/y
 #define TILE_COORD(C) (C & 0b111111111000)       // Rounds a 12bit map coordinate down to the closest 8 pixel coordinate
 
-#define MAX_ENTITIES 10
+#define MAX_ENTITIES 5
 
 enum tile_type {TT_NONE, TT_PLATFORM, TT_SOLID, TT_HAZARD};
 
