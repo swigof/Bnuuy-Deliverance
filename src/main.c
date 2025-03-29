@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "common.h"
 #include "level_zero.h"
+#include "truck_sheet.h"
 
 #pragma bank 1
 

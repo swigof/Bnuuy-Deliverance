@@ -1,5 +1,11 @@
 #include "level_zero.h"
+#include "entity.h"
+#include "common.h"
+#include "color.h"
 #include "../obj/level_0.h"
+#include "../obj/player_sheet.h"
+#include "../obj/truck_sheet.h"
+#include "../obj/box_sheet.h"
 
 #pragma bank 1
 

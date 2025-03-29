@@ -2,22 +2,6 @@
 #define LEVEL_H
 
 #include <stdint.h>
-#include <gbdk/platform.h>
-#include "../obj/level_0.h"
-#include "../obj/level_1.h"
-#include "../obj/level_2.h"
-#include "../obj/level_3.h"
-#include "../obj/level_4.h"
-#include "../obj/level_5.h"
-#include "../obj/level_end.h"
-#include "../obj/level_long.h"
-#include "../obj/level_elevator.h"
-#include "common.h"
-#include "entity.h"
-#include "../obj/box_sheet.h"
-#include "../obj/player_sheet.h"
-#include "../obj/truck_sheet.h"
-#include "color.h"
 
 #define MAP_WIDTH 20
 #define DOOR_TILE_INDEX 12
@@ -44,5 +28,12 @@ extern const uint8_t door_tiles[];
 extern const uint8_t empty_tiles[];
 
 extern const level_t level_1;
+extern const level_t level_2;
+extern const level_t level_3;
+extern const level_t level_4;
+extern const level_t level_5;
+extern const level_t level_end;
+
+void standard_init();
 
 #endif //LEVEL_H
