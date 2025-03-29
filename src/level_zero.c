@@ -112,7 +112,7 @@ void level_0_update() {
     player->state_data = &player_sigh;
     player->animation_frame = 0;
     player->frame_counter = 0;
-    while(player->frame_counter != 149 || player->animation_frame != 2) {
+    while(player->frame_counter != 119 || player->animation_frame != 2) {
         if(player->frame_counter % 8 == 0) {
             fade_to_color(&title_colors[2], &title_target_colors[0]);
             fade_to_color(&title_colors[3], &title_target_colors[1]);

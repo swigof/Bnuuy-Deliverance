@@ -98,7 +98,7 @@ const state_data_t player_sigh = {
         ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         0,
-        150,
+        120,
         &player_sheet_metasprites[17],
         3
 };
