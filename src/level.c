@@ -59,7 +59,7 @@ void level_0_init() {
     // Title text fade using unused color palette
     set_bkg_palette(7,1, title_colors);
     set_bkg_attributes(1, 4, 5, 1, title_attr_map);
-    set_bkg_attributes(1, 5, 11, 1, title_attr_map);
+    set_bkg_attributes(1, 6, 11, 1, title_attr_map);
 
     DISPLAY_ON;
 }
