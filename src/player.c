@@ -245,6 +245,12 @@ void update_player(entity_t* player) {
                     box->vel_x -= 30;
                 else
                     box->vel_x += 30;
+            } else {
+                box->vel_y = -10;
+                if (player->state & FLIP_X)
+                    box->vel_x = -10;
+                else
+                    box->vel_x = 10;
             }
         }
     }
