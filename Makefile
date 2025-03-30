@@ -26,7 +26,7 @@ endif
 CFLAGS += -I$(HUGE_HOME)include
 CFLAGS += -Wl-l$(HUGE_HOME)gbdk/hUGEDriver.lib
 
-PROJECTNAME = eigg
+PROJECTNAME = bnuuydel
 
 BINDIR      = bin
 SRCDIR      = src
