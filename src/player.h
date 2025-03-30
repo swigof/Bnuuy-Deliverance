@@ -16,6 +16,6 @@ extern uint8_t remove_door;
 extern uint8_t carry;
 
 void update_player(entity_t* player);
-void level_transition();
+void level_transition(void);
 
 #endif //PLAYER_H

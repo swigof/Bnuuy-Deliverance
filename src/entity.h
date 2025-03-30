@@ -70,9 +70,9 @@ void populate_hitbox_record(entity_t* e);
  * Adds entity_to_add to the entity list
  * @return The pointer to the entity in the list or NULL if it failed to add
  */
-entity_t* add_entity();
+entity_t* add_entity(void);
 
-void update_entities();
+void update_entities(void);
 
 /**
  * Flags the entity state for which horizontal direction it should be rendered in based on velocity

@@ -12,8 +12,8 @@ struct level_t {
     uint16_t max_camera_y;
     const uint8_t* map;
     const uint8_t* attributes;
-    void (*init_function)();
-    void (*update_function)();
+    void (*init_function)(void);
+    void (*update_function)(void);
     const level_t* next_level;
     const uint16_t door_x, door_y;
     const uint16_t start_x, start_y;
@@ -33,6 +33,6 @@ extern const level_t level_3;
 extern const level_t level_4;
 extern const level_t level_5;
 
-void standard_init();
+void standard_init(void);
 
 #endif //LEVEL_H

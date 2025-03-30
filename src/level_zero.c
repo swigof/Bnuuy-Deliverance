@@ -11,7 +11,6 @@
 entity_t* truck;
 uint8_t truck_vel_x = 32;
 uint8_t loop_flag = 0;
-void* prev_update_function = NULL;
 
 const palette_color_t title_target_colors[2] = { RGBHTML(0xD43FD6),RGB_BLACK };
 palette_color_t title_colors[] = {RGB8(0xFA,0xE6,0xCD),RGB8(0,0,0),RGB8(0xFA,0xE6,0xCD),RGB8(0xFA,0xE6,0xCD)};
@@ -27,7 +26,7 @@ const state_data_t truck_base = {
         1
 };
 
-void level_0_init() {
+void level_0_init(void) {
     DISPLAY_OFF;
 
     entity_to_add.base_tile = player_sheet_TILE_COUNT + box_sheet_TILE_COUNT;
@@ -51,7 +50,7 @@ void level_0_init() {
 
     DISPLAY_ON;
 }
-void level_0_update() {
+void level_0_update(void) {
     // move in truck
     while(MAP_COORD(truck->x) != 16) {
         truck->x += truck_vel_x;
@@ -108,7 +107,6 @@ void level_0_update() {
     loop_flag++;
 
     // have a sit
-    prev_update_function = player->update_function;
     player->update_function = NULL;
     player->state_data = &player_sigh;
     player->animation_frame = 0;
@@ -138,7 +136,7 @@ void level_0_update() {
         hUGE_init(&main_track);
         add_VBL(hUGE_dosound);
     }
-    player->update_function = prev_update_function;
+    player->update_function = (void (*)(void *)) &update_player;
     while(current_level == &level_0) {
         prev_joypads = joypads;
         joypad_ex(&joypads);

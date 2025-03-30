@@ -124,7 +124,7 @@ const state_data_t player_get_up = {
 
 uint16_t player_fade_colors[4];
 uint16_t box_fade_colors[4];
-void level_transition() {
+void level_transition(void) {
     // remove door by replacing its tiles with blanks
     if(remove_door)
         set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);

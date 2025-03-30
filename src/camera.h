@@ -7,7 +7,7 @@
 extern uint16_t camera_y;
 
 void init_camera(uint16_t y);
-void update_camera();
+void update_camera(void);
 void set_focus(uint16_t y);
 
 #endif //CAMERA_H

@@ -7,7 +7,7 @@
 #pragma bank 1
 
 uint16_t level_pan_y = 0;
-void level_long_init() {
+void level_long_init(void) {
     DISPLAY_OFF;
 
     set_bkg_data(DOOR_TILE_INDEX, 4, door_tiles);
@@ -39,7 +39,7 @@ void level_long_init() {
     remove_door = FALSE;
 }
 
-void level_elevator_init() {
+void level_elevator_init(void) {
     // swap to elevator track
     hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
     hUGE_mute_channel(HT_CH2,HT_CH_MUTE);
@@ -52,7 +52,7 @@ void level_elevator_init() {
 uint8_t elevator_timer = 0;
 uint8_t offset = 0;
 void scanline_isr(void) { SCX_REG = offset; }
-void level_elevator_update() {
+void level_elevator_update(void) {
     elevator_timer = 0;
     while(elevator_timer <= 30) {
         vsync();

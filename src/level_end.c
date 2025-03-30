@@ -39,7 +39,7 @@ void move_box_to_position(entity_t* e) {
     }
 }
 
-void level_end_init() {
+void level_end_init(void) {
     // stop music
     hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
     hUGE_mute_channel(HT_CH2,HT_CH_MUTE);
@@ -51,7 +51,7 @@ void level_end_init() {
     standard_init();
 }
 
-void level_end_update() {
+void level_end_update(void) {
     // wait for player to reach center
     while(!end_cutscene_flag) {
         prev_joypads = joypads;

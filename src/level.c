@@ -9,7 +9,7 @@
 
 #pragma bank 1
 
-void standard_init() {
+void standard_init(void) {
     DISPLAY_OFF;
 
     player->x = current_level->start_x << 4;

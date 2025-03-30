@@ -6,7 +6,7 @@ uint16_t camera_y;
 
 uint16_t old_camera_y;
 uint8_t map_pos_y, old_map_pos_y;
-uint8_t *bank_map, *bank_attributes;
+const uint8_t *bank_map, *bank_attributes;
 
 void init_camera(const uint16_t y) NONBANKED{
     camera_y = y;
@@ -40,7 +40,7 @@ void init_camera(const uint16_t y) NONBANKED{
     SWITCH_ROM(1);
 }
 
-void update_camera() NONBANKED{
+void update_camera(void) NONBANKED{
     if (camera_y == old_camera_y)
         return;
     move_bkg(0, camera_y);

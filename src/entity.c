@@ -2,7 +2,7 @@
 
 #pragma bank 1
 
-entity_t entity_to_add = {};
+entity_t entity_to_add;
 uint8_t sprite_index = 0;
 
 entity_t entities[MAX_ENTITIES];
@@ -11,7 +11,7 @@ uint8_t entity_count = 0;
 
 uint16_t height_base_index = 0;
 uint8_t tile = 0;
-uint8_t* tilemap;
+const uint8_t* tilemap;
 // Functions which use this need to be NONBANKED
 inline uint8_t get_tile_type(const uint16_t x, const uint16_t y) {
     height_base_index = width_multiplication_table[y >> 3];
@@ -66,9 +66,9 @@ void populate_hitbox_record(entity_t* const e) {
     e->hitbox.bottom = MAP_COORD(e->y) + e->state_data->hitbox_half_height;
 }
 
-entity_t empty_entity = {};
+entity_t empty_entity;
 uint8_t entity_index = 0;
-entity_t* add_entity() {
+entity_t* add_entity(void) {
     if(entity_count < MAX_ENTITIES) {
         entities[next_entity_index] = entity_to_add;
         entity_count++;
@@ -88,7 +88,7 @@ int8_t entity_iterator = 0;
 uint16_t entity_y_coord = 0;
 entity_t* current_entity = NULL;
 const state_data_t * current_state_data = NULL;
-void update_entities() {
+void update_entities(void) {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         current_entity = &entities[entity_iterator];
@@ -149,7 +149,7 @@ void velocity_direction_flip(entity_t* e) {
 
 uint8_t moved = 0; // bitwise 6[unused]1[vertical]1[horizontal]
 uint16_t adjustment = 0;
-edge_t edge = {};
+edge_t edge;
 uint16_t previous_map_coord;
 uint8_t velocity_collision_move(entity_t* e) {
     moved = 0b00;
