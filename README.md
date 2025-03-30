@@ -44,6 +44,7 @@ and camera can fall apart.
   * Entities which have the active flag unset may be removed when adding a new entity
 * The box when carried by the player has its movement handled by the player update function
   * Collision checks aren't made for the box in this case
+    * This unfortunately makes it very easy to clip through single tile thick ceilings / platforms
 * Similarly to entities, levels should have a map image respecting the primary tileset and a `level_t`
 * Levels have an init function which should initialize all entities and the camera as needed
 * Levels have an update function pointer which, if set, allows them to override normal main loop update behavior

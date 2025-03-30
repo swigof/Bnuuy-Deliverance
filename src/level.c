@@ -33,8 +33,8 @@ const level_t level_5 = {
         standard_init,
         NULL,
         &level_long,
-        144, 32,
-        16, 176,
+        144, 40,
+        16, 184,
         BANK(level_5)
 };
 
@@ -46,8 +46,8 @@ const level_t level_4 = {
         standard_init,
         NULL,
         &level_5,
-        112, 32,
-        144, 168,
+        112, 40,
+        144, 176,
         BANK(level_4)
 };
 
@@ -59,8 +59,8 @@ const level_t level_3 = {
         standard_init,
         NULL,
         &level_4,
-        24, 32,
-        16, 168,
+        24, 40,
+        16, 176,
         BANK(level_3)
 };
 
@@ -72,8 +72,8 @@ const level_t level_2 = {
         standard_init,
         NULL,
         &level_3,
-        72, 32,
-        32, 168,
+        72, 40,
+        32, 176,
         BANK(level_2)
 };
 
@@ -85,8 +85,8 @@ const level_t level_1 = {
     standard_init,
     NULL,
     &level_2,
-    72,32,
-    8, 168,
+    72,40,
+    8, 176,
     BANK(level_1)
 };
 
