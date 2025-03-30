@@ -39,6 +39,18 @@ void move_box_to_position(entity_t* e) {
     }
 }
 
+void level_end_init() {
+    // stop music
+    hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
+    hUGE_mute_channel(HT_CH2,HT_CH_MUTE);
+    hUGE_mute_channel(HT_CH3,HT_CH_MUTE);
+    hUGE_mute_channel(HT_CH4,HT_CH_MUTE);
+    CRITICAL {
+        remove_VBL(hUGE_dosound);
+    }
+    standard_init();
+}
+
 void level_end_update() {
     // wait for player to reach center
     while(!end_cutscene_flag) {
@@ -177,7 +189,7 @@ const level_t level_end = {
         level_final_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_final_map,
         level_final_map_attributes,
-        standard_init,
+        level_end_init,
         level_end_update,
         &level_end,
         0, 0,

@@ -14,5 +14,6 @@ extern joypads_t joypads;
 extern joypads_t prev_joypads;
 
 extern const hUGESong_t main_track;
+extern const hUGESong_t elevator_track;
 
 #endif //COMMON_H

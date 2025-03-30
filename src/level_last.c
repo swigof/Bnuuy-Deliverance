@@ -39,6 +39,16 @@ void level_long_init() {
     remove_door = FALSE;
 }
 
+void level_elevator_init() {
+    // swap to elevator track
+    hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
+    hUGE_mute_channel(HT_CH2,HT_CH_MUTE);
+    hUGE_mute_channel(HT_CH3,HT_CH_MUTE);
+    hUGE_mute_channel(HT_CH4,HT_CH_MUTE);
+    hUGE_init(&elevator_track);
+    standard_init();
+}
+
 uint8_t elevator_timer = 0;
 uint8_t offset = 0;
 void scanline_isr(void) { SCX_REG = offset; }
@@ -97,7 +107,7 @@ const level_t level_elevator = {
         level_elevator_HEIGHT - DEVICE_SCREEN_PX_HEIGHT,
         level_elevator_map,
         level_elevator_map_attributes,
-        standard_init,
+        level_elevator_init,
         level_elevator_update,
         &level_end,
         80, 88,

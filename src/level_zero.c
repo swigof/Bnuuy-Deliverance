@@ -132,7 +132,7 @@ void level_0_update() {
         loop_flag++;
     }
 
-    // give player control
+    // give player control, start music
     CRITICAL {
         hUGE_init(&main_track);
         add_VBL(hUGE_dosound);
