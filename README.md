@@ -8,9 +8,9 @@ This project uses GBDK and hUGEDriver.
 By default, they are expected to be in the directory above the project.
 Alternatively, you can set `GBDK_HOME` and/or `HUGE_HOME`  in your environment to paths elsewhere.
 
-## Resources
+## Assets
 
-The project needs certain resources placed in a top level `res` folder
+The project needs certain assets placed in a top level `res` folder
 
 * `res/sprites/{x}_sheet.png` spritesheets of various entities
 * `res/tiles/tileset_primary.png` tilesheet for background tiles
@@ -62,7 +62,7 @@ Layout:
 * ROM 2: Levels and map tilesets
 * ROM 3: Levels
 
-## References
+## Resources
 
 https://gbdev.io/
 
