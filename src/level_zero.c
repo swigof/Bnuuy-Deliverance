@@ -18,7 +18,7 @@ palette_color_t title_colors[] = {RGB8(0xFA,0xE6,0xCD),RGB8(0,0,0),RGB8(0xFA,0xE
 const uint8_t title_attr_map[] = {7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
 
 const state_data_t truck_base = {
-        ((truck_sheet_WIDTH >> 3) << 4) | (truck_sheet_HEIGHT >> 3),
+        truck_sheet_HEIGHT >> 1,
         (truck_sheet_PIVOT_W << 4) | (truck_sheet_PIVOT_H),
         0,
         0,

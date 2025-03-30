@@ -86,7 +86,6 @@ entity_t* add_entity() {
 
 int8_t entity_iterator = 0;
 uint16_t entity_y_coord = 0;
-uint8_t half_sprite_height = 0;
 entity_t* current_entity = NULL;
 const state_data_t * current_state_data = NULL;
 void update_entities() {
@@ -96,11 +95,10 @@ void update_entities() {
         if(current_entity->active) {
             current_state_data = current_entity->state_data;
             entity_y_coord = MAP_COORD(current_entity->y);
-            half_sprite_height = (SPRITE_HEIGHT(current_state_data->sprite_dimensions)) >> 1;
 
             // Onscreen check
-            current_entity->onscreen = (entity_y_coord + half_sprite_height) > camera_y
-                    && entity_y_coord - half_sprite_height < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
+            current_entity->onscreen = (entity_y_coord + current_state_data->half_sprite_height) > camera_y
+                    && (entity_y_coord - current_state_data->half_sprite_height) < (camera_y + DEVICE_SCREEN_PX_HEIGHT);
 
             if(current_entity->onscreen) {
                 // Animation

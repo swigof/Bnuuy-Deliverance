@@ -13,8 +13,6 @@
 
 #define MAX_X_COORD 159
 
-#define SPRITE_WIDTH(D) ((D >> 4) << 3)          // Get width of a sprite from entity sprite_dimensions
-#define SPRITE_HEIGHT(D) ((D & 0b00001111) << 3) // Get height of a sprite from entity sprite_dimensions
 #define WIDTH_MARGIN(P) (P >> 4)                 // Get width margin from entity hitbox_margin
 #define HEIGHT_MARGIN(P) (P & 0b00001111)        // Get height margin from entity hitbox_margin
 #define MAP_COORD(C) (C >> 4)                    // Get map coordinate from entity x/y
@@ -25,7 +23,7 @@
 enum tile_type {TT_NONE, TT_PLATFORM, TT_SOLID, TT_HAZARD};
 
 typedef struct {
-    uint8_t sprite_dimensions; // bitwise 4[8 multiples for width]4[8 multiples for height]
+    uint8_t half_sprite_height;
     uint8_t hitbox_margin;     // bitwise 4[margin to horizontal hitbox edges from center]4[same vertically]
     int8_t speed;
     uint8_t frame_duration;

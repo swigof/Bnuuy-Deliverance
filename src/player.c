@@ -20,7 +20,7 @@ const int8_t jump_velocity[2] = {-20, -16};
 
 const state_data_t player_idle[2] = {
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         16,
         30,
@@ -28,7 +28,7 @@ const state_data_t player_idle[2] = {
         1
     },
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         8,
         30,
@@ -39,7 +39,7 @@ const state_data_t player_idle[2] = {
 
 const state_data_t player_move[2] = {
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         16,
         10,
@@ -47,7 +47,7 @@ const state_data_t player_move[2] = {
         2
     },
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         8,
         15,
@@ -58,7 +58,7 @@ const state_data_t player_move[2] = {
 
 const state_data_t player_jump[2] = {
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         16,
         30,
@@ -66,7 +66,7 @@ const state_data_t player_jump[2] = {
         1
     },
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         8,
         30,
@@ -77,7 +77,7 @@ const state_data_t player_jump[2] = {
 
 const state_data_t player_fall[2] = {
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         16,
         30,
@@ -85,7 +85,7 @@ const state_data_t player_fall[2] = {
         1
     },
     {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         8,
         30,
@@ -95,7 +95,7 @@ const state_data_t player_fall[2] = {
 };
 
 const state_data_t player_sigh = {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         0,
         120,
@@ -104,7 +104,7 @@ const state_data_t player_sigh = {
 };
 
 const state_data_t player_get_up = {
-        ((player_sheet_WIDTH >> 3) << 4) | (player_sheet_HEIGHT >> 3),
+        player_sheet_HEIGHT >> 1,
         (player_sheet_PIVOT_W << 4) | (player_sheet_PIVOT_H),
         0,
         0,
