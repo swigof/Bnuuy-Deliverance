@@ -88,13 +88,15 @@ int8_t entity_iterator = 0;
 uint16_t entity_y_coord = 0;
 uint8_t half_sprite_height = 0;
 entity_t* current_entity = NULL;
+const state_data_t * current_state_data = NULL;
 void update_entities() {
     sprite_index = 0;
     for(entity_iterator = MAX_ENTITIES - 1; entity_iterator >= 0; entity_iterator--) {
         current_entity = &entities[entity_iterator];
         if(current_entity->active) {
+            current_state_data = current_entity->state_data;
             entity_y_coord = MAP_COORD(current_entity->y);
-            half_sprite_height = (SPRITE_HEIGHT(current_entity->state_data->sprite_dimensions)) >> 1;
+            half_sprite_height = (SPRITE_HEIGHT(current_state_data->sprite_dimensions)) >> 1;
 
             // Onscreen check
             current_entity->onscreen = (entity_y_coord + half_sprite_height) > camera_y
@@ -102,12 +104,12 @@ void update_entities() {
 
             if(current_entity->onscreen) {
                 // Animation
-                if(current_entity->state_data->animation_length > 1) {
+                if(current_state_data->animation_length > 1) {
                     current_entity->frame_counter++;
-                    if(current_entity->frame_counter >= current_entity->state_data->frame_duration) {
+                    if(current_entity->frame_counter >= current_state_data->frame_duration) {
                         current_entity->frame_counter = 0;
                         current_entity->animation_frame++;
-                        if(current_entity->animation_frame >= current_entity->state_data->animation_length)
+                        if(current_entity->animation_frame >= current_state_data->animation_length)
                             current_entity->animation_frame = 0;
                     }
                 }
@@ -115,7 +117,7 @@ void update_entities() {
                 // Render
                 if(current_entity->state & FLIP_X) {
                     sprite_index += move_metasprite_flipx(
-                            current_entity->state_data->metasprite[current_entity->animation_frame],
+                            current_state_data->metasprite[current_entity->animation_frame],
                             current_entity->base_tile,
                             current_entity->prop,
                             sprite_index,
@@ -123,7 +125,7 @@ void update_entities() {
                             entity_y_coord - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
                 } else {
                     sprite_index += move_metasprite_ex(
-                            current_entity->state_data->metasprite[current_entity->animation_frame],
+                            current_state_data->metasprite[current_entity->animation_frame],
                             current_entity->base_tile,
                             current_entity->prop,
                             sprite_index,
@@ -133,7 +135,7 @@ void update_entities() {
             }
             // Entity specific update
             if(current_entity->update_function)
-                current_entity->update_function(&entities[entity_iterator]);
+                current_entity->update_function(current_entity);
         }
     }
     hide_sprites_range(sprite_index,MAX_HARDWARE_SPRITES);
