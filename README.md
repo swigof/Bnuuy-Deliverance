@@ -29,7 +29,6 @@ and camera can fall apart.
 * The project Makefile builds spritesheets using png2asset
 * Sprites should be centered horizontally and vertically on their hitboxes
   * `-pw` and `-ph` in png2asset should be set to the distance from the center to the hitbox edge
-  * Hitboxes have a size limit of 30x30 (4 bits for pw/ph)
   * Hitboxes should always remain fully inside the mapped area
 * Each entity should have a source definition (`entity_t`) and spritesheet
   * The source definition details its various states and the metasprites to use in each state

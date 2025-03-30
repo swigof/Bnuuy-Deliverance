@@ -19,7 +19,8 @@ const uint8_t title_attr_map[] = {7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
 
 const state_data_t truck_base = {
         truck_sheet_HEIGHT >> 1,
-        (truck_sheet_PIVOT_W << 4) | (truck_sheet_PIVOT_H),
+        truck_sheet_PIVOT_W,
+        truck_sheet_PIVOT_H,
         0,
         0,
         &truck_sheet_metasprites[0],

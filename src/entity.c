@@ -60,10 +60,10 @@ uint8_t get_horizontal_edge_tile_type(edge_t* edge) NONBANKED{
 }
 
 void populate_hitbox_record(entity_t* const e) {
-    e->hitbox.top = MAP_COORD(e->y) - HEIGHT_MARGIN(e->state_data->hitbox_margin);
-    e->hitbox.left = MAP_COORD(e->x) - WIDTH_MARGIN(e->state_data->hitbox_margin);
-    e->hitbox.right = MAP_COORD(e->x) + WIDTH_MARGIN(e->state_data->hitbox_margin);
-    e->hitbox.bottom = MAP_COORD(e->y) + HEIGHT_MARGIN(e->state_data->hitbox_margin);
+    e->hitbox.top = MAP_COORD(e->y) - e->state_data->hitbox_half_height;
+    e->hitbox.left = MAP_COORD(e->x) - e->state_data->hitbox_half_width;
+    e->hitbox.right = MAP_COORD(e->x) + e->state_data->hitbox_half_width;
+    e->hitbox.bottom = MAP_COORD(e->y) + e->state_data->hitbox_half_height;
 }
 
 entity_t empty_entity = {};

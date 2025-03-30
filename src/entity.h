@@ -13,8 +13,6 @@
 
 #define MAX_X_COORD 159
 
-#define WIDTH_MARGIN(P) (P >> 4)                 // Get width margin from entity hitbox_margin
-#define HEIGHT_MARGIN(P) (P & 0b00001111)        // Get height margin from entity hitbox_margin
 #define MAP_COORD(C) (C >> 4)                    // Get map coordinate from entity x/y
 #define TILE_COORD(C) (C & 0b111111111000)       // Rounds a 12bit map coordinate down to the closest 8 pixel coordinate
 
@@ -24,7 +22,8 @@ enum tile_type {TT_NONE, TT_PLATFORM, TT_SOLID, TT_HAZARD};
 
 typedef struct {
     uint8_t half_sprite_height;
-    uint8_t hitbox_margin;     // bitwise 4[margin to horizontal hitbox edges from center]4[same vertically]
+    uint8_t hitbox_half_width;
+    uint8_t hitbox_half_height;
     int8_t speed;
     uint8_t frame_duration;
     const metasprite_t* const * metasprite;

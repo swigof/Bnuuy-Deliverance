@@ -16,7 +16,8 @@ void update_angel(entity_t* e) {
 
 const state_data_t angel_tpose = {
     angel_sheet_HEIGHT >> 1,
-    (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
+    angel_sheet_PIVOT_W,
+    angel_sheet_PIVOT_H,
     16,
     15,
     &angel_sheet_metasprites[0],
@@ -25,7 +26,8 @@ const state_data_t angel_tpose = {
 
 const state_data_t angel_idle = {
     angel_sheet_HEIGHT >> 1,
-    (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
+    angel_sheet_PIVOT_W,
+    angel_sheet_PIVOT_H,
     16,
     15,
     &angel_sheet_metasprites[1],
@@ -34,7 +36,8 @@ const state_data_t angel_idle = {
 
 const state_data_t angel_clap = {
     angel_sheet_HEIGHT >> 1,
-    (angel_sheet_PIVOT_W << 4) | (angel_sheet_PIVOT_H),
+    angel_sheet_PIVOT_W,
+    angel_sheet_PIVOT_H,
     16,
     15,
     &angel_sheet_metasprites[2],

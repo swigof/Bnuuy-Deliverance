@@ -4,7 +4,8 @@
 
 const state_data_t box_base = {
         box_sheet_HEIGHT >> 1,
-        (box_sheet_PIVOT_W << 4) | (box_sheet_PIVOT_H),
+        box_sheet_PIVOT_W,
+        box_sheet_PIVOT_H,
         15,
         30,
         &box_sheet_metasprites[0],
