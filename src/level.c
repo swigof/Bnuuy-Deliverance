@@ -46,7 +46,7 @@ const level_t level_4 = {
         standard_init,
         NULL,
         &level_5,
-        112, 40,
+        104, 40,
         144, 176,
         BANK(level_4)
 };
