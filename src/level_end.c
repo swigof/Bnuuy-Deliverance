@@ -17,6 +17,9 @@ uint8_t box_shake_counter = 0;
 
 entity_t* angel;
 
+const uint8_t foregrounded_merlons[] = { 0xA0, 0x80, 0xA0, 0x80 };
+const uint8_t foregrounded_floor[] = { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
+
 void move_box_to_position(entity_t* e) {
     if(box_shake_counter < BOX_SHAKE_COUNT) {
         if (MAP_COORD(e->x) < 80)
@@ -49,6 +52,8 @@ void level_end_init(void) {
         remove_VBL(hUGE_dosound);
     }
     standard_init();
+    set_bkg_attributes(6, 35, 2, 2, foregrounded_merlons);
+    set_bkg_attributes(12, 35, 2, 2, foregrounded_merlons);
 }
 
 void level_end_update(void) {
@@ -98,6 +103,9 @@ void level_end_update(void) {
         player->active = FALSE;
         box->active = FALSE;
     } else {
+        // background dropping box and angel sprites
+        set_bkg_attributes(6, 37, 8, 1, foregrounded_floor);
+
         // prevent player from carrying box, move box into position
         carry = FALSE;
         box->update_function = (void (*)(void *)) &move_box_to_position;
