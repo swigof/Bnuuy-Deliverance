@@ -57,6 +57,8 @@ void level_long_update(void) {
     }
 }
 
+const uint8_t elevator_closed[] = { 0x5B, 0x5C, 0x5F, 0x5F, 0x5D, 0x5E };
+const uint8_t elevator_open[] = { 0x59, 0x4A, 0x4A, 0x4A, 0x5A, 0x7E };
 void level_elevator_init(void) {
     // swap to elevator track
     hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
@@ -71,11 +73,13 @@ uint8_t elevator_timer = 0;
 uint8_t offset = 0;
 void scanline_isr(void) { SCX_REG = offset; }
 void level_elevator_update(void) {
-    elevator_timer = 0;
-    while(elevator_timer <= 30) {
+    joypads.joy0 = J_LEFT | J_B;
+    while(MAP_COORD(player->x) > 80) {
+        update_entities();
         vsync();
-        elevator_timer++;
     }
+
+    set_bkg_tiles(12, 7, 1, 6, elevator_closed);
 
     CRITICAL {
         STAT_REG = STATF_MODE00;
@@ -111,10 +115,12 @@ void level_elevator_update(void) {
         STAT_REG = 0;
     }
 
-    elevator_timer = 0;
-    while(elevator_timer <= 30) {
+    set_bkg_tiles(12, 7, 1, 6, elevator_open);
+
+    joypads.joy0 = J_RIGHT | J_B;
+    while(MAP_COORD(player->x) < 104) {
+        update_entities();
         vsync();
-        elevator_timer++;
     }
 
     level_transition(current_level->next_level);
@@ -128,8 +134,8 @@ const level_t level_elevator = {
         level_elevator_init,
         level_elevator_update,
         &level_end,
-        80, 88,
-        80, 88,
+        104, 88,
+        104, 88,
         BANK(level_elevator)
 };
 
