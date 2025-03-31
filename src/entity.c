@@ -247,8 +247,3 @@ void check_grounding(entity_t* e) {
         e->state &= ~GROUNDED;
     }
 }
-
-uint8_t do_hitboxes_overlap(const hitbox_record_t* const h1, const hitbox_record_t* const h2) {
-    return (h1->right >= h2->left && h2->right >= h1->left)
-        && (h1->bottom >= h2->top && h2->bottom >= h1->top);
-}
