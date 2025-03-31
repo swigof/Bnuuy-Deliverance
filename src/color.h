@@ -12,6 +12,7 @@
 
 extern const uint16_t black;
 extern const uint16_t white;
+extern palette_color_t tile_palettes[4];
 
 void fade_to_color(uint16_t* color, uint16_t* target);
 

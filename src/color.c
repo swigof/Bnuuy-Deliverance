@@ -2,6 +2,8 @@
 
 #pragma bank 1
 
+palette_color_t tile_palettes[] = { RGB8(0xFA,0xE6,0xCD),RGB8(0xF3,0xC0,0xCE),RGB8(0x97,0x9B,0xC7),RGB8(0,0,0) };
+
 const uint16_t black = RGB_BLACK;
 const uint16_t white = RGB_WHITE;
 

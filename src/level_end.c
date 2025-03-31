@@ -95,6 +95,10 @@ void level_end_update(void) {
 
         //pan up
         while(camera_y > 8) {
+            if(camera_y % 4 == 0) {
+                fade_to_color(&tile_palettes[0], &black);
+                set_bkg_palette(0, 1, tile_palettes);
+            }
             update_entities();
             camera_y--;
             update_camera();
@@ -212,6 +216,10 @@ void level_end_update(void) {
         //fly away and pan up
         angel->state_data = &angel_tpose;
         while(camera_y > 8) {
+            if(camera_y % 4 == 0) {
+                fade_to_color(&tile_palettes[0], &black);
+                set_bkg_palette(0, 1, tile_palettes);
+            }
             prev_joypads = joypads;
             joypad_ex(&joypads);
             angel->vel_y--;
