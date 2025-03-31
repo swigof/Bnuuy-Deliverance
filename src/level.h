@@ -25,6 +25,7 @@ extern const uint16_t width_multiplication_table[];
 extern const level_t* current_level;
 
 extern uint8_t remove_door;
+extern uint16_t door_x, door_y;
 
 extern const uint8_t door_tiles[];
 extern const uint8_t empty_tiles[];
@@ -36,6 +37,16 @@ extern const level_t level_4;
 extern const level_t level_5;
 
 void standard_init(void);
-void level_transition(const level_t* level);
+void apply_level_transition(const level_t* level);
+inline void level_transition_alt_coord(const level_t* level, uint16_t x, uint16_t y) {
+    door_x = x;
+    door_y = y;
+    apply_level_transition(level);
+}
+inline void level_transition(const level_t* level) {
+    door_x = current_level->door_x;
+    door_y = current_level->door_y;
+    apply_level_transition(level);
+}
 
 #endif //LEVEL_H

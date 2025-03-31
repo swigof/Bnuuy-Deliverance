@@ -16,7 +16,8 @@ uint8_t remove_door = TRUE; // flag to remove doors on level transition
 
 uint16_t player_fade_colors[4];
 uint16_t box_fade_colors[4];
-void level_transition(const level_t* level) {
+uint16_t door_x, door_y;
+void apply_level_transition(const level_t* level) {
     // remove door by replacing its tiles with blanks
     if(remove_door)
         set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
@@ -28,8 +29,8 @@ void level_transition(const level_t* level) {
                     player->base_tile,
                     player->prop,
                     0,
-                    current_level->door_x + DEVICE_SPRITE_PX_OFFSET_X,
-                    current_level->door_y - camera_y + DEVICE_SPRITE_PX_OFFSET_Y),
+                    door_x + DEVICE_SPRITE_PX_OFFSET_X,
+                    door_y - camera_y + DEVICE_SPRITE_PX_OFFSET_Y),
             MAX_HARDWARE_SPRITES);
 
     // fade out player

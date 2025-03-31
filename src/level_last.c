@@ -39,6 +39,24 @@ void level_long_init(void) {
     remove_door = FALSE;
 }
 
+void level_long_update(void) {
+    while(current_level == &level_long) {
+        prev_joypads = joypads;
+        joypad_ex(&joypads);
+        set_focus(MAP_COORD(player->y));
+        update_entities();
+        vsync();
+        update_camera();
+        if (carry && (player->state & GROUNDED) && (joypads.joy0 & J_UP)) {
+            if (is_at_coord(&player->hitbox, 72, 56)) {
+                remove_door = TRUE;
+                true_end_flag = TRUE;
+                level_transition_alt_coord(&level_end, 72, 56);
+            }
+        }
+    }
+}
+
 void level_elevator_init(void) {
     // swap to elevator track
     hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
@@ -121,7 +139,7 @@ const level_t level_long = {
         level_long_map,
         level_long_map_attributes,
         level_long_init,
-        NULL,
+        level_long_update,
         &level_elevator,
         128, 2024,
         16, 2024,
