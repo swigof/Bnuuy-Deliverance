@@ -4,14 +4,6 @@
 
 uint8_t carry = 0; // If player is carrying the box
 
-// Check if player is at the door on the current level
-inline uint8_t is_at_door(hitbox_record_t* h) {
-    return h->left < current_level->door_x &&
-           h->right > current_level->door_x &&
-           h->top < current_level->door_y &&
-           h->bottom > current_level->door_y;
-}
-
 // Player state data is split into arrays of the not carrying and carrying versions to simplify their selection
 
 const int8_t jump_velocity[2] = {-20, -16};
@@ -149,7 +141,7 @@ void update_player(entity_t* player) {
             box->update_function = NULL;
         }
         if(carry && (player->state & GROUNDED) && (joypads.joy0 & J_UP)) {
-            if(is_at_door(&player->hitbox)) {
+            if(is_at_coord(&player->hitbox, current_level->door_x, current_level->door_y)) {
                 level_transition(current_level->next_level);
             }
         }

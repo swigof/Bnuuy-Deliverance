@@ -101,4 +101,9 @@ void check_grounding(entity_t* e);
  */
 uint8_t do_hitboxes_overlap(const hitbox_record_t* h1, const hitbox_record_t* h2);
 
+// Check if a hitbox is at a coordinate
+inline uint8_t is_at_coord(hitbox_record_t* h, uint16_t x, uint16_t y) {
+    return h->left < x && h->right > x && h->top < y && h->bottom > y;
+}
+
 #endif
