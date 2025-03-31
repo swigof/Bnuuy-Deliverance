@@ -1,13 +1,94 @@
 #include "level.h"
 #include "entity.h"
+#include "color.h"
 #include "level_last.h"
 #include "../obj/level_1.h"
 #include "../obj/level_2.h"
 #include "../obj/level_3.h"
 #include "../obj/level_4.h"
 #include "../obj/level_5.h"
+#include "../obj/player_sheet.h"
+#include "../obj/box_sheet.h"
 
 #pragma bank 1
+
+uint8_t remove_door = TRUE; // flag to remove doors on level transition
+
+uint16_t player_fade_colors[4];
+uint16_t box_fade_colors[4];
+void level_transition(const level_t* level) {
+    // remove door by replacing its tiles with blanks
+    if(remove_door)
+        set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
+
+    // set player to turn around sprite, hide box
+    hide_sprites_range(
+            move_metasprite_ex(
+                    player_sheet_metasprites[21],
+                    player->base_tile,
+                    player->prop,
+                    0,
+                    current_level->door_x + DEVICE_SPRITE_PX_OFFSET_X,
+                    current_level->door_y - camera_y + DEVICE_SPRITE_PX_OFFSET_Y),
+            MAX_HARDWARE_SPRITES);
+
+    // fade out player
+    player_fade_colors[0] = RGB8(255,255,255); // set initial colors to match those in player sheet
+    player_fade_colors[1] = RGB8(255,228,194);
+    player_fade_colors[2] = RGB8(154,114,72);
+    player_fade_colors[3] = RGB8(0,0,0);
+    while(player_fade_colors[1] != black) {
+        DECREMENT_COLOR(&player_fade_colors[1]);
+        DECREMENT_COLOR(&player_fade_colors[2]);
+        set_sprite_palette(0, 1, player_fade_colors);
+        vsync();
+    }
+
+    // change level
+    current_level = level;
+    current_level->init_function();
+
+    sprite_index = 0;
+
+    // show box blacked out
+    box_fade_colors[0] = black;
+    box_fade_colors[1] = black;
+    box_fade_colors[2] = black;
+    box_fade_colors[3] = black;
+    set_sprite_palette(1, 1, box_fade_colors);
+    sprite_index += move_metasprite_ex(
+            box_sheet_metasprites[0],
+            box->base_tile,
+            box->prop,
+            sprite_index,
+            MAP_COORD(box->x) + DEVICE_SPRITE_PX_OFFSET_X,
+            MAP_COORD(box->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+
+    // change player to carry animation
+    sprite_index += move_metasprite_ex(
+            player_sheet_metasprites[3],
+            player->base_tile,
+            player->prop,
+            sprite_index,
+            MAP_COORD(player->x) + DEVICE_SPRITE_PX_OFFSET_X,
+            MAP_COORD(player->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+
+    hide_sprites_range(sprite_index, MAX_HARDWARE_SPRITES);
+
+    // fade in player and box
+    while(player_fade_colors[1] != player_sheet_palettes[1]) {
+        fade_to_color(&player_fade_colors[1], &player_sheet_palettes[1]);
+        fade_to_color(&player_fade_colors[2], &player_sheet_palettes[2]);
+        fade_to_color(&box_fade_colors[1], &box_sheet_palettes[1]);
+        fade_to_color(&box_fade_colors[2], &box_sheet_palettes[2]);
+        set_sprite_palette(0, 1, player_fade_colors);
+        set_sprite_palette(1, 1, box_fade_colors);
+        vsync();
+    }
+
+    // re-place door tiles
+    set_bkg_data(DOOR_TILE_INDEX, 4, door_tiles);
+}
 
 void standard_init(void) {
     DISPLAY_OFF;

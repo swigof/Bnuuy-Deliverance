@@ -99,7 +99,7 @@ void level_elevator_update(void) {
         elevator_timer++;
     }
 
-    level_transition();
+    level_transition(current_level->next_level);
 }
 
 const level_t level_elevator = {

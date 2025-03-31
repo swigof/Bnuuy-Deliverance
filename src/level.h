@@ -24,6 +24,8 @@ extern const uint16_t width_multiplication_table[];
 
 extern const level_t* current_level;
 
+extern uint8_t remove_door;
+
 extern const uint8_t door_tiles[];
 extern const uint8_t empty_tiles[];
 
@@ -34,5 +36,6 @@ extern const level_t level_4;
 extern const level_t level_5;
 
 void standard_init(void);
+void level_transition(const level_t* level);
 
 #endif //LEVEL_H
