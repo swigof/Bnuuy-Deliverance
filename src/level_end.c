@@ -2,6 +2,10 @@
 #include "player.h"
 #include "angel.h"
 #include <rand.h>
+#include "cbtfx.h"
+#include "../res/sfx/SFX_0A.h"
+#include "../res/sfx/SFX_08.h"
+#include "../res/sfx/SFX_12.h"
 #include "../obj/level_final.h"
 #include "../obj/truck_sheet.h"
 
@@ -51,6 +55,11 @@ void level_end_init(void) {
     CRITICAL {
         remove_VBL(hUGE_dosound);
     }
+    // reset mutes to avoid sfx bugs
+    hUGE_mute_channel(HT_CH1,HT_CH_PLAY);
+    hUGE_mute_channel(HT_CH2,HT_CH_PLAY);
+    hUGE_mute_channel(HT_CH3,HT_CH_PLAY);
+    hUGE_mute_channel(HT_CH4,HT_CH_PLAY);
     standard_init();
     set_bkg_attributes(6, 35, 2, 2, foregrounded_merlons);
     set_bkg_attributes(12, 35, 2, 2, foregrounded_merlons);
@@ -131,6 +140,7 @@ void level_end_update(void) {
                 end_cutscene_timer = 30;
             else if (end_cutscene_timer > 120)
                 end_cutscene_timer = 120;
+            CBTFX_PLAY_SFX_0A;
             box->x += (int8_t) rand();
             box->y += (int8_t) rand();
             while (end_cutscene_timer != 0) {
@@ -154,7 +164,16 @@ void level_end_update(void) {
         }
         box->active = FALSE;
         end_cutscene_timer = 0;
-        while (end_cutscene_timer < 120) {
+        while (end_cutscene_timer < 60) {
+            prev_joypads = joypads;
+            joypad_ex(&joypads);
+            update_entities();
+            vsync();
+            end_cutscene_timer++;
+        }
+        CBTFX_PLAY_SFX_08;
+        end_cutscene_timer = 0;
+        while (end_cutscene_timer < 60) {
             prev_joypads = joypads;
             joypad_ex(&joypads);
             update_entities();
@@ -206,6 +225,8 @@ void level_end_update(void) {
         angel->state_data = &angel_clap;
         end_cutscene_timer = 0;
         while (end_cutscene_timer < 180) {
+            if(angel->animation_frame == 1 && angel->frame_counter == 0)
+                CBTFX_PLAY_SFX_12;
             prev_joypads = joypads;
             joypad_ex(&joypads);
             update_entities();
