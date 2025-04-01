@@ -1,6 +1,8 @@
 #include "level_last.h"
 #include "level_end.h"
 #include "player.h"
+#include "cbtfx.h"
+#include "../res/sfx/SFX_11.h"
 #include "../obj/level_long.h"
 #include "../obj/level_elevator.h"
 
@@ -89,6 +91,8 @@ void level_elevator_update(void) {
     set_interrupts(IE_REG | LCD_IFLAG);
     elevator_timer = 0;
     while(elevator_timer <= 254) {
+        if(elevator_timer % 128 == 0)
+            CBTFX_PLAY_SFX_11;
         offset = (elevator_timer & 0b00000100) >> 2;
         sprite_index = 0;
         sprite_index += move_metasprite_ex(
