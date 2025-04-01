@@ -132,10 +132,7 @@ void level_0_update(void) {
     }
 
     // give player control, start music
-    CRITICAL {
-        hUGE_init(&main_track);
-        add_VBL(hUGE_dosound);
-    }
+    hUGE_init(&main_track);
     player->update_function = (void (*)(void *)) &update_player;
     while(current_level == &level_0) {
         prev_joypads = joypads;

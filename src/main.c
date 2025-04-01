@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
+#include "cbtfx.h"
 #include "entity.h"
 #include "../obj/tileset_primary.h"
 #include "player.h"
@@ -26,6 +27,11 @@ int main(void) NONBANKED{
     NR52_REG = 0x80;
     NR50_REG = 0xFF;
     NR51_REG = 0xFF;
+
+    CRITICAL {
+        add_VBL(hUGE_dosound);
+        add_VBL(CBTFX_update);
+    }
 
     SHOW_BKG;
     SPRITES_8x16;

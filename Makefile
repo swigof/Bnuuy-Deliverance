@@ -32,11 +32,13 @@ BINDIR      = bin
 SRCDIR      = src
 OBJDIR      = obj
 RESDIR      = res
-IMAGEDIRS   = $(RESDIR)/*
+IMAGEDIRS   = $(RESDIR)/sprites $(RESDIR)/levels $(RESDIR)/tiles
+MUSICDIR    = $(RESDIR)/music
+SFXDIR      = $(RESDIR)/sfx
 MKDIRS      = $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
 
 BINS	    = $(BINDIR)/$(PROJECTNAME).gbc
-CSOURCES    = $(foreach dir,$(SRCDIR) $(RESDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES    = $(foreach dir,$(SRCDIR) $(MUSICDIR) $(SFXDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 
 # Images in res/ will be converted to source files with png2asset
@@ -84,8 +86,10 @@ $(OBJDIR)/%.o:	$(OBJDIR)/%.c
 $(OBJDIR)/%.o:	$(SRCDIR)/%.c
 	$(LCC) $(CFLAGS) -c -o $@ $<
 
-# Compile .c assembly files in "res/" to .o object files
-$(OBJDIR)/%.o:	$(RESDIR)/%.c
+# Compile .c files in "res/music" and "res/sfx" to .o object files
+$(OBJDIR)/%_track.o:	$(MUSICDIR)/%_track.c
+	$(LCC) $(CFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o:	$(SFXDIR)/%.c
 	$(LCC) $(CFLAGS) -c -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
