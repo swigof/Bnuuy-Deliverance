@@ -11,6 +11,7 @@
 #include "../obj/level_5.h"
 #include "../obj/player_sheet.h"
 #include "../obj/box_sheet.h"
+#include "player.h"
 
 #pragma bank 1
 
@@ -28,15 +29,17 @@ void apply_level_transition(const level_t* level) {
     }
 
     // set player to turn around sprite, hide box
-    hide_sprites_range(
-            move_metasprite_ex(
-                    player_sheet_metasprites[21],
-                    player->base_tile,
-                    player->prop,
-                    0,
-                    door_x + DEVICE_SPRITE_PX_OFFSET_X,
-                    door_y - camera_y + DEVICE_SPRITE_PX_OFFSET_Y),
-            MAX_HARDWARE_SPRITES);
+    player->state_data = &player_turn_around;
+    player->animation_frame = 0;
+    player->frame_counter = 0;
+    player->update_function = NULL;
+    box->update_function = NULL;
+    player->x = door_x << 4;
+    player->y = door_y << 4;
+    box->x = 0;
+    box->y = 0;
+    update_entities();
+    vsync();
 
     // fade out player
     player_fade_colors[0] = RGB8(255,255,255); // set initial colors to match those in player sheet
@@ -101,6 +104,11 @@ void apply_level_transition(const level_t* level) {
         set_sprite_palette(1, 1, box_fade_colors);
         vsync();
     }
+
+    // reset player and box update functions, and player state
+    player->state_data = &player_idle[carry];
+    player->update_function = (void (*)(void *)) &update_player;
+    box->update_function = (void (*)(void *)) &update_box;
 
     // re-place door tiles
     set_bkg_data(DOOR_TILE_INDEX, 4, door_tiles);

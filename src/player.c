@@ -115,6 +115,16 @@ const state_data_t player_get_up = {
         1
 };
 
+const state_data_t player_turn_around = {
+        player_sheet_HEIGHT >> 1,
+        player_sheet_PIVOT_W,
+        player_sheet_PIVOT_H,
+        0,
+        0,
+        &player_sheet_metasprites[21],
+        1
+};
+
 void update_player(entity_t* player) {
     // Input and velocity changes
     if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {

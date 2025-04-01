@@ -11,6 +11,7 @@
 extern const state_data_t player_idle[2];
 extern const state_data_t player_sigh;
 extern const state_data_t player_get_up;
+extern const state_data_t player_turn_around;
 
 extern uint8_t carry;
 
