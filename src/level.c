@@ -71,13 +71,23 @@ void apply_level_transition(const level_t* level) {
             MAP_COORD(box->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
 
     // change player to carry animation
-    sprite_index += move_metasprite_ex(
-            player_sheet_metasprites[3],
-            player->base_tile,
-            player->prop,
-            sprite_index,
-            MAP_COORD(player->x) + DEVICE_SPRITE_PX_OFFSET_X,
-            MAP_COORD(player->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+    if(FLIP_X & player->state) {
+        sprite_index += move_metasprite_flipx(
+                player_sheet_metasprites[3],
+                player->base_tile,
+                player->prop,
+                sprite_index,
+                MAP_COORD(player->x) + DEVICE_SPRITE_PX_OFFSET_X,
+                MAP_COORD(player->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+    } else {
+        sprite_index += move_metasprite_ex(
+                player_sheet_metasprites[3],
+                player->base_tile,
+                player->prop,
+                sprite_index,
+                MAP_COORD(player->x) + DEVICE_SPRITE_PX_OFFSET_X,
+                MAP_COORD(player->y) - camera_y + DEVICE_SPRITE_PX_OFFSET_Y);
+    }
 
     hide_sprites_range(sprite_index, MAX_HARDWARE_SPRITES);
 
