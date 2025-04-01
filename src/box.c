@@ -1,4 +1,6 @@
 #include "box.h"
+#include "cbtfx.h"
+#include "../res/sfx/SFX_0A.h"
 
 #pragma bank 1
 
@@ -12,12 +14,14 @@ const state_data_t box_base = {
         1
 };
 
+uint8_t was_grounded;
 void update_box(entity_t* box) {
     // Velocities
     if(!(box->state & GROUNDED) && box->vel_y < 100) {
         box->vel_y += 2;
     }
     if(box->state & GROUNDED) {
+        was_grounded = TRUE;
         if(box->vel_x > 1) {
             box->vel_x -= 2;
         } else if(box->vel_x < -1) {
@@ -26,6 +30,7 @@ void update_box(entity_t* box) {
             box->vel_x = 0;
         }
     } else {
+        was_grounded = FALSE;
         if(box->vel_x > 0) {
             box->vel_x -= 1;
         } else if(box->vel_x < 0) {
@@ -38,5 +43,9 @@ void update_box(entity_t* box) {
         if(velocity_collision_move(box)) {
             check_grounding(box);
         }
+    }
+
+    if(!was_grounded && (box->state & GROUNDED)) {
+        CBTFX_PLAY_SFX_0A;
     }
 }

@@ -1,4 +1,7 @@
 #include "player.h"
+#include "cbtfx.h"
+#include "../res/sfx/SFX_0C.h"
+#include "../res/sfx/SFX_0D.h"
 
 #pragma bank 1
 
@@ -116,9 +119,11 @@ void update_player(entity_t* player) {
     // Input and velocity changes
     if(joypads.joy0 & J_A && !(prev_joypads.joy0 & J_A)) {
         if(player->state & GROUNDED) {
+            CBTFX_PLAY_SFX_0C;
             player->state &= ~GROUNDED;
             player->vel_y = jump_velocity[carry];
         } else if(!(player->state & DOUBLE_JUMP) && !carry) {
+            CBTFX_PLAY_SFX_0D;
             player->state |= DOUBLE_JUMP;
             player->vel_y = jump_velocity[carry];
         }
