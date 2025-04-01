@@ -3,6 +3,7 @@
 #include "player.h"
 #include "cbtfx.h"
 #include "../res/sfx/SFX_11.h"
+#include "../res/sfx/SFX_0F.h"
 #include "../obj/level_long.h"
 #include "../obj/level_elevator.h"
 
@@ -36,12 +37,14 @@ void level_long_init(void) {
     }
 
     set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
+    CBTFX_PLAY_SFX_0F;
     set_focus(MAP_COORD(player->y));
-
-    remove_door = FALSE;
 }
 
 void level_long_update(void) {
+    remove_door = FALSE;
+    play_door_close_sfx = FALSE;
+
     while(current_level == &level_long) {
         prev_joypads = joypads;
         joypad_ex(&joypads);
@@ -82,6 +85,14 @@ void level_elevator_update(void) {
     }
 
     set_bkg_tiles(12, 7, 1, 6, elevator_closed);
+    CBTFX_PLAY_SFX_0F;
+    elevator_timer = 0;
+    joypads.joy0 = J_B;
+    while(elevator_timer < 60) {
+        update_entities();
+        vsync();
+        elevator_timer++;
+    }
 
     CRITICAL {
         STAT_REG = STATF_MODE00;
@@ -120,6 +131,7 @@ void level_elevator_update(void) {
     }
 
     set_bkg_tiles(12, 7, 1, 6, elevator_open);
+    CBTFX_PLAY_SFX_0F;
 
     joypads.joy0 = J_RIGHT | J_B;
     while(MAP_COORD(player->x) < 104) {

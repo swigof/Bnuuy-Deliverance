@@ -2,6 +2,8 @@
 #include "entity.h"
 #include "color.h"
 #include "level_last.h"
+#include "cbtfx.h"
+#include "../res/sfx/SFX_0F.h"
 #include "../obj/level_1.h"
 #include "../obj/level_2.h"
 #include "../obj/level_3.h"
@@ -13,14 +15,17 @@
 #pragma bank 1
 
 uint8_t remove_door = TRUE; // flag to remove doors on level transition
+uint8_t play_door_close_sfx = TRUE;
 
 uint16_t player_fade_colors[4];
 uint16_t box_fade_colors[4];
 uint16_t door_x, door_y;
 void apply_level_transition(const level_t* level) {
     // remove door by replacing its tiles with blanks
-    if(remove_door)
+    if(remove_door) {
+        CBTFX_PLAY_SFX_0F;
         set_bkg_data(DOOR_TILE_INDEX, 4, empty_tiles);
+    }
 
     // set player to turn around sprite, hide box
     hide_sprites_range(
@@ -89,6 +94,8 @@ void apply_level_transition(const level_t* level) {
 
     // re-place door tiles
     set_bkg_data(DOOR_TILE_INDEX, 4, door_tiles);
+    if(play_door_close_sfx)
+        CBTFX_PLAY_SFX_0F;
 }
 
 void standard_init(void) {

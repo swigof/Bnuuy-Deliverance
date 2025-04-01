@@ -25,6 +25,7 @@ extern const uint16_t width_multiplication_table[];
 extern const level_t* current_level;
 
 extern uint8_t remove_door;
+extern uint8_t play_door_close_sfx;
 extern uint16_t door_x, door_y;
 
 extern const uint8_t door_tiles[];
