@@ -3,6 +3,8 @@
 #include "common.h"
 #include "color.h"
 #include "player.h"
+#include "cbtfx.h"
+#include "../res/sfx/SFX_11.h"
 #include "../obj/level_0.h"
 #include "../obj/truck_sheet.h"
 
@@ -52,6 +54,7 @@ void level_0_init(void) {
 }
 void level_0_update(void) {
     // move in truck
+    CBTFX_PLAY_SFX_11;
     while(MAP_COORD(truck->x) != 16) {
         truck->x += truck_vel_x;
         truck_vel_x--;
@@ -63,8 +66,9 @@ void level_0_update(void) {
         vsync();
         vsync();
     }
+    CBTFX_PLAY_SFX_11;
     loop_flag = 0;
-    while(loop_flag < 20) {
+    while(loop_flag < 30) {
         truck->y += 16;
         update_entities();
         vsync();
