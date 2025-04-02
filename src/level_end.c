@@ -12,17 +12,36 @@
 #pragma bank 1
 
 #define BOX_SHAKE_COUNT 4
+#define STAR_TILE_INDEX 86
 
 uint8_t true_end_flag = FALSE;
 
 uint8_t end_cutscene_timer = 0;
 uint8_t end_cutscene_flag = FALSE;
 uint8_t box_shake_counter = 0;
+uint8_t star_counter = 0;
 
 entity_t* angel;
 
 const uint8_t foregrounded_merlons[] = { 0xA0, 0x80, 0xA0, 0x80 };
 const uint8_t foregrounded_floor[] = { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
+
+const uint8_t star_tiles[] = {
+        0x00,0x00,0x00,0x00,
+        0x04,0x00,0x0e,0x00,
+        0x04,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x02,0x00,
+        0x04,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x04,0x00,
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+};
 
 void move_box_to_position(entity_t* e) {
     if(box_shake_counter < BOX_SHAKE_COUNT) {
@@ -252,6 +271,17 @@ void level_end_update(void) {
         }
         angel->active = FALSE;
         player->active = FALSE;
+    }
+    end_cutscene_timer = 0;
+    while(1) {
+        if(end_cutscene_timer % 8 == 0) {
+            set_bkg_data(STAR_TILE_INDEX + 2, 1, &star_tiles[star_counter % 48]);
+            set_bkg_data(STAR_TILE_INDEX + 1, 1, &star_tiles[(star_counter + 16) % 48]);
+            set_bkg_data(STAR_TILE_INDEX, 1, &star_tiles[(star_counter + 32) % 48]);
+            star_counter += 16;
+        }
+        vsync();
+        end_cutscene_timer++;
     }
 }
 
