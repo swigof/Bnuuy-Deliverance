@@ -20,6 +20,9 @@ The project needs certain assets placed in a top level `res` folder
 * `res/music/{x}_track.c` hUGETracker exported songs
 * `res/sfx/SFX_{x}.[c/h]` CBT-FX exported sound effects
 
+These files along with their license information can be found in the archive 
+[here](https://github.com/swigof/Bnuuy-Deliverance/releases/download/1.0.0/res.zip)
+
 The image files are processed with GBDK's `png2asset` as defined in the Makefile
 
 Care should be taken to avoid having source files in the project which match the names of those 
